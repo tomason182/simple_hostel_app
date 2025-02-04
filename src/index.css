@@ -24,10 +24,18 @@
   --primary-color: #284b63;
   --secondary-color: #005f73;
 
-  /* Text Colors */
-  --text-color: #242424;
-  --text-color-dark: #131721;
-  --text-color-light: #7c7c7c;
+  /* gray Colors */
+
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
 
   font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -43,8 +51,6 @@
 }
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 250px;
   min-height: 100vh;
 }

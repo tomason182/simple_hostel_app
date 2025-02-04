@@ -1,0 +1,88 @@
+.header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: #fff;
+  border-bottom: 1px solid var(--gray-200);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.leftSection {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logo {
+  color: var(--primary-color);
+  font-size: 0.65rem;
+}
+
+/* Search bar */
+
+.relative {
+  position: relative;
+}
+
+.relative > svg {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.relative > input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid var(--gray-200);
+  border-radius: 1rem;
+  font-size: 1rem;
+}
+
+/* Right Section */
+.rightSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+}
+
+.userInfo {
+  text-align: left;
+}
+
+.propertyName,
+.userName {
+  margin: 0.35rem;
+}
+
+.propertyName {
+  color: var(--gray-900);
+  font-size: 0.875rem;
+}
+
+.userName {
+  color: var(--gray-500);
+  font-size: 0.75rem;
+}
+
+/* Action Buttons */
+.actionButton {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+}
+
+.actionButton svg {
+  stroke: var(--gray-500);
+}
+
+.actionButton:hover svg {
+  stroke: var(--gray-900);
+}

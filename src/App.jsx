@@ -1,8 +1,19 @@
 import "./App.css";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+
 function App() {
+  const propertyName = "La Casa de Tomas";
+  const user = {
+    name: "Tomas",
+  };
   return (
     <>
-      <h1>Main app page</h1>
+      <Header user={user} propertyName={propertyName} />
+      <main>This is the body</main>
+      <footer>
+        <Footer />
+      </footer>
     </>
   );
 }
