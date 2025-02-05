@@ -29,9 +29,7 @@ function App() {
       <main>
         <Tabs tabs={tabs} />
       </main>
-      <footer>
-        <Footer />
-      </footer>
+      <Footer />
     </>
   );
 }
