@@ -5,7 +5,7 @@ export default function Card({
   title,
   subtitle,
   children,
-  bodyClassName,
+  customStyle,
   actions,
 }) {
   return (
@@ -14,7 +14,9 @@ export default function Card({
         <h3>{title}</h3>
         {subtitle && <p>{subtitle}</p>}
       </div>
-      <div className={bodyClassName}>{children}</div>
+      <div style={customStyle} className={styles.body}>
+        {children}
+      </div>
       {actions && (
         <div className={styles.actionsContainer}>
           {actions.map((action, index) => (
@@ -36,7 +38,7 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string,
   children: PropTypes.node.isRequired,
-  bodyClassName: PropTypes.string.isRequired,
+  customStyle: PropTypes.object,
   actions: PropTypes.arrayOf(
     PropTypes.shape({
       onClick: PropTypes.func,
