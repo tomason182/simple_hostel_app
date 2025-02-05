@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
 import Card from "../../components/Card/Card";
+import Modal from "../../components/Modal/Modal";
 import { ReservationsList, LatestReservations } from "./Children";
 import styles from "./Home.module.css";
 
 export default function Home() {
   const [todaysReservations, setTodaysReservations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const reservations = [
@@ -65,10 +68,14 @@ export default function Home() {
     setTodaysReservations(reservations);
   }, []);
 
+  function onModalClose() {
+    setIsOpen(false);
+  }
+
   const actions = [
     {
       label: "SHOW MORE",
-      onClick: () => console.log("button clicked"),
+      onClick: () => setIsOpen(true),
     },
   ];
 
@@ -133,6 +140,14 @@ export default function Home() {
       >
         <LatestReservations />
       </Card>
+      <Modal isOpen={isOpen} onClose={onModalClose}>
+        <ReservationsList
+          data={todaysReservations}
+          error={error}
+          loading={loading}
+          info={coming}
+        />
+      </Modal>
     </div>
   );
 }

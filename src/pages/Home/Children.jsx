@@ -2,8 +2,12 @@ import Spinner from "../../components/Spinner/Spinner";
 import { format } from "date-fns";
 import PropTypes from "prop-types";
 import styles from "./Children.module.css";
+import Modal from "../../components/Modal/Modal";
+import { useState } from "react";
 
 export function ReservationsList({ data, error, loading, info }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   if (loading) {
     return <Spinner />;
   }
@@ -38,7 +42,7 @@ export function ReservationsList({ data, error, loading, info }) {
       <li>{info.message}</li>
     ) : (
       filteredData.map(d => (
-        <li key={d.id}>
+        <li key={d.id} onClick={() => setIsOpen(true)}>
           <p>{d.guest_info.full_name}</p>
           <span>
             <svg
@@ -64,7 +68,14 @@ export function ReservationsList({ data, error, loading, info }) {
       ))
     );
 
-  return <ul className={styles.list}>{reservationsList}</ul>;
+  return (
+    <>
+      <ul className={styles.list}>{reservationsList}</ul>;
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <h1>This is a Modal</h1>
+      </Modal>
+    </>
+  );
 }
 
 export function LatestReservations() {
