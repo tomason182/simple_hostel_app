@@ -1,0 +1,95 @@
+.calendarTable {
+  width: 100%;
+  border-spacing: 0px;
+  table-layout: fixed;
+}
+
+.calendarTable td {
+  border-left: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  height: 2rem;
+}
+
+/* Table header */
+
+.monthDisplay {
+  font-size: 1.5rem;
+  /* border-bottom: 1px solid var(--gray-400); */
+  color: var(--gray-700);
+  text-align: center;
+}
+
+.arrowBtn {
+  background: none;
+  cursor: pointer;
+  border: none;
+}
+
+.arrowBtn svg {
+  stroke: var(--gray-700);
+}
+
+.arrowBtn:hover {
+  background: none;
+}
+
+.arrowBtn:hover svg {
+  stroke: var(--gray-400);
+  transform: scale(1.2);
+}
+
+/* Table rooms and beds */
+.roomDescription {
+  color: var(--gray-700);
+  background: var(--gray-200);
+  height: 2.5rem;
+  font-family: "Inter-Bold";
+  text-align: left;
+}
+
+.roomDescription th {
+  padding-left: 1rem;
+}
+
+.roomName {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roomName > span {
+  font-size: 0.65rem;
+  margin-left: 0.5rem;
+  background-color: var(--gray-400);
+  color: #fff;
+  border-radius: 5px;
+  padding: 0.25rem 0.35rem;
+}
+
+/* Reservations & Guest styles */
+.guestName {
+  font-family: "Inter";
+  color: white;
+}
+
+.confirmed {
+  background: #6a994e;
+}
+
+.checkedOut {
+  background: #343a40;
+}
+
+.inHouse {
+  background: #e36414;
+}
+
+.provisional {
+  background: #3a86ff;
+}

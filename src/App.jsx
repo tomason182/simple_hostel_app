@@ -2,7 +2,9 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Tabs from "./components/Tabs/Tabs";
+/* Import Pages */
 import Home from "./pages/Home/Home";
+import Calendar from "./pages/Calendar/Calendar";
 
 function App() {
   const propertyName = "La Casa de Tomas";
@@ -12,7 +14,7 @@ function App() {
 
   const tabs = [
     { label: "home", content: <Home /> },
-    { label: "calendar", content: <h1>Calendar page</h1> },
+    { label: "calendar", content: <Calendar /> },
     {
       label: "Rates & Availability",
       content: <h1>Rates and Availability Page</h1>,
