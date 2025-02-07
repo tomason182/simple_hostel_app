@@ -1,9 +1,10 @@
 import styles from "./Calendar.module.css";
 import { format, sub, add, setDefaultOptions } from "date-fns";
-import { es, enUS, tr } from "date-fns/locale";
+import { es, enUS } from "date-fns/locale";
 import { Fragment, useEffect, useState } from "react";
-import PropTypes from "prop-types";
 import Spinner from "../../components/Spinner/Spinner";
+import Modal from "../../components/Modal/Modal";
+import Form from "../../components/Form/Form";
 
 export default function Calendar() {
   const today = new Date();
@@ -11,6 +12,9 @@ export default function Calendar() {
   const [reservations, setReservations] = useState([]);
   const [roomTypes, setRoomTypes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  // Modal States
+  const [isOpen, setIsOpen] = useState(false);
 
   setDefaultOptions({ locale: es });
 
@@ -383,7 +387,10 @@ export default function Calendar() {
 
   function NewReservationButton() {
     return (
-      <button className={styles.newReservationButton}>
+      <button
+        className={styles.newReservationButton}
+        onClick={() => setIsOpen(true)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -403,76 +410,88 @@ export default function Calendar() {
     );
   }
 
+  /* Check email form */
+  const checkEmailFields = [
+    { name: "email", label: "Email", type: "email", required: true },
+  ];
+  const handleEmailSubmit = data =>
+    console.log("Search guest email submitted", data);
+
   if (reservations === null || roomTypes === null) return <Spinner />;
 
   return (
-    <table className={styles.calendarTable}>
-      <thead>
-        <tr>
-          <th colSpan={3} rowSpan={3}>
-            <NewReservationButton />
-          </th>
-        </tr>
-        <tr>
-          <th colSpan={12} className={styles.monthDisplay}>
-            {MMM}&nbsp;{year}
-          </th>
-
-          <th>
-            <button onClick={handlePrevBtn} className={styles.arrowBtn}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="38"
-                height="38"
-                viewBox="0 0 24 24"
-                fill="none"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
-          </th>
-          <th>
-            <button onClick={handleNextBtn} className={styles.arrowBtn}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="38"
-                height="38"
-                viewBox="0 0 24 24"
-                fill="none"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
-          </th>
-        </tr>
-        <tr>
-          {/* <th colSpan={3}></th> */}
-          {days}
-        </tr>
-      </thead>
-      <tbody>
-        {loading ? (
-          <Spinner />
-        ) : roomList.length === 0 ? (
-          <tr height={250}>
-            <td colSpan={17} className={styles.noRoomTypesMessage}>
-              There are no room types created. Before you begin, please create
-              your property room types
-            </td>
+    <>
+      <table className={styles.calendarTable}>
+        <thead>
+          <tr>
+            <th colSpan={3} rowSpan={3}>
+              <NewReservationButton />
+            </th>
           </tr>
-        ) : (
-          roomList
-        )}
-      </tbody>
-      <tfoot>
-        <CalendarFooter />
-      </tfoot>
-    </table>
+          <tr>
+            <th colSpan={12} className={styles.monthDisplay}>
+              {MMM}&nbsp;{year}
+            </th>
+
+            <th>
+              <button onClick={handlePrevBtn} className={styles.arrowBtn}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="38"
+                  height="38"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+            </th>
+            <th>
+              <button onClick={handleNextBtn} className={styles.arrowBtn}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="38"
+                  height="38"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+            </th>
+          </tr>
+          <tr>
+            {/* <th colSpan={3}></th> */}
+            {days}
+          </tr>
+        </thead>
+        <tbody>
+          {loading ? (
+            <Spinner />
+          ) : roomList.length === 0 ? (
+            <tr height={250}>
+              <td colSpan={17} className={styles.noRoomTypesMessage}>
+                There are no room types created. Before you begin, please create
+                your property room types
+              </td>
+            </tr>
+          ) : (
+            roomList
+          )}
+        </tbody>
+        <tfoot>
+          <CalendarFooter />
+        </tfoot>
+      </table>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        <Form fields={checkEmailFields} onSubmit={handleEmailSubmit} />
+      </Modal>
+    </>
   );
 }

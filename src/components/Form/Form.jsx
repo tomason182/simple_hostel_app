@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import styles from "./Form.module.css";
 
 export default function Form({ fields, onSubmit, externalErrors = {} }) {
   const [formData, setFormData] = useState(
@@ -10,9 +11,9 @@ export default function Form({ fields, onSubmit, externalErrors = {} }) {
   );
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+  /*   useEffect(() => {
     setErrors(externalErrors);
-  }, [externalErrors]);
+  }, [externalErrors]); */
 
   const validate = () => {
     const newErrors = {};
@@ -42,13 +43,14 @@ export default function Form({ fields, onSubmit, externalErrors = {} }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       {fields.map(({ name, label, type, placeholder }) => (
-        <div key={name}>
-          <label>
+        <div key={name} className={styles.formGroup}>
+          <label className={styles.label}>
             {label}
             {type === "checkbox" ? (
               <input
+                className={styles.checkbox}
                 type={type}
                 name={name}
                 checked={formData[name]}
@@ -56,6 +58,7 @@ export default function Form({ fields, onSubmit, externalErrors = {} }) {
               />
             ) : (
               <input
+                className={styles.input}
                 type={type}
                 name={name}
                 value={formData[name]}
@@ -64,10 +67,12 @@ export default function Form({ fields, onSubmit, externalErrors = {} }) {
               />
             )}
           </label>
-          {errors[name] && <span style={{ color: "red" }}>{errors[name]}</span>}
+          {errors[name] && <span className={styles.error}>{errors[name]}</span>}
         </div>
       ))}
-      <button type="submit">Submit</button>
+      <button className={styles.submitButton} type="submit">
+        Submit
+      </button>
     </form>
   );
 }
