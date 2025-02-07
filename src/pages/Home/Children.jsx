@@ -70,7 +70,7 @@ export function ReservationsList({ data, error, loading, info }) {
 
   return (
     <>
-      <ul className={styles.list}>{reservationsList}</ul>;
+      <ul className={styles.list}>{reservationsList}</ul>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <h1>This is a Modal</h1>
       </Modal>

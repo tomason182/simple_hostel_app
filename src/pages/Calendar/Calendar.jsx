@@ -1,6 +1,6 @@
 import styles from "./Calendar.module.css";
 import { format, sub, add, setDefaultOptions } from "date-fns";
-import { es, enUS } from "date-fns/locale";
+import { es, enUS, tr } from "date-fns/locale";
 import { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Spinner from "../../components/Spinner/Spinner";
@@ -347,6 +347,38 @@ export default function Calendar() {
     </Fragment>
   ));
 
+  /* Table footer */
+  function CalendarFooter() {
+    const statusList = [
+      {
+        key: "1",
+        title: "Reserved-Provisional",
+        customStyle: { color: "#3a86ff" },
+      },
+      {
+        key: "2",
+        title: "Reserved-Confirmed",
+        customStyle: { color: "#6a994e" },
+      },
+      { key: "3", title: "In House", customStyle: { color: "#e36414" } },
+      { key: "4", title: "Checked-out", customStyle: { color: "#343a40" } },
+    ];
+
+    const listItems = statusList.map(item => (
+      <li key={item.key} style={item.customStyle}>
+        {item.title}
+      </li>
+    ));
+    return (
+      <tr className={styles.reservationStatus}>
+        <th scope="row" colSpan={3}></th>
+        <td colSpan={14}>
+          <ul>{listItems}</ul>
+        </td>
+      </tr>
+    );
+  }
+
   if (reservations === null || roomTypes === null) return <Spinner />;
 
   return (
@@ -409,7 +441,9 @@ export default function Calendar() {
           roomList
         )}
       </tbody>
-      <tfoot></tfoot>
+      <tfoot>
+        <CalendarFooter />
+      </tfoot>
     </table>
   );
 }
