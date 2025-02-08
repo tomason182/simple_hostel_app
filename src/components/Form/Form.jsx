@@ -20,7 +20,7 @@ export default function Form({
     setErrors(externalErrors);
   }, [externalErrors]); */
 
-  const validate = () => {
+  /*   const validate = () => {
     const newErrors = {};
     fields.forEach(({ name, required, pattern, minLength, maxLength }) => {
       const value = formData[name];
@@ -34,7 +34,7 @@ export default function Form({
     });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }; */
 
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
