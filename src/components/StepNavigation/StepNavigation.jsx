@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./StepNavigation.module.css";
+import { Fragment } from "react";
 
 export default function StepNavigation({
   activeStep,
@@ -12,9 +13,8 @@ export default function StepNavigation({
     <div className={styles.stepContainer} style={style}>
       <div className={styles.progressContainer}>
         {steps.map((step, index) => (
-          <>
+          <Fragment key={index}>
             <div
-              key={index}
               className={`${styles.step} ${
                 index <= activeStep ? styles.active : ""
               }`}
@@ -31,7 +31,7 @@ export default function StepNavigation({
                 }`}
               ></div>
             )}
-          </>
+          </Fragment>
         ))}
       </div>
     </div>
