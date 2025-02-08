@@ -1,0 +1,46 @@
+.stepContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.progressContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 80%;
+  position: relative;
+}
+
+.step {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--gray-200);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.step.active,
+.line.active {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.step span {
+  font-size: 0.875rem;
+}
+
+.line {
+  height: 2px;
+  width: 20%;
+  background-color: var(--gray-200);
+  position: relative;
+  z-index: 1;
+}
