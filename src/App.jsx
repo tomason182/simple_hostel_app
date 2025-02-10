@@ -5,6 +5,7 @@ import Tabs from "./components/Tabs/Tabs";
 /* Import Pages */
 import Home from "./pages/Home/Home";
 import Calendar from "./pages/Calendar/Calendar";
+import RatesAndAvailability from "./pages/RatesAndAvailability/RatesAndAvailability";
 
 function App() {
   const propertyName = "La Casa de Tomas";
@@ -17,7 +18,7 @@ function App() {
     { label: "calendar", content: <Calendar /> },
     {
       label: "Rates & Availability",
-      content: <h1>Rates and Availability Page</h1>,
+      content: <RatesAndAvailability />,
     },
     { label: "Reservations", content: <h1>Reservation Page</h1> },
     { label: "Property", content: <h1>Property Page</h1> },
