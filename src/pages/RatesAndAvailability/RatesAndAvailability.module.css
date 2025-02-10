@@ -1,0 +1,74 @@
+.table {
+  width: 100%;
+  border-spacing: 0px;
+  table-layout: fixed;
+}
+
+.table td {
+  border-left: 1px solid var(--gray-200);
+  border-bottom: 1px solid var(--gray-200);
+  color: var(--gray-600);
+  font-size: 0.785rem;
+}
+
+/* Prev and Next button */
+.arrowBtn {
+  background: none;
+  cursor: pointer;
+  border: none;
+}
+
+.arrowBtn svg {
+  stroke: var(--gray-700);
+}
+
+.arrowBtn:hover {
+  background: none;
+}
+
+.arrowBtn:hover svg {
+  stroke: var(--gray-400);
+  transform: scale(1.2);
+}
+
+/* Bulk edit button */
+.bulkEditButton {
+  padding: 1.25rem 1.5rem;
+  border-radius: 10%;
+  border: 1px solid var(--gray-200);
+  background: none;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-family: "Inter";
+  cursor: pointer;
+}
+
+.bulkEditButton:hover {
+  background-color: var(--gray-100);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.roomDescription {
+  color: var(--gray-700);
+  background: var(--gray-200);
+  height: 2.5rem;
+  font-family: "Inter-Bold";
+  text-align: left;
+}
+
+.roomDescription th {
+  padding-left: 1rem;
+}
+
+.label {
+  border-bottom: 1px solid var(--gray-200);
+  text-align: left;
+  padding: 0.3rem 1rem;
+  font-family: "Inter-Bold";
+  font-size: 0.785rem;
+}
