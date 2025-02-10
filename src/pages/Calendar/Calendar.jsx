@@ -4,7 +4,7 @@ import { es, enUS } from "date-fns/locale";
 import { Fragment, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
-import Form from "../../components/Form/Form";
+import StepNavigation from "../../components/StepNavigation/StepNavigation";
 
 export default function Calendar() {
   const today = new Date();
@@ -15,6 +15,9 @@ export default function Calendar() {
 
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
+
+  // Form index
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   setDefaultOptions({ locale: es });
 
@@ -77,7 +80,7 @@ export default function Calendar() {
         guest_info: {
           full_name: "Larry Clark",
         },
-        check_in: "2025-02-05",
+        check_in: "2025-02-03",
         check_out: "2025-02-07",
         number_of_guest: 2,
         reservation_status: "confirmed",
@@ -162,7 +165,7 @@ export default function Calendar() {
         number_of_guest: 1,
         reservation_status: "confirmed",
         payment_status: "partial",
-        assigned_beds: [19],
+        assigned_beds: [20],
         special_request: "",
         created_by: "",
         updated_by: "",
@@ -226,7 +229,7 @@ export default function Calendar() {
     const expr = parseInt(format(today, "yyyyMMdd"));
     const checkIn = Number(reservation.checkIn.split("-").join(""));
     const checkOut = Number(reservation.checkOut.split("-").join(""));
-    console.log(checkIn);
+
     let statusClassName = "confirmed";
 
     if (checkOut <= expr) {
@@ -323,7 +326,7 @@ export default function Calendar() {
 
                   if (reservation) {
                     skipDays = reservation.nights - 1;
-                    console.log(skipDays);
+
                     const colSpan =
                       index + reservation.nights > days.length
                         ? daysArray.length - index
@@ -410,14 +413,166 @@ export default function Calendar() {
     );
   }
 
+  /* HANDLING RESERVATION FORM */
+  const nextForm = () => {
+    setCurrentIndex(prevIndex =>
+      prevIndex === formChildren.length ? formChildren.length : prevIndex + 1
+    );
+  };
+
+  /* FORM FIELDS */
+  /* Check in and check out dates */
+  const dates = [
+    {
+      name: "checkIn",
+      label: "Check-in",
+      type: "date",
+      required: true,
+    },
+    {
+      name: "checkOut",
+      label: "Check-out",
+      type: "date",
+      required: true,
+    },
+  ];
+
   /* Check email form */
   const checkEmailFields = [
     { name: "email", label: "Email", type: "email", required: true },
   ];
-  const handleEmailSubmit = data =>
-    console.log("Search guest email submitted", data);
 
-  if (reservations === null || roomTypes === null) return <Spinner />;
+  const guestData = [
+    {
+      name: "firstName",
+      label: "First name",
+      type: "text",
+      required: true,
+      maxLength: 100,
+    },
+    {
+      name: "lastName",
+      label: "Last name",
+      type: "text",
+      required: true,
+      maxLength: 100,
+    },
+    {
+      name: "idNumber",
+      label: "Passport or ID number",
+      type: "text",
+      maxLength: 25,
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      required: true,
+      disabled: true,
+      maxLength: 50,
+    },
+    {
+      name: "phoneNumber",
+      type: "text",
+      label: "Phone number",
+      maxLength: 50,
+    },
+    {
+      name: "countryCode",
+      label: "Country Code",
+      type: "text",
+      maxLength: 2,
+    },
+    {
+      name: "city",
+      label: "City",
+      type: "text",
+      maxLength: 50,
+    },
+    {
+      name: "street",
+      label: "Street",
+      type: "text",
+      maxLength: 100,
+    },
+    {
+      name: "postalCode",
+      label: "Postal Code",
+      type: "text",
+      maxLength: 100,
+    },
+  ];
+
+  // Guest data form style
+  const guestDataFormCustomStyle = {
+    form: {
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "wrap",
+      gap: "1rem",
+      alignItem: "center",
+    },
+    formGroup: {
+      margin: "0",
+    },
+    formButton: {
+      margin: "auto 0 0 auto",
+    },
+  };
+
+  // Handle form submit
+
+  const checkAvailability = data => {
+    setTimeout(() => {
+      console.log("Availability retrieve");
+    }, 3000);
+    return data;
+  };
+
+  const handleDatesSubmit = async data => {
+    try {
+      const result = await checkAvailability(data);
+      console.log("Search check-in and check-out dates:", result);
+      nextForm();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleEmailSubmit = data => {
+    console.log("Search guest email submitted", data);
+    nextForm();
+  };
+
+  const handleGuestInfoSubmit = data => {
+    console.log("Sending guest information: ", data);
+  };
+
+  /* Step Navigation */
+  const steps = [
+    { label: "1" },
+    { label: "2" },
+    { label: "3" },
+    { label: "4" },
+    { label: "5" },
+  ];
+
+  const onStepClick = index => {
+    setCurrentIndex(index);
+  };
+
+  const stepsNavigation = (
+    <StepNavigation
+      activeStep={currentIndex}
+      steps={steps}
+      clickableSteps={true}
+      onStepClick={onStepClick}
+    />
+  );
+
+  const formChildren = [];
+
+  // if (reservations === null || roomTypes === null) return <Spinner />;
 
   return (
     <>
@@ -489,8 +644,16 @@ export default function Calendar() {
           <CalendarFooter />
         </tfoot>
       </table>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <Form fields={checkEmailFields} onSubmit={handleEmailSubmit} />
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          setCurrentIndex(0);
+        }}
+        width="800px"
+        header={stepsNavigation}
+      >
+        {formChildren[currentIndex]}
       </Modal>
     </>
   );
