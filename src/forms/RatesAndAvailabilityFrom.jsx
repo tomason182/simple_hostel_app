@@ -12,12 +12,14 @@ export default function RatesAndAvailabilityFrom({ roomTypes }) {
     standardRate: 0,
   });
 
+  console.log(formData);
+
   const today = new Date();
   const formattedToday = format(today, "yyyy-MM-dd");
 
   function onChange(e) {
     e.preventDefault();
-    const [name, value] = e.target;
+    const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   }
   return (
@@ -25,10 +27,12 @@ export default function RatesAndAvailabilityFrom({ roomTypes }) {
       <div className={styles.formGroup}>
         <label>
           Room type
-          <select onChange={onChange}>
+          <select name="roomTypeId" onChange={onChange}>
             <option value="">Select a Room Type</option>
             {roomTypes.map(room => (
-              <option key={room.id}>{room.description}</option>
+              <option key={room.id} value={room.id}>
+                {room.description}
+              </option>
             ))}
           </select>
         </label>
