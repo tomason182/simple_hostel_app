@@ -2,11 +2,12 @@
   border-radius: 50%;
   border-style: solid;
   border-color: #f3f3f3;
-  border-top-color: #3498db;
+  border-top-color: var(--gray-700);
   animation-name: spin;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-duration: 1s;
+  margin: 3rem auto;
 }
 
 @keyframes spin {
