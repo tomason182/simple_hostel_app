@@ -1,0 +1,65 @@
+.form {
+  display: flex;
+  gap: 1rem;
+  justify-content: left;
+  align-items: last baseline;
+  flex-wrap: wrap;
+  text-align: left;
+}
+
+.form label {
+  font-size: 0.875rem;
+  color: var(--gray-700);
+}
+
+.form button {
+  padding: 0.675rem 1rem;
+  border-radius: 5px;
+  background-color: var(--button-primary);
+  color: var(--gray-200);
+  font-family: "Inter-Bold" sans-serif;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  margin-left: 2rem;
+}
+
+/* Reservations list */
+.reservationsList {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 0;
+}
+
+.reservationsList li {
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  max-width: 350px;
+  padding: 1rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.reservationsList li:hover {
+  transform: scale(1.05);
+}
+
+.fullName {
+  color: var(--button-primary);
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.dates {
+  color: var(--gray-400);
+}
+
+.price {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
