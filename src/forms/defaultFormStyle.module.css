@@ -43,7 +43,7 @@ select {
 
 .form input:focus,
 .form select:focus {
-  border-color: #007bff;
+  border-color: var(--button-primary);
   outline: none;
 }
 
@@ -64,7 +64,7 @@ select {
 }
 
 .submitButton {
-  background-color: #007bff;
+  background-color: var(--button-primary);
   color: white;
   border: none;
   padding: 0.8rem 1.6rem;

@@ -49,6 +49,6 @@
 
 .list span:last-of-type {
   font-family: "Inter-Bold";
-  color: #007bff;
+  color: var(--button-primary);
   margin-top: 5px;
 }
