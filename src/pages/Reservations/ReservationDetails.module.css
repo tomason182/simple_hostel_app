@@ -1,0 +1,47 @@
+/* Switch buttons */
+.switchContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto;
+}
+
+.switchTrack {
+  position: relative;
+  display: flex;
+  width: 250px;
+  background-color: var(--gray-100);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.switchIndicator {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  background-color: var(--button-primary);
+  border-radius: 8px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.moveRight {
+  transform: translateX(100%);
+}
+
+.switchButton {
+  flex: 1;
+  border: none;
+  padding: 0.75rem 0;
+  background: transparent;
+  color: var(--gray-600);
+  cursor: pointer;
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+  transition: color 0.3s ease-in-out;
+}
+
+.active {
+  color: #fff;
+}
