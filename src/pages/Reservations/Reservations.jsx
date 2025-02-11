@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Reservations.module.css";
 import Modal from "../../components/Modal/Modal";
-import { ReservationDetails } from "../Home/Children";
+import ReservationDetails from "./ReservationDetails";
 
 export default function Reservations() {
   const [reservations, setReservations] = useState([]);
@@ -171,7 +171,7 @@ export default function Reservations() {
 
       <ul className={styles.reservationsList}>{list}</ul>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ReservationDetails />
+        <ReservationDetails id={1} />
       </Modal>
     </div>
   );
