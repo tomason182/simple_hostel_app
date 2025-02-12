@@ -5,11 +5,20 @@ import Button from "../../../components/Button/Button";
 import UserForm from "../../../forms/UserForm";
 import Modal from "../../../components/Modal/Modal";
 export default function Users() {
-  const [users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
+  // Form Data state
+  const [userData, setUserData] = useState({
+    id: "",
+    username: "",
+    first_name: "",
+    last_name: "",
+    role: "",
+  });
+
+  console.log(userData);
 
   useEffect(() => {
     const usersData = [
@@ -31,6 +40,13 @@ export default function Users() {
     setUsers(usersData);
     setLoading(false);
   }, [setUsers]);
+
+  function editUser(id) {
+    const selectedUser = users.find(user => user.id === id);
+    if (selectedUser) {
+      setUserData({ ...selectedUser });
+    }
+  }
 
   if (loading) return <Spinner />;
 
@@ -56,7 +72,13 @@ export default function Users() {
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        <button className={styles.editBtn}>
+        <button
+          className={styles.editBtn}
+          onClick={() => {
+            editUser(user.id);
+            setIsOpen(true);
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -81,7 +103,7 @@ export default function Users() {
       <Button title="Create User" onClick={() => setIsOpen(true)} />
       <ul className={styles.list}>{userList}</ul>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <UserForm />
+        <UserForm user={userData} />
       </Modal>
     </div>
   );
