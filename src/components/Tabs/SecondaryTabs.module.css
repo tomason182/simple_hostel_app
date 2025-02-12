@@ -34,3 +34,10 @@
   border: 2px solid var(--gray-700);
   font-family: "Inter-Bold";
 }
+
+.tabContent {
+  padding: 1rem;
+  font-size: 14px;
+  color: var(--gray-700);
+  border-radius: 0 0 8px 8px;
+}
