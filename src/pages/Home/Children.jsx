@@ -82,6 +82,21 @@ export function LatestReservations() {
   return <h1>Return the last 10 reservations</h1>;
 }
 
+export function ReservationDetails() {
+  return (
+    <div className={styles.content}>
+      <div className={styles.details}>
+        <h3>Reservation Details</h3>
+      </div>
+      <div className={styles.controllers}>
+        <button>Mark as no-Show</button>
+        <button>Mark as Paid</button>
+        <button>Add advance payment</button>
+      </div>
+    </div>
+  );
+}
+
 ReservationsList.propTypes = {
   data: PropTypes.array.isRequired,
   error: PropTypes.string.isRequired,
