@@ -1,0 +1,36 @@
+.tabsWrapper {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.tabsHeader {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.tabButton {
+  flex: 1;
+  padding: 6px 12px;
+  border: 1px solid var(--gray-200);
+  background-color: #fff;
+  font-size: 0.785rem;
+  font-family: "Inter", sans-serif;
+  font-weight: normal;
+  color: var(--gray-700);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.tabButton:hover {
+  background-color: var(--gray-400);
+  color: #fff;
+}
+
+.activeTabBtn {
+  border: 2px solid var(--gray-700);
+  font-family: "Inter-Bold";
+}
