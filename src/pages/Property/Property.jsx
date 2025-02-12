@@ -1,6 +1,7 @@
 import styles from "./Property.module.css";
 import SecondaryTabs from "../../components/Tabs/SecondaryTabs";
 import PropertyInfo from "./components/PropertyInfo";
+import Users from "./components/Users";
 
 export default function Property() {
   const tabs = [
@@ -10,7 +11,7 @@ export default function Property() {
     },
     {
       label: "Users",
-      content: <h1>Property Users</h1>,
+      content: <Users />,
     },
     {
       label: "Room Types",
