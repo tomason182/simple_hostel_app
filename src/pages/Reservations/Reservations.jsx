@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./Reservations.module.css";
 import Modal from "../../components/Modal/Modal";
-import ReservationDetails from "./ReservationDetails";
+import ReservationDetails from "./components/ReservationDetails";
 
 export default function Reservations() {
   const [reservations, setReservations] = useState([]);
