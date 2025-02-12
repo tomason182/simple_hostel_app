@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import StepNavigation from "../../components/StepNavigation/StepNavigation";
+import Button from "../../components/Button/Button";
 
 export default function Calendar() {
   const today = new Date();
@@ -386,33 +387,6 @@ export default function Calendar() {
     );
   }
 
-  /* Reservation Button */
-
-  function NewReservationButton() {
-    return (
-      <button
-        className={styles.newReservationButton}
-        onClick={() => setIsOpen(true)}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="#000000"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-        <span>Create</span>
-      </button>
-    );
-  }
-
   /* HANDLING RESERVATION FORM */
   const nextForm = () => {
     setCurrentIndex(prevIndex =>
@@ -580,7 +554,7 @@ export default function Calendar() {
         <thead>
           <tr>
             <th colSpan={3} rowSpan={3}>
-              <NewReservationButton />
+              <Button title="Create" onClick={() => setIsOpen(true)} />
             </th>
           </tr>
           <tr>
