@@ -1,0 +1,12 @@
+.list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.list dt {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  text-align: left;
+  color: var(--gray-700);
+}
