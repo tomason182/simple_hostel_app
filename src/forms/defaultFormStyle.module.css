@@ -20,6 +20,38 @@
   flex: 1;
 }
 
+/* Radio Inputs */
+.radioContainer {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.radioContainer > label {
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.radioContainer input[type="radio"] {
+  appearance: none;
+  padding: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid var(--gray-700);
+  position: absolute;
+  right: 0;
+  transition: 0.2s all linear;
+}
+
+.radioContainer input[type="radio"]:checked {
+  border: 6px solid var(--gray-700);
+  padding: 0;
+}
+
 /* labels */
 
 .form label {
@@ -61,6 +93,7 @@ select {
 .buttonGroup {
   display: flex;
   justify-content: space-around;
+  padding: 1rem 0;
 }
 
 .submitButton {
