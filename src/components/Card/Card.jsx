@@ -14,11 +14,11 @@ export default function Card({
         <h3>{title}</h3>
         {subtitle && <p>{subtitle}</p>}
       </div>
-      <div style={customStyle} className={styles.body}>
+      <div style={customStyle?.children} className={styles.body}>
         {children}
       </div>
       {actions && (
-        <div className={styles.actionsContainer}>
+        <div className={styles.actionsContainer} style={customStyle?.actions}>
           {actions.map((action, index) => (
             <button
               key={index}
