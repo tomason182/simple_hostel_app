@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 const RoomTypeContext = createContext();
 
 export default function RoomTypeDataProvider({ children }) {
-  const [roomTypeData, setRoomTypeData] = useState([]);
+  const [roomTypesData, setRoomTypesData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchRoomTypesData = useCallback(() => {
-    const url = import.meta.env.VITE_URL_BASE + "room-types";
+    const url = import.meta.env.VITE_URL_BASE + "/room-types";
     const options = {
       mode: "cors",
       method: "GET",
@@ -30,7 +30,7 @@ export default function RoomTypeDataProvider({ children }) {
 
         return r.json();
       })
-      .then(data => setRoomTypeData(data))
+      .then(data => setRoomTypesData(data))
       .catch(e => {
         console.error("Error fetching room types data", e);
         setError(e);
@@ -45,7 +45,7 @@ export default function RoomTypeDataProvider({ children }) {
   return (
     <RoomTypeContext.Provider
       value={{
-        roomTypeData,
+        roomTypesData,
         isLoading,
         error,
         refreshRoomTypeData: fetchRoomTypesData,
