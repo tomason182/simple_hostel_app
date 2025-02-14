@@ -2,12 +2,15 @@ import "./App.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import Tabs from "./components/Tabs/Tabs";
-/* Import Pages */
+// Import Pages
 import Home from "./pages/Home/Home";
 import Calendar from "./pages/Calendar/Calendar";
 import RatesAndAvailability from "./pages/RatesAndAvailability/RatesAndAvailability";
 import Reservations from "./pages/Reservations/Reservations";
 import Property from "./pages/Property/Property";
+
+// Import Data providers
+import RoomTypeDataProvider from "./data_providers/RoomTypesDataProvider";
 
 function App() {
   const propertyName = "La Casa de Tomas";
@@ -32,7 +35,9 @@ function App() {
     <>
       <Header user={user} propertyName={propertyName} />
       <main>
-        <Tabs tabs={tabs} />
+        <RoomTypeDataProvider>
+          <Tabs tabs={tabs} />
+        </RoomTypeDataProvider>
       </main>
       <Footer />
     </>
