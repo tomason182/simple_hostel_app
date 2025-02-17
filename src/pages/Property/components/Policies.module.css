@@ -1,0 +1,21 @@
+.policiesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
+}
+
+.policiesDescription {
+  background-color: var(--gray-100);
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+.policiesDescription h3,
+.policiesDescription p {
+  text-align: left;
+}
+
+.policiesDescription h3 {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+}

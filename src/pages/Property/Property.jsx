@@ -3,6 +3,7 @@ import PropertyInfo from "./components/PropertyInfo";
 import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
+import Policies from "./components/Policies";
 
 export default function Property() {
   const tabs = [
@@ -24,7 +25,7 @@ export default function Property() {
     },
     {
       label: "Policies",
-      content: <h1>Property policies</h1>,
+      content: <Policies />,
     },
     {
       label: "Room amenities",
