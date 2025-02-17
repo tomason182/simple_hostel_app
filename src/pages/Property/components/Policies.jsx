@@ -4,6 +4,8 @@ import Modal from "../../../components/Modal/Modal";
 import { useState } from "react";
 // Import forms
 import AdvancePaymentForm from "../../../forms/AdvancePaymentForm";
+import CancellationPoliciesForm from "../../../forms/CancellationPoliciesForm";
+import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
 
 export default function Policies() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,6 +13,8 @@ export default function Policies() {
 
   const formSelector = {
     1: <AdvancePaymentForm closeModal={() => setIsOpen(false)} />,
+    2: <CancellationPoliciesForm closeModal={() => setIsOpen(false)} />,
+    3: <OtherPoliciesForm />,
   };
 
   function handleFormSelection(id) {
@@ -61,7 +65,7 @@ export default function Policies() {
     {
       label: "Edit",
       onClick: () => {
-        handleFormSelection(5);
+        handleFormSelection(3);
         setIsOpen(true);
       },
     },
