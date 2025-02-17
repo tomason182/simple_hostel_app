@@ -2,14 +2,68 @@ import styles from "./Policies.module.css";
 import Card from "../../../components/Card/Card";
 import Modal from "../../../components/Modal/Modal";
 import { useState } from "react";
+// Import forms
+import AdvancePaymentForm from "../../../forms/AdvancePaymentForm";
 
 export default function Policies() {
   const [isOpen, setIsOpen] = useState(false);
+  const [form, setForm] = useState(null);
 
-  const action = [
+  const formSelector = {
+    1: <AdvancePaymentForm closeModal={() => setIsOpen(false)} />,
+  };
+
+  function handleFormSelection(id) {
+    setForm(formSelector[id]);
+  }
+
+  const actionPayment = [
     {
       label: "Edit",
-      onClick: () => setIsOpen(true),
+      onClick: () => {
+        handleFormSelection(1);
+        setIsOpen(true);
+      },
+    },
+  ];
+
+  const actionCancel = [
+    {
+      label: "Edit",
+      onClick: () => {
+        handleFormSelection(2);
+        setIsOpen(true);
+      },
+    },
+  ];
+
+  const actionChildren = [
+    {
+      label: "Edit",
+      onClick: () => {
+        handleFormSelection(3);
+        setIsOpen(true);
+      },
+    },
+  ];
+
+  const actionPets = [
+    {
+      label: "Edit",
+      onClick: () => {
+        handleFormSelection(4);
+        setIsOpen(true);
+      },
+    },
+  ];
+
+  const actionOthers = [
+    {
+      label: "Edit",
+      onClick: () => {
+        handleFormSelection(5);
+        setIsOpen(true);
+      },
     },
   ];
 
@@ -24,7 +78,7 @@ export default function Policies() {
       <div className={styles.policiesContainer}>
         <Card
           title="Advance Payment"
-          actions={action}
+          actions={actionPayment}
           customStyle={customStyle}
         >
           <p>
@@ -34,24 +88,28 @@ export default function Policies() {
         </Card>
         <Card
           title="Cancellation Policies"
-          actions={action}
+          actions={actionCancel}
           customStyle={customStyle}
         >
           <p>The deposit will not be return if the guest cancel at any time.</p>
         </Card>
         <Card
           title="Children policies"
-          actions={action}
+          actions={actionChildren}
           customStyle={customStyle}
         >
           <p>Children of all age are allowed only in private rooms.</p>
         </Card>
-        <Card title="Pets policies" actions={action} customStyle={customStyle}>
+        <Card
+          title="Pets policies"
+          actions={actionPets}
+          customStyle={customStyle}
+        >
           <p>Pets are not allowed in your property</p>
         </Card>
         <Card
           title="Other Property Policies"
-          actions={action}
+          actions={actionOthers}
           customStyle={customStyle}
         >
           <p>Check-in & Check-out times</p>
@@ -89,7 +147,9 @@ export default function Policies() {
         <h3>Pets Policies</h3>
         <p>Specify whether pets are allowed in your property.</p>
       </div>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}></Modal>
+      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        {form}
+      </Modal>
     </>
   );
 }
