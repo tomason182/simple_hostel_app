@@ -1,8 +1,8 @@
-import styles from "./Property.module.css";
 import SecondaryTabs from "../../components/Tabs/SecondaryTabs";
 import PropertyInfo from "./components/PropertyInfo";
 import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
+import RoomsPhotos from "./components/RoomsPhotos";
 
 export default function Property() {
   const tabs = [
@@ -20,7 +20,7 @@ export default function Property() {
     },
     {
       label: "Photos",
-      content: <h1>Property fotos</h1>,
+      content: <RoomsPhotos />,
     },
     {
       label: "Policies",
