@@ -18,3 +18,34 @@
   font-family: "Inter-Bold", sans-serif;
   font-weight: bold;
 }
+
+/* Team members list */
+.teamMembersList {
+  list-style: none;
+  padding: 0;
+}
+.teamMembersList li {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 2px 12px;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.teamMembersList li p {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+}
+
+.teamMembersList li span {
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  background-color: green;
+  color: white;
+}
