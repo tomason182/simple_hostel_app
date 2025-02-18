@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-export default function UsersDataProvider() {
+export default function useUsersDataProvider() {
   const [usersData, setUsersData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
