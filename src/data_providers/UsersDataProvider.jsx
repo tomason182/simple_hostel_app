@@ -7,7 +7,7 @@ export default function useUsersDataProvider() {
 
   const fetchUsersData = useCallback(() => {
     setIsLoading(true);
-    const url = import.meta.env.VITE_URL_BASE + "users/all";
+    const url = import.meta.env.VITE_URL_BASE + "/users/all";
     const options = {
       mode: "cors",
       method: "GET",
@@ -38,8 +38,8 @@ export default function useUsersDataProvider() {
 
   return {
     usersData,
-    isLoading,
-    error,
+    usersLoading: isLoading,
+    usersError: error,
     refreshUsersData: fetchUsersData,
   };
 }
