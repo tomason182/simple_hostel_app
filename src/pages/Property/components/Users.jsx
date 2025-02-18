@@ -4,6 +4,8 @@ import Spinner from "../../../components/Spinner/Spinner";
 import Button from "../../../components/Button/Button";
 import UserForm from "../../../forms/UserForm";
 import Modal from "../../../components/Modal/Modal";
+import PropTypes from "prop-types";
+
 export default function Users({ users, loading }) {
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
@@ -83,3 +85,8 @@ export default function Users({ users, loading }) {
     </div>
   );
 }
+
+Users.propTypes = {
+  users: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
