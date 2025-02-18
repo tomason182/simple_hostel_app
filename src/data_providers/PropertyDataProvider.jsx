@@ -30,7 +30,7 @@ export default function PropertyDataProvider() {
         setError(e);
       })
       .finally(setIsLoading(false));
-  });
+  }, []);
 
   useEffect(() => {
     fetchPropertyData();
