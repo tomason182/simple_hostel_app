@@ -3,3 +3,18 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
 }
+
+.list {
+  list-style: none;
+  text-align: left;
+  padding: 0;
+}
+
+.list li {
+  padding: 0.2rem 0;
+}
+
+.list li span {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+}
