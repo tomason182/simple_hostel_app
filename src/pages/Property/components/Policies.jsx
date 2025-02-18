@@ -4,7 +4,7 @@ import Modal from "../../../components/Modal/Modal";
 import { useState } from "react";
 // Import forms
 import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
-import AdvancePaymentForm from "../../../forms/AdvancePaymentForm";
+import AdvancePaymentAndCancellationForm from "../../../forms/AdvancePaymentAndCancellationForm";
 import CancellationPoliciesForm from "../../../forms/CancellationPoliciesForm";
 import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
 
@@ -14,8 +14,10 @@ export default function Policies() {
 
   const formSelector = {
     1: <ReservationPoliciesForm />,
-    2: <AdvancePaymentForm closeModal={() => setIsOpen(false)} />,
-    3: <CancellationPoliciesForm closeModal={() => setIsOpen(false)} />,
+    2: (
+      <AdvancePaymentAndCancellationForm closeModal={() => setIsOpen(false)} />
+    ),
+
     4: <OtherPoliciesForm />,
   };
 
@@ -38,16 +40,6 @@ export default function Policies() {
       label: "Edit",
       onClick: () => {
         handleFormSelection(2);
-        setIsOpen(true);
-      },
-    },
-  ];
-
-  const actionCancel = [
-    {
-      label: "Edit",
-      onClick: () => {
-        handleFormSelection(3);
         setIsOpen(true);
       },
     },
@@ -94,7 +86,7 @@ export default function Policies() {
       <div className={styles.policiesContainer}>
         <Card title="Reservation Policies" actions={actionReservation}></Card>
         <Card
-          title="Advance Payment"
+          title="Advance Payment & Cancellation Policies"
           actions={actionPayment}
           customStyle={customStyle}
         >
@@ -103,26 +95,13 @@ export default function Policies() {
             be arrange between you (the owner) and the guest
           </p>
         </Card>
-        <Card
-          title="Cancellation Policies"
-          actions={actionCancel}
-          customStyle={customStyle}
-        >
-          <p>The deposit will not be return if the guest cancel at any time.</p>
-        </Card>
+
         <Card
           title="Children policies"
           actions={actionChildren}
           customStyle={customStyle}
         >
           <p>Children of all age are allowed only in private rooms.</p>
-        </Card>
-        <Card
-          title="Pets policies"
-          actions={actionPets}
-          customStyle={customStyle}
-        >
-          <p>Pets are not allowed in your property</p>
         </Card>
         <Card
           title="Other Property Policies"

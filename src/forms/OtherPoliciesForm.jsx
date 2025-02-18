@@ -3,6 +3,25 @@ import styles from "./defaultFormStyle.module.css";
 export default function OtherPoliciesForm() {
   return (
     <form className={styles.form}>
+      <h2>Other Property Policies</h2>
+      <fieldset>
+        <legend>Minimum length of stay</legend>
+        <div className={styles.formGroup}>
+          <label>
+            Nights
+            <input type="number" name="min_length_stay" min={1} required />
+          </label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Minimum advance booking</legend>
+        <div className={styles.formGroup}>
+          <label>
+            Nights
+            <input type="number" name="advance_booking" min={0} />
+          </label>
+        </div>
+      </fieldset>
       <fieldset>
         <legend>Children Policies</legend>
         <div className={styles.formGroup}>

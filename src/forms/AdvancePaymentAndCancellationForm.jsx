@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 
-export default function AdvancePaymentForm({ closeModal }) {
+export default function AdvancePaymentAndCancellationForm({ closeModal }) {
   const [requiredDeposit, setRequiredDeposit] = useState(true);
 
   const percent = [
@@ -14,36 +14,7 @@ export default function AdvancePaymentForm({ closeModal }) {
   return (
     <form className={styles.form}>
       <fieldset>
-        <legend>Payment method accepted in the property</legend>
-        <div className={styles.groupContainer}>
-          <div className={styles.checkbox}>
-            <label>
-              Cash
-              <input type="checkbox" name="cash" />
-            </label>
-          </div>
-          <div className={styles.checkbox}>
-            <label>
-              Debit card
-              <input type="checkbox" name="debit" />
-            </label>
-          </div>
-          <div className={styles.checkbox}>
-            <label>
-              Credit card
-              <input type="checkbox" name="credit" />
-            </label>
-          </div>
-          <div className={styles.checkbox}>
-            <label>
-              Bank transfer
-              <input type="checkbox" name="transfer" />
-            </label>
-          </div>
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Advance payment Policies</legend>
+        <legend>Advance Payment</legend>
         <div className={styles.formGroup}>
           <label>
             Do you required advance payment for a reservation?
@@ -66,6 +37,30 @@ export default function AdvancePaymentForm({ closeModal }) {
           </label>
         </div>
       </fieldset>
+      <fieldset>
+        <legend>Cancellation Policies</legend>
+        <div className={styles.formGroup}>
+          <label>
+            Do you allow cancellation?
+            <select name="cancellation">
+              <option value={true}>Yes</option>
+              <option value={false}>No</option>
+            </select>
+          </label>
+        </div>
+        <div className={styles.formGroup}>
+          <label>
+            Day before arrival for cancel
+            <input type="number" />
+          </label>
+        </div>
+        <div className={styles.formGroup}>
+          <label>
+            Amount of the deposit refunded
+            <select name="amount_refunded">{amount}</select>
+          </label>
+        </div>
+      </fieldset>
 
       <div className={styles.buttonGroup}>
         <button className={styles.cancelButton} onClick={closeModal}>
@@ -77,6 +72,6 @@ export default function AdvancePaymentForm({ closeModal }) {
   );
 }
 
-AdvancePaymentForm.propTypes = {
+AdvancePaymentAndCancellationForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
 };
