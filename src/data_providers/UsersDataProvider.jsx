@@ -6,6 +6,7 @@ export default function UsersDataProvider() {
   const [error, setError] = useState(null);
 
   const fetchUsersData = useCallback(() => {
+    setIsLoading(true);
     const url = import.meta.env.VITE_URL_BASE + "users/all";
     const options = {
       mode: "cors",
@@ -28,7 +29,7 @@ export default function UsersDataProvider() {
       .catch(e => {
         console.log("Error fetching all property users data", e), setError(e);
       })
-      .finally(setIsLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {

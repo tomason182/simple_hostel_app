@@ -9,6 +9,7 @@ export default function RoomTypeDataProvider({ children }) {
   const [error, setError] = useState(null);
 
   const fetchRoomTypesData = useCallback(() => {
+    setIsLoading(true);
     const url = import.meta.env.VITE_URL_BASE + "/room-types";
     const options = {
       mode: "cors",
@@ -35,7 +36,7 @@ export default function RoomTypeDataProvider({ children }) {
         console.error("Error fetching room types data", e);
         setError(e);
       })
-      .finally(setIsLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {

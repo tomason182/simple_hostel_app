@@ -1,12 +1,13 @@
 import { useState, useCallback, useEffect } from "react";
 
-export default function PropertyDataProvider() {
+export default function usePropertyDataProvider() {
   const [propertyData, setPropertyData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchPropertyData = useCallback(() => {
-    const url = import.meta.env.VITE_URL_BASE + "property";
+    setIsLoading(true); // Reset loading state before each fetch
+    const url = import.meta.env.VITE_URL_BASE + "/properties";
     const options = {
       mode: "cors",
       method: "GET",
@@ -29,7 +30,7 @@ export default function PropertyDataProvider() {
         console.log("Error fetching property data", e);
         setError(e);
       })
-      .finally(setIsLoading(false));
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
