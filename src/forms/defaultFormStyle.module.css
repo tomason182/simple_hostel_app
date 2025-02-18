@@ -1,6 +1,11 @@
 .form {
   padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
+
+/* Group containers */
 
 .groupContainer {
   display: flex;
@@ -21,6 +26,7 @@
 }
 
 /* Radio Inputs */
+
 .radioContainer {
   display: flex;
   flex: 1;

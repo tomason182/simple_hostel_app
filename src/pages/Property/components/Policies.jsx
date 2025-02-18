@@ -3,6 +3,7 @@ import Card from "../../../components/Card/Card";
 import Modal from "../../../components/Modal/Modal";
 import { useState } from "react";
 // Import forms
+import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
 import AdvancePaymentForm from "../../../forms/AdvancePaymentForm";
 import CancellationPoliciesForm from "../../../forms/CancellationPoliciesForm";
 import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
@@ -12,16 +13,17 @@ export default function Policies() {
   const [form, setForm] = useState(null);
 
   const formSelector = {
-    1: <AdvancePaymentForm closeModal={() => setIsOpen(false)} />,
-    2: <CancellationPoliciesForm closeModal={() => setIsOpen(false)} />,
-    3: <OtherPoliciesForm />,
+    1: <ReservationPoliciesForm />,
+    2: <AdvancePaymentForm closeModal={() => setIsOpen(false)} />,
+    3: <CancellationPoliciesForm closeModal={() => setIsOpen(false)} />,
+    4: <OtherPoliciesForm />,
   };
 
   function handleFormSelection(id) {
     setForm(formSelector[id]);
   }
 
-  const actionPayment = [
+  const actionReservation = [
     {
       label: "Edit",
       onClick: () => {
@@ -31,7 +33,7 @@ export default function Policies() {
     },
   ];
 
-  const actionCancel = [
+  const actionPayment = [
     {
       label: "Edit",
       onClick: () => {
@@ -41,7 +43,7 @@ export default function Policies() {
     },
   ];
 
-  const actionChildren = [
+  const actionCancel = [
     {
       label: "Edit",
       onClick: () => {
@@ -51,7 +53,7 @@ export default function Policies() {
     },
   ];
 
-  const actionPets = [
+  const actionChildren = [
     {
       label: "Edit",
       onClick: () => {
@@ -61,11 +63,21 @@ export default function Policies() {
     },
   ];
 
+  const actionPets = [
+    {
+      label: "Edit",
+      onClick: () => {
+        handleFormSelection(5);
+        setIsOpen(true);
+      },
+    },
+  ];
+
   const actionOthers = [
     {
       label: "Edit",
       onClick: () => {
-        handleFormSelection(3);
+        handleFormSelection(6);
         setIsOpen(true);
       },
     },
@@ -80,6 +92,7 @@ export default function Policies() {
   return (
     <>
       <div className={styles.policiesContainer}>
+        <Card title="Reservation Policies" actions={actionReservation}></Card>
         <Card
           title="Advance Payment"
           actions={actionPayment}
