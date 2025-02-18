@@ -42,7 +42,13 @@ export default function Property() {
     },
     {
       label: "Policies",
-      content: <Policies />,
+      content: (
+        <Policies
+          policies={propertyData.policies}
+          isLoading={isLoading}
+          error={error}
+        />
+      ),
     },
     {
       label: "Room amenities",

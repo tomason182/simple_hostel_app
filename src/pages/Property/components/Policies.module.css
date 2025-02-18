@@ -19,3 +19,23 @@
   font-family: "Inter-Bold", sans-serif;
   font-weight: bold;
 }
+
+/* List styling */
+.list {
+  list-style: none;
+  text-align: left;
+  padding: 0;
+}
+
+.list li {
+  padding: 0.35rem 0;
+  display: flex;
+  justify-content: space-between;
+  color: var(--gray-500);
+}
+
+.list li span {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  color: var(--gray-700);
+}

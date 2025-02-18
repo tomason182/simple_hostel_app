@@ -1,14 +1,15 @@
 import styles from "./Policies.module.css";
+import PropTypes from "prop-types";
 import Card from "../../../components/Card/Card";
 import Modal from "../../../components/Modal/Modal";
 import { useState } from "react";
 // Import forms
 import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
 import AdvancePaymentAndCancellationForm from "../../../forms/AdvancePaymentAndCancellationForm";
-import CancellationPoliciesForm from "../../../forms/CancellationPoliciesForm";
 import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
+import Spinner from "../../../components/Spinner/Spinner";
 
-export default function Policies() {
+export default function Policies({ policies, isLoading, error }) {
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState(null);
 
@@ -55,16 +56,6 @@ export default function Policies() {
     },
   ];
 
-  const actionPets = [
-    {
-      label: "Edit",
-      onClick: () => {
-        handleFormSelection(5);
-        setIsOpen(true);
-      },
-    },
-  ];
-
   const actionOthers = [
     {
       label: "Edit",
@@ -81,10 +72,48 @@ export default function Policies() {
     },
   };
 
+  if (isLoading) return <Spinner />;
+
   return (
     <>
       <div className={styles.policiesContainer}>
-        <Card title="Reservation Policies" actions={actionReservation}></Card>
+        <Card title="Reservation Policies" actions={actionReservation}>
+          <ul className={styles.list}>
+            <li>
+              <span>Minimum length of stay:</span>{" "}
+              {policies.reservation.min_length_stay} days
+            </li>
+            <li>
+              <span>Maximum length of stay:</span>{" "}
+              {policies.reservation.max_length_stay} days
+            </li>
+            <li>
+              <span>Minimum advance booking:</span>{" "}
+              {policies.reservation.min_advance_booking}
+            </li>
+            <li>
+              <span>allow same day reservation:</span>{" "}
+              {policies.reservation.allow_same_day_reservation ? "Yes" : "No"}
+            </li>
+            <li>
+              <span>Check-in window:</span>
+              {policies.reservation.check_in_window.from} -{" "}
+              {policies.reservation.check_in_window.to}
+            </li>
+            <li>
+              <span>check-out time</span>{" "}
+              {policies.reservation.check_out_time.until}
+            </li>
+            <li>
+              <span>Payment method:</span>
+              <ul>
+                {policies.reservation.payment_methods.map((m, i) => (
+                  <li key={i}>{m}</li>
+                ))}
+              </ul>
+            </li>
+          </ul>
+        </Card>
         <Card
           title="Advance Payment & Cancellation Policies"
           actions={actionPayment}
@@ -149,3 +178,9 @@ export default function Policies() {
     </>
   );
 }
+
+Policies.propTypes = {
+  policies: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+};
