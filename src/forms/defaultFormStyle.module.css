@@ -54,8 +54,8 @@
 
 /* labels */
 
-.form label {
-  font-size: 0.9rem;
+.formGroup label {
+  font-size: 0.85rem;
   font-family: "Inter-Bold";
   color: var(--gray-700);
 }
@@ -79,8 +79,20 @@ select {
   outline: none;
 }
 
+/* checkbox style */
+
 .checkbox {
-  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkbox label {
+  font-size: 0.75rem;
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  color: var(--gray-700);
 }
 
 .error {
