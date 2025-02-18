@@ -24,6 +24,13 @@ export default function PropertyInfo({
       onClick: () => alert("Edit property details"),
     },
   ];
+
+  const teamMembersActions = [
+    {
+      label: "Edit",
+      onClick: () => alert("Edit team Members"),
+    },
+  ];
   if (loadingPropertyData) return <Spinner />;
 
   return (
@@ -103,7 +110,7 @@ export default function PropertyInfo({
             </li>
           </ul>
         </Card>
-        <Card title="Team members">
+        <Card title="Team members" actions={teamMembersActions}>
           {loadingUsersData ? (
             <Spinner />
           ) : (
