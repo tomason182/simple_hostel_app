@@ -30,7 +30,7 @@ export default function Property() {
     },
     {
       label: "Users",
-      content: <Users />,
+      content: <Users users={usersData} loading={usersLoading} />,
     },
     {
       label: "Room Types",

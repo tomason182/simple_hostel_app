@@ -4,9 +4,7 @@ import Spinner from "../../../components/Spinner/Spinner";
 import Button from "../../../components/Button/Button";
 import UserForm from "../../../forms/UserForm";
 import Modal from "../../../components/Modal/Modal";
-export default function Users() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function Users({ users, loading }) {
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
   // Form Data state
@@ -17,29 +15,6 @@ export default function Users() {
     last_name: "",
     role: "",
   });
-
-  console.log(userData);
-
-  useEffect(() => {
-    const usersData = [
-      {
-        id: 1,
-        username: "tomas@mail.com",
-        first_name: "Tomas",
-        last_name: "Rivero",
-        role: "admin",
-      },
-      {
-        id: 2,
-        username: "silveti@mail.com",
-        first_name: "Silvia",
-        last_name: "Veti",
-        role: "manager",
-      },
-    ];
-    setUsers(usersData);
-    setLoading(false);
-  }, [setUsers]);
 
   function editUser(id) {
     const selectedUser = users.find(user => user.id === id);
