@@ -5,11 +5,28 @@ import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
 import Policies from "./components/Policies";
 
+// Fetch property data
+import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
+// Fetch team members
+import useUsersDataProvider from "../../data_providers/UsersDataProvider";
+
 export default function Property() {
+  const { propertyData, isLoading, error } = usePropertyDataProvider();
+  const { usersData, usersLoading, usersError } = useUsersDataProvider();
+
   const tabs = [
     {
       label: "Property Info",
-      content: <PropertyInfo />,
+      content: (
+        <PropertyInfo
+          propertyData={propertyData}
+          loadingPropertyData={isLoading}
+          propertyError={error}
+          usersData={usersData}
+          loadingUsersData={usersLoading}
+          usersError={usersError}
+        />
+      ),
     },
     {
       label: "Users",
