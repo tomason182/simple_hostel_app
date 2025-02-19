@@ -15,11 +15,15 @@ export default function Policies({ policies, isLoading, error }) {
 
   const formSelector = {
     1: {
-      header: <h3>Reservation Policies</h3>,
+      header: <h3 className={styles.header}>Reservation Policies</h3>,
       form: <ReservationPoliciesForm closeModal={() => setIsOpen(false)} />,
     },
     2: {
-      header: <h3>Advance Payment and Cancellation Policies</h3>,
+      header: (
+        <h3 className={styles.header}>
+          Advance Payment and Cancellation Policies
+        </h3>
+      ),
       form: (
         <AdvancePaymentAndCancellationForm
           closeModal={() => setIsOpen(false)}
