@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 
@@ -229,4 +229,23 @@ export default function ReservationPoliciesForm({
 
 ReservationPoliciesForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
+  reservationPoliciesData: PropTypes.shape({
+    min_advance_booking: PropTypes.number,
+    min_length_stay: PropTypes.number,
+    max_length_stay: PropTypes.number,
+    allow_same_day_reservation: PropTypes.bool,
+    check_in_window: PropTypes.shape({
+      from: PropTypes.string,
+      to: PropTypes.string,
+    }),
+    check_out_time: PropTypes.shape({
+      until: PropTypes.string,
+    }),
+    payment_methods: PropTypes.arrayOf(
+      PropTypes.oneOf(["cash", "debit_credit_card", "bank_transfer"])
+    ),
+    online_payment_methods: PropTypes.arrayOf(
+      PropTypes.oneOf(["paypal", "mercado_pago", "bitcoin"])
+    ),
+  }),
 };
