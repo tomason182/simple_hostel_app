@@ -2,7 +2,7 @@ import styles from "./Policies.module.css";
 import PropTypes from "prop-types";
 import Card from "../../../components/Card/Card";
 import Modal from "../../../components/Modal/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // Import forms
 import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
 import AdvancePaymentAndCancellationForm from "../../../forms/AdvancePaymentAndCancellationForm";
@@ -13,10 +13,51 @@ export default function Policies({ policies, isLoading, error }) {
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState(null);
 
+  // Policies States
+  const [reservationPolicies, setReservationPolicies] = useState({
+    min_length_stay: 0,
+    max_length_stay: 0,
+    min_advance_booking: 0,
+    allow_same_day_reservation: "",
+    check_in_window: {
+      from: "",
+      to: "",
+    },
+    check_out_time: {
+      until: "",
+    },
+    payment_methods: [],
+    online_payment_methods: [],
+  });
+
+  useEffect(() => {
+    setReservationPolicies({
+      min_length_stay: policies.reservation.min_length_stay || 0,
+      max_length_stay: policies.reservation.max_length_stay || 0,
+      min_advance_booking: policies.reservation.min_advance_booking || 0,
+      allow_same_day_reservation:
+        policies.reservation.allow_same_day_reservation || false,
+      check_in_window: {
+        from: policies.reservation.check_in_window.from || "",
+        to: policies.reservation.check_in_window.to || "",
+      },
+      check_out_time: {
+        until: policies.reservation.check_out_time.until,
+      },
+      payment_methods: policies.reservation.payment_methods,
+      online_payment_methods: policies.reservation.online_payment_methods,
+    });
+  }, [setReservationPolicies, policies]);
+
   const formSelector = {
     1: {
       header: <h3 className={styles.header}>Reservation Policies</h3>,
-      form: <ReservationPoliciesForm closeModal={() => setIsOpen(false)} />,
+      form: (
+        <ReservationPoliciesForm
+          reservationPoliciesData={reservationPolicies}
+          closeModal={() => setIsOpen(false)}
+        />
+      ),
     },
     2: {
       header: (
@@ -95,41 +136,56 @@ export default function Policies({ policies, isLoading, error }) {
     <>
       <div className={styles.policiesContainer}>
         <Card title="Reservation Policies" actions={actionReservation}>
-          <ul className={styles.list}>
-            <li>
-              <span>Minimum length of stay:</span>{" "}
-              {policies.reservation.min_length_stay} days
-            </li>
-            <li>
-              <span>Maximum length of stay:</span>{" "}
-              {policies.reservation.max_length_stay} days
-            </li>
-            <li>
-              <span>Minimum advance booking:</span>{" "}
-              {policies.reservation.min_advance_booking}
-            </li>
-            <li>
-              <span>allow same day reservation:</span>{" "}
-              {policies.reservation.allow_same_day_reservation ? "Yes" : "No"}
-            </li>
-            <li>
-              <span>Check-in window:</span>
-              {policies.reservation.check_in_window.from} -{" "}
-              {policies.reservation.check_in_window.to}
-            </li>
-            <li>
-              <span>check-out time</span>{" "}
-              {policies.reservation.check_out_time.until}
-            </li>
-            <li>
-              <span>Payment method:</span>
-              <ul>
-                {policies.reservation.payment_methods.map((m, i) => (
-                  <li key={i}>{m}</li>
-                ))}
-              </ul>
-            </li>
-          </ul>
+          {reservationPolicies.min_length_stay === 0 ? (
+            <p>
+              No reservation polices are created. Click on &quot;Edit&quot; to
+              add your policies.
+            </p>
+          ) : (
+            <ul className={styles.list}>
+              <li>
+                <span>Minimum length of stay:</span>{" "}
+                {reservationPolicies.min_length_stay} days
+              </li>
+              <li>
+                <span>Maximum length of stay:</span>{" "}
+                {reservationPolicies.max_length_stay} days
+              </li>
+              <li>
+                <span>Minimum advance booking:</span>{" "}
+                {reservationPolicies.min_advance_booking}
+              </li>
+              <li>
+                <span>allow same day reservation:</span>{" "}
+                {reservationPolicies.allow_same_day_reservation ? "Yes" : "No"}
+              </li>
+              <li>
+                <span>Check-in window:</span>
+                {reservationPolicies.check_in_window.from} -{" "}
+                {reservationPolicies.check_in_window.to}
+              </li>
+              <li>
+                <span>check-out time</span>{" "}
+                {reservationPolicies.check_out_time.until}
+              </li>
+              <li>
+                <span>Payment method:</span>
+                <ul>
+                  {reservationPolicies.payment_methods.map((m, i) => (
+                    <li key={i}>{m}</li>
+                  ))}
+                </ul>
+              </li>
+              <li>
+                <span>Online Payment methods</span>
+                <ul>
+                  {reservationPolicies.online_payment_methods.map((m, i) => (
+                    <li key={i}>{m}</li>
+                  ))}
+                </ul>
+              </li>
+            </ul>
+          )}
         </Card>
         <Card
           title="Advance Payment & Cancellation Policies"

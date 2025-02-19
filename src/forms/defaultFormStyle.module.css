@@ -32,6 +32,10 @@
   width: 75px;
 }
 
+.inputMedium {
+  width: 100px;
+}
+
 .formGroup {
   margin-bottom: 1rem;
   text-align: left;
