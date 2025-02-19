@@ -16,9 +16,10 @@ export default function AdvancePaymentAndCancellationForm({ closeModal }) {
       <fieldset>
         <legend>Advance Payment</legend>
         <div className={styles.formGroup}>
-          <label>
+          <label className={styles.labelFlex}>
             Do you required advance payment for a reservation?
             <select
+              className={styles.inputSmall}
               name="advance_payment"
               onChange={() => setRequiredDeposit(!requiredDeposit)}
               value={requiredDeposit}
@@ -29,15 +30,21 @@ export default function AdvancePaymentAndCancellationForm({ closeModal }) {
           </label>
         </div>
         <div className={styles.formGroup}>
-          <label>
+          <label className={styles.labelFlex}>
             Amount in percent of the deposit?
-            <select name="amount" disabled={!requiredDeposit}>
+            <select
+              className={styles.inputSmall}
+              name="amount"
+              disabled={!requiredDeposit}
+            >
               {amount}
             </select>
           </label>
         </div>
 
-        <h4>Accepted payment method for deposit</h4>
+        <h4 className={styles.subtitle}>
+          Which payment methods do you accept for deposits?
+        </h4>
         <div className={styles.groupContainer}>
           <div className={styles.checkbox}>
             <label>
@@ -68,24 +75,39 @@ export default function AdvancePaymentAndCancellationForm({ closeModal }) {
       <fieldset>
         <legend>Cancellation Policies</legend>
         <div className={styles.formGroup}>
-          <label>
+          <label className={styles.labelFlex}>
             Do you allow cancellation?
-            <select name="cancellation">
+            <select className={styles.inputSmall} name="cancellation">
               <option value={true}>Yes</option>
               <option value={false}>No</option>
             </select>
           </label>
         </div>
         <div className={styles.formGroup}>
-          <label>
-            Day before arrival for cancel
-            <input type="number" />
+          <label className={styles.labelFlex}>
+            Cancellation Type:
+            <select name="type" className={styles.inputSmall}>
+              <option value="flexible">Flexible</option>
+              <option value="strict">Strict</option>
+            </select>
           </label>
         </div>
         <div className={styles.formGroup}>
-          <label>
+          <label className={styles.labelFlex}>
+            Day before arrival for cancel
+            <input
+              className={styles.inputSmall}
+              type="number"
+              name="cancellation_notice_period"
+            />
+          </label>
+        </div>
+        <div className={styles.formGroup}>
+          <label className={styles.labelFlex}>
             Amount of the deposit refunded
-            <select name="amount_refunded">{amount}</select>
+            <select className={styles.inputSmall} name="amount_refunded">
+              {amount}
+            </select>
           </label>
         </div>
       </fieldset>

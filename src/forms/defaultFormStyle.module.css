@@ -5,6 +5,14 @@
   gap: 1rem;
 }
 
+/* Form subtitle */
+.subtitle {
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
 /* Group containers */
 
 .groupContainer {
@@ -12,6 +20,16 @@
   justify-content: space-between;
   gap: 1rem;
   position: relative;
+}
+
+.labelFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputSmall {
+  width: 75px;
 }
 
 .formGroup {
@@ -60,9 +78,9 @@
 
 /* labels */
 
-.formGroup label {
-  font-size: 0.85rem;
-  font-family: "Inter-Bold";
+.formGroup label,
+.checkbox label {
+  font-size: 0.785rem;
   color: var(--gray-700);
 }
 
@@ -92,13 +110,6 @@ select {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.checkbox label {
-  font-size: 0.75rem;
-  font-family: "Inter-Bold", sans-serif;
-  font-weight: bold;
-  color: var(--gray-700);
 }
 
 .error {
