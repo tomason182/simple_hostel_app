@@ -14,12 +14,23 @@ export default function Policies({ policies, isLoading, error }) {
   const [form, setForm] = useState(null);
 
   const formSelector = {
-    1: <ReservationPoliciesForm />,
-    2: (
-      <AdvancePaymentAndCancellationForm closeModal={() => setIsOpen(false)} />
-    ),
+    1: {
+      header: <h3>Reservation Policies</h3>,
+      form: <ReservationPoliciesForm closeModal={() => setIsOpen(false)} />,
+    },
+    2: {
+      header: <h3>Advance Payment and Cancellation Policies</h3>,
+      form: (
+        <AdvancePaymentAndCancellationForm
+          closeModal={() => setIsOpen(false)}
+        />
+      ),
+    },
 
-    4: <OtherPoliciesForm />,
+    4: {
+      header: <h2>Other Property Policies</h2>,
+      form: <OtherPoliciesForm />,
+    },
   };
 
   function handleFormSelection(id) {
@@ -73,6 +84,8 @@ export default function Policies({ policies, isLoading, error }) {
   };
 
   if (isLoading) return <Spinner />;
+
+  if (error) return <h1>Error Page</h1>;
 
   return (
     <>
@@ -260,8 +273,12 @@ export default function Policies({ policies, isLoading, error }) {
         <h3>Pets Policies</h3>
         <p>Specify whether pets are allowed in your property.</p>
       </div>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        {form}
+      <Modal
+        header={form?.header}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      >
+        {form?.form}
       </Modal>
     </>
   );
