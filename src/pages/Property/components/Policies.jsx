@@ -119,9 +119,36 @@ export default function Policies({ policies, isLoading, error }) {
           actions={actionPayment}
           customStyle={customStyle}
         >
+          <h4>Advance Payment</h4>
+          <ul className={styles.list}>
+            <li>
+              {policies.advance_payment.required
+                ? `You required ${
+                    policies.advance_payment.amount * 10
+                  } % of deposit when guest make a reservation`
+                : "You DO NOT required an advance payment for guest reservations"}
+            </li>
+            <li>
+              You accept the following payment method for advance payment:
+              <ul>
+                {policies.advance_payment.payment_methods.map(
+                  (method, index) => (
+                    <li key={index}>{method}</li>
+                  )
+                )}
+              </ul>
+            </li>
+          </ul>
+          <h4>Cancellations</h4>
+          <p>{policies.cancellation.type}</p>
           <p>
-            The deposit amount is 30% of the total reservation amount and will
-            be arrange between you (the owner) and the guest
+            {policies.cancellation.type === "strict"
+              ? "You will not refund the deposit if guest cancel anytime"
+              : `You will refund ${
+                  policies.cancellation.refund_percentage * 100
+                }% of the deposit if the guest cancel ${
+                  policies.cancellation.cancellation_notice_period
+                } days before arrival.`}
           </p>
         </Card>
 
@@ -130,17 +157,78 @@ export default function Policies({ policies, isLoading, error }) {
           actions={actionChildren}
           customStyle={customStyle}
         >
-          <p>Children of all age are allowed only in private rooms.</p>
+          <ul className={styles.list}>
+            <li>
+              {policies.children_policies.children_allowed &&
+              policies.children_policies.min_age === 0
+                ? "Children of all age are allow in your property"
+                : !policies.children_policies.children_allowed
+                ? "Children are not allow in your property"
+                : `Children of ${policies.children_policies.min_age} years old or greater are allow in your property`}
+            </li>
+            <li>
+              {policies.children_policies.allowed_room_types &&
+                `Children are allow in ${
+                  policies.children_policies.allowed_room_types ===
+                  "private_room"
+                    ? "Private Rooms only"
+                    : "any Room"
+                }`}
+            </li>
+            <li>
+              {policies.children_policies.free_stay_age > 0 &&
+                `Children of ${policies.children_policies.free_stay_age} years old can stay for free`}
+            </li>
+          </ul>
         </Card>
         <Card
           title="Other Property Policies"
           actions={actionOthers}
           customStyle={customStyle}
         >
-          <p>Check-in & Check-out times</p>
+          <h4>House rules</h4>
           <ul>
-            <li>Check-in from 14:00 PM to 21:00 PM</li>
-            <li>Check-out until 11:00 AM</li>
+            <li>Quiet hours</li>
+            <ul>
+              <li>
+                From: {policies.other_policies.house_rules.quiet_hours.from}
+              </li>
+              <li>To: {policies.other_policies.house_rules.quiet_hours.to}</li>
+            </ul>
+            <li>
+              Smoking areas:{" "}
+              {policies.other_policies.house_rules.smoking_areas ? "Yes" : "No"}
+            </li>
+            <li>
+              Are external guest allowed?:{" "}
+              {policies.other_policies.house_rules.external_guest_allowed
+                ? "Yes"
+                : "No"}
+            </li>
+            <li>
+              Are pets allowed?:{" "}
+              {policies.other_policies.house_rules.pets_allowed ? "Yes" : "No"}
+            </li>
+          </ul>
+          <h4>Special services</h4>
+          <ul>
+            {policies.other_policies.special_services.luggage_storage
+              .available && (
+              <li>
+                Luggage storage is available for $
+                {policies.other_policies.special_services.luggage_storage.price}
+              </li>
+            )}
+            {policies.other_policies.special_services.airport_pickup_service
+              .available && (
+              <li>
+                Airport pickup service is available for $
+                {
+                  policies.other_policies.special_services
+                    .airport_pickup_service.price
+                }
+              </li>
+            )}
           </ul>
         </Card>
       </div>

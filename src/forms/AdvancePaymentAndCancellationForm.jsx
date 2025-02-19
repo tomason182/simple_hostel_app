@@ -36,6 +36,34 @@ export default function AdvancePaymentAndCancellationForm({ closeModal }) {
             </select>
           </label>
         </div>
+
+        <h4>Accepted payment method for deposit</h4>
+        <div className={styles.groupContainer}>
+          <div className={styles.checkbox}>
+            <label>
+              Cash
+              <input type="checkbox" name="cash" />
+            </label>
+          </div>
+          <div className={styles.checkbox}>
+            <label>
+              Debit | Credit card
+              <input type="checkbox" name="card_payment" />
+            </label>
+          </div>
+          <div className={styles.checkbox}>
+            <label>
+              Bank transfer
+              <input type="checkbox" name="bank_transfer" />
+            </label>
+          </div>
+          <div className={styles.checkbox}>
+            <label>
+              Paypal
+              <input type="checkbox" name="paypal" />
+            </label>
+          </div>
+        </div>
       </fieldset>
       <fieldset>
         <legend>Cancellation Policies</legend>
