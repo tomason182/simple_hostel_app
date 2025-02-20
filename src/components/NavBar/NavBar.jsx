@@ -1,32 +1,33 @@
 import styles from "./NavBar.module.css";
+import { Link } from "react-router";
 
 export default function NavBar() {
   return (
     <nav className={styles.navBar}>
       <ul className={styles.navList}>
         <li>
-          <a href="#">Home</a>
+          <Link to="/">Home</Link>
         </li>
         <li>
-          <a href="#">Calendar</a>
+          <Link to="/calendar">Calendar</Link>
         </li>
         <li>
-          <a href="#">Rates &amp; Availability</a>
+          <Link to="/rates-and-availability">Rates &amp; Availability</Link>
         </li>
         <li>
-          <a href="#">Reservations</a>
+          <Link to="/reservations">Reservations</Link>
         </li>
         <li>
-          <a href="#">Property</a>
+          <Link to="/property">Property</Link>
         </li>
         <li>
-          <a href="#">Inbox</a>
+          <Link to="/inbox">Inbox</Link>
         </li>
         <li>
-          <a href="#">My Website</a>
+          <Link to="#">My Website</Link>
         </li>
         <li>
-          <a href="#">Reports</a>
+          <Link to="#">Reports</Link>
         </li>
       </ul>
     </nav>
