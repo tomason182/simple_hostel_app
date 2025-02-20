@@ -14,40 +14,37 @@ export default function Policies({ policies, isLoading, error }) {
   const [form, setForm] = useState(null);
 
   // Policies States
-  const [reservationPolicies, setReservationPolicies] = useState({
-    min_length_stay: 0,
-    max_length_stay: 0,
-    min_advance_booking: 0,
-    allow_same_day_reservation: "",
+  const reservationPolicies = {
+    min_length_stay: policies.reservation.min_length_stay || 0,
+    max_length_stay: policies.reservation.max_length_stay || 0,
+    min_advance_booking: policies.reservation.min_advance_booking || 0,
+    allow_same_day_reservation:
+      policies.reservation.allow_same_day_reservation || false,
     check_in_window: {
-      from: "",
-      to: "",
+      from: policies.reservation.check_in_window.from || "",
+      to: policies.reservation.check_in_window.to || "",
     },
     check_out_time: {
-      until: "",
+      until: policies.reservation.check_out_time.until,
     },
-    payment_methods: [],
-    online_payment_methods: [],
-  });
+    payment_methods: policies.reservation.payment_methods || [],
+    online_payment_methods: policies.reservation.online_payment_methods || [],
+  };
 
-  useEffect(() => {
-    setReservationPolicies({
-      min_length_stay: policies.reservation.min_length_stay || 0,
-      max_length_stay: policies.reservation.max_length_stay || 0,
-      min_advance_booking: policies.reservation.min_advance_booking || 0,
-      allow_same_day_reservation:
-        policies.reservation.allow_same_day_reservation || false,
-      check_in_window: {
-        from: policies.reservation.check_in_window.from || "",
-        to: policies.reservation.check_in_window.to || "",
-      },
-      check_out_time: {
-        until: policies.reservation.check_out_time.until,
-      },
-      payment_methods: policies.reservation.payment_methods,
-      online_payment_methods: policies.reservation.online_payment_methods,
-    });
-  }, [setReservationPolicies, policies]);
+  const advancePaymentPolicies = {
+    required: policies.advance_payment.required || false,
+    amount: policies.advance_payment.amount || 0,
+    payment_methods: policies.advance_payment.payment_methods || [],
+  };
+
+  const cancellationPolicies = {
+    type: policies.cancellation.type || "strict",
+    cancellation_notice_period:
+      policies.cancellation.cancellation_notice_period || 0,
+    amount_refunded: policies.cancellation.amount_refunded || 0,
+  };
+
+  console.log(cancellationPolicies);
 
   const formSelector = {
     1: {
@@ -67,6 +64,8 @@ export default function Policies({ policies, isLoading, error }) {
       ),
       form: (
         <AdvancePaymentAndCancellationForm
+          advancePaymentData={advancePaymentPolicies}
+          cancellationData={cancellationPolicies}
           closeModal={() => setIsOpen(false)}
         />
       ),
@@ -201,16 +200,6 @@ export default function Policies({ policies, isLoading, error }) {
                   } % of deposit when guest make a reservation`
                 : "You DO NOT required an advance payment for guest reservations"}
             </li>
-            <li>
-              You accept the following payment method for advance payment:
-              <ul>
-                {policies.advance_payment.payment_methods.map(
-                  (method, index) => (
-                    <li key={index}>{method}</li>
-                  )
-                )}
-              </ul>
-            </li>
           </ul>
           <h4>Cancellations</h4>
           <p>{policies.cancellation.type}</p>
@@ -218,7 +207,7 @@ export default function Policies({ policies, isLoading, error }) {
             {policies.cancellation.type === "strict"
               ? "You will not refund the deposit if guest cancel anytime"
               : `You will refund ${
-                  policies.cancellation.refund_percentage * 100
+                  policies.cancellation.amount_refunded * 100
                 }% of the deposit if the guest cancel ${
                   policies.cancellation.cancellation_notice_period
                 } days before arrival.`}
