@@ -1,7 +1,27 @@
 import styles from "./Header.module.css";
 import PropTypes from "prop-types";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router";
 
 export default function Header({ user, propertyName }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (isMenuOpen && !menuRef.current?.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isMenuOpen]);
+
+  function handleLogOut() {
+    alert("User logged out");
+  }
+
   return (
     <header className={styles.header}>
       <div className={styles.leftSection}>
@@ -66,7 +86,10 @@ export default function Header({ user, propertyName }) {
             <path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path>
           </svg>
         </button>
-        <button className={styles.actionButton}>
+        <button
+          className={styles.actionButton}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -82,6 +105,45 @@ export default function Header({ user, propertyName }) {
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </button>
+        {/* Profile menu */}
+        <div
+          className={`${styles.profileMenu} ${isMenuOpen ? styles.active : ""}`}
+          ref={menuRef}
+        >
+          <Link to="users/profile/edit" onClick={() => setIsMenuOpen(false)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+            Profile
+          </Link>
+          <Link onClick={handleLogOut}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#000"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M16 17l5-5-5-5M19.8 12H9M13 22a10 10 0 1 1 0-20" />
+            </svg>
+            Log out
+          </Link>
+        </div>
         <button className={styles.actionButton}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
