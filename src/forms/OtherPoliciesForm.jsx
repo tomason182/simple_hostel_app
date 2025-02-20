@@ -3,7 +3,6 @@ import styles from "./defaultFormStyle.module.css";
 export default function OtherPoliciesForm() {
   return (
     <form className={styles.form}>
-      <h2>Other Property Policies</h2>
       <fieldset>
         <legend>Minimum length of stay</legend>
         <div className={styles.formGroup}>

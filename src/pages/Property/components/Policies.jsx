@@ -89,7 +89,7 @@ export default function Policies({ policies, isLoading, error }) {
     },
 
     4: {
-      header: <h2>Other Property Policies</h2>,
+      header: <h3 className={styles.header}>Other Property Policies</h3>,
       form: <OtherPoliciesForm />,
     },
   };
@@ -132,7 +132,7 @@ export default function Policies({ policies, isLoading, error }) {
     {
       label: "Edit",
       onClick: () => {
-        handleFormSelection(6);
+        handleFormSelection(4);
         setIsOpen(true);
       },
     },
