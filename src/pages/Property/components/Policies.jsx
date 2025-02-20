@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
 import AdvancePaymentAndCancellationForm from "../../../forms/AdvancePaymentAndCancellationForm";
 import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
+import ChildrenPoliciesForm from "../../../forms/ChildrenPoliciesForm";
 import Spinner from "../../../components/Spinner/Spinner";
 
 export default function Policies({ policies, isLoading, error }) {
@@ -77,6 +78,15 @@ export default function Policies({ policies, isLoading, error }) {
         />
       ),
     },
+    3: {
+      header: <h3 className={styles.header}>Children Policies</h3>,
+      form: (
+        <ChildrenPoliciesForm
+          childrenPoliciesData={childrenPolicies}
+          closeModal={() => setIsOpen(false)}
+        />
+      ),
+    },
 
     4: {
       header: <h2>Other Property Policies</h2>,
@@ -112,7 +122,7 @@ export default function Policies({ policies, isLoading, error }) {
     {
       label: "Edit",
       onClick: () => {
-        handleFormSelection(4);
+        handleFormSelection(3);
         setIsOpen(true);
       },
     },
