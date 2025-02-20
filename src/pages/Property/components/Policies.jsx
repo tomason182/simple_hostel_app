@@ -44,7 +44,14 @@ export default function Policies({ policies, isLoading, error }) {
     amount_refunded: policies.cancellation.amount_refunded || 0,
   };
 
-  console.log(cancellationPolicies);
+  const childrenPolicies = {
+    children_allowed: policies.children_policies.children_allowed || false,
+    min_age: policies.children_policies.min_age || 0,
+    allowed_room_types: policies.children_policies.allowed_room_types || null,
+    free_stay_age: policies.children_policies.free_stay_age || 0,
+  };
+
+  console.log("Children Policies: ", childrenPolicies);
 
   const formSelector = {
     1: {
@@ -221,15 +228,15 @@ export default function Policies({ policies, isLoading, error }) {
         >
           <ul className={styles.list}>
             <li>
-              {policies.children_policies.children_allowed &&
-              policies.children_policies.min_age === 0
+              {childrenPolicies.children_allowed &&
+              childrenPolicies.min_age === 0
                 ? "Children of all age are allow in your property"
                 : !policies.children_policies.children_allowed
                 ? "Children are not allow in your property"
                 : `Children of ${policies.children_policies.min_age} years old or greater are allow in your property`}
             </li>
             <li>
-              {policies.children_policies.allowed_room_types &&
+              {childrenPolicies.allowed_room_types &&
                 `Children are allow in ${
                   policies.children_policies.allowed_room_types ===
                   "private_room"
@@ -238,7 +245,7 @@ export default function Policies({ policies, isLoading, error }) {
                 }`}
             </li>
             <li>
-              {policies.children_policies.free_stay_age > 0 &&
+              {childrenPolicies.free_stay_age > 0 &&
                 `Children of ${policies.children_policies.free_stay_age} years old can stay for free`}
             </li>
           </ul>
