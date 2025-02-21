@@ -31,13 +31,6 @@ export default function Home() {
     },
   };
 
-  const loadingStyling = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: "2rem 0",
-  };
-
   const coming = {
     type: "coming",
     message: "You have no arrivals today",
