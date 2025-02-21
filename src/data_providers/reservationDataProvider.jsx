@@ -84,7 +84,7 @@ export function useGetLatestReservations() {
   return {
     latestReservations,
     loadingLatestReservation: loading,
-    error,
+    errorLatestReservations: error,
     refreshLatestReservationsData: fetchLatestReservation,
   };
 }
