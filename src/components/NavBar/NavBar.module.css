@@ -14,10 +14,6 @@
 
 .navList li {
   cursor: pointer;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex: 1;
 }
 
@@ -27,6 +23,11 @@
 
 .navList li a {
   text-decoration: none;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #fff;
   font-size: 0.8rem;
   font-family: "Inter-Bold", sans-serif;
