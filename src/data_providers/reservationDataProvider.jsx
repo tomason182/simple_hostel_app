@@ -43,3 +43,48 @@ export function useGetTodayReservations() {
     refreshTodayReservationsData: fetchTodayReservations,
   };
 }
+
+export function useGetLatestReservations() {
+  const [latestReservations, setLatestReservations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchLatestReservation = useCallback(() => {
+    setLoading(true);
+    const url = import.meta.env.VITE_URL_BASE + "/reservations/find/latest";
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Server Error");
+        }
+
+        return response.json();
+      })
+      .then(data => setLatestReservations(data))
+      .catch(e => {
+        console.error("Error fetching data", e);
+        setError(e);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetchLatestReservation();
+  }, [fetchLatestReservation]);
+
+  return {
+    latestReservations,
+    loadingLatestReservation: loading,
+    error,
+    refreshLatestReservationsData: fetchLatestReservation,
+  };
+}
