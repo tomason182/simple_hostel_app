@@ -1,13 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Card from "../../components/Card/Card";
 import Modal from "../../components/Modal/Modal";
+import { useGetTodayReservations } from "../../data_providers/reservationDataProvider";
 import { ReservationsList, LatestReservations } from "./Children";
 import styles from "./Home.module.css";
 
 export default function Home() {
-  const [todaysReservations, setTodaysReservations] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const { todayReservations, loadingTodayReservations, error } =
+    useGetTodayReservations();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -15,24 +15,19 @@ export default function Home() {
     setIsOpen(false);
   }
 
-  const actions = [
-    {
-      label: "SHOW MORE",
-      onClick: () => setIsOpen(true),
+  const customStyle = {
+    children: {
+      maxHeight: "300px",
+      overflowY: "auto",
+      overflowX: "hidden",
     },
-  ];
+  };
 
   const loadingStyling = {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     padding: "2rem 0",
-  };
-
-  const listStyle = {
-    maxHeight: "300px",
-    overflowY: "auto",
-    overflowX: "hidden",
   };
 
   const coming = {
@@ -52,42 +47,36 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Card
-        title="Who's coming today"
-        actions={actions}
-        customStyle={loading ? loadingStyling : listStyle}
-      >
+      <Card title="Who's coming today" customStyle={customStyle}>
         <ReservationsList
-          data={todaysReservations}
+          data={todayReservations}
           error={error}
-          loading={loading}
+          loading={loadingTodayReservations}
           info={coming}
         />
       </Card>
       <Card
         title="Who's leaving today"
-        actions={actions}
-        customStyle={loading ? loadingStyling : {}}
+        customStyle={loadingTodayReservations ? loadingStyling : {}}
       >
         <ReservationsList
-          data={todaysReservations}
+          data={todayReservations}
           error={error}
-          loading={loading}
+          loading={loadingTodayReservations}
           info={leaving}
         />
       </Card>
       <Card
         title="Latest reservations"
-        actions={actions}
-        customStyle={loading ? loadingStyling : {}}
+        customStyle={loadingTodayReservations ? loadingStyling : {}}
       >
         <LatestReservations />
       </Card>
       <Modal isOpen={isOpen} onClose={onModalClose}>
         <ReservationsList
-          data={todaysReservations}
+          data={todayReservations}
           error={error}
-          loading={loading}
+          loading={loadingTodayReservations}
           info={coming}
         />
       </Modal>
