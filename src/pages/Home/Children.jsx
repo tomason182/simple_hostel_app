@@ -27,7 +27,7 @@ export function ReservationsList({ data, error, loading, info }) {
         (d.status === "confirmed" || d.status === "provisional")
       );
     });
-  } else {
+  } else if (info.type === "leaving") {
     filteredData = data.filter(d => {
       const checkOut = d.check_out.split("-").join("");
       return (
@@ -35,6 +35,8 @@ export function ReservationsList({ data, error, loading, info }) {
         (d.status === "confirmed" || d.status === "provisional")
       );
     });
+  } else {
+    filteredData = data;
   }
 
   const reservationsList =

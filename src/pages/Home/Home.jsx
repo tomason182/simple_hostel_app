@@ -1,13 +1,21 @@
 import { useState } from "react";
 import Card from "../../components/Card/Card";
 import Modal from "../../components/Modal/Modal";
-import { useGetTodayReservations } from "../../data_providers/reservationDataProvider";
-import { ReservationsList, LatestReservations } from "./Children";
+import {
+  useGetTodayReservations,
+  useGetLatestReservations,
+} from "../../data_providers/reservationDataProvider";
+import { ReservationsList } from "./Children";
 import styles from "./Home.module.css";
 
 export default function Home() {
   const { todayReservations, loadingTodayReservations, error } =
     useGetTodayReservations();
+  const {
+    latestReservations,
+    loadingLatestReservation,
+    errorLatestReservations,
+  } = useGetLatestReservations();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -32,12 +40,12 @@ export default function Home() {
 
   const coming = {
     type: "coming",
-    message: "No reservations coming today",
+    message: "You have no arrivals today",
   };
 
   const leaving = {
     type: "leaving",
-    message: "No reservations leaving today",
+    message: "You have no departures today",
   };
 
   const latest = {
@@ -55,10 +63,7 @@ export default function Home() {
           info={coming}
         />
       </Card>
-      <Card
-        title="Who's leaving today"
-        customStyle={loadingTodayReservations ? loadingStyling : {}}
-      >
+      <Card title="Who's leaving today" customStyle={customStyle}>
         <ReservationsList
           data={todayReservations}
           error={error}
@@ -66,20 +71,15 @@ export default function Home() {
           info={leaving}
         />
       </Card>
-      <Card
-        title="Latest reservations"
-        customStyle={loadingTodayReservations ? loadingStyling : {}}
-      >
-        <LatestReservations />
-      </Card>
-      <Modal isOpen={isOpen} onClose={onModalClose}>
+      <Card title="Latest reservations" customStyle={customStyle}>
         <ReservationsList
-          data={todayReservations}
-          error={error}
-          loading={loadingTodayReservations}
-          info={coming}
+          data={latestReservations}
+          error={errorLatestReservations}
+          loading={loadingLatestReservation}
+          info={latest}
         />
-      </Modal>
+      </Card>
+      <Modal isOpen={isOpen} onClose={onModalClose}></Modal>
     </div>
   );
 }
