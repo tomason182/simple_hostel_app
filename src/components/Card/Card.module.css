@@ -1,7 +1,7 @@
 .cardContainer {
   background-color: #fff;
   border: 1px solid var(--gray-200);
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); */
   padding: 1.2rem;
   margin: 0;
   display: flex;
