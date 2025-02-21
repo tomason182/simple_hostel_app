@@ -11,63 +11,6 @@ export default function Home() {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const reservations = [
-      {
-        id: 1,
-        guest_info: {
-          full_name: "Larry Clark",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-07",
-        number_of_guest: 2,
-        status: "confirmed",
-      },
-      {
-        id: 2,
-        guest_info: {
-          full_name: "Sophia Martinez",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-09",
-        number_of_guest: 1,
-        status: "confirmed",
-      },
-      {
-        id: 3,
-        guest_info: {
-          full_name: "Michael Johnson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-07",
-        number_of_guest: 3,
-        status: "confirmed",
-      },
-      {
-        id: 4,
-        guest_info: {
-          full_name: "Emma Thompson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-12",
-        number_of_guest: 2,
-        status: "confirmed",
-      },
-      {
-        id: 5,
-        guest_info: {
-          full_name: "Daniel Rivera",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-06",
-        number_of_guest: 1,
-        status: "confirmed",
-      },
-    ];
-
-    setTodaysReservations(reservations);
-  }, []);
-
   function onModalClose() {
     setIsOpen(false);
   }
