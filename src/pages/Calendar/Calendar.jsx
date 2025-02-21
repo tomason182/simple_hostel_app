@@ -6,6 +6,7 @@ import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import StepNavigation from "../../components/StepNavigation/StepNavigation";
 import Button from "../../components/Button/Button";
+import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
 
 export default function Calendar() {
   const today = new Date();
@@ -394,106 +395,6 @@ export default function Calendar() {
     );
   };
 
-  /* FORM FIELDS */
-  /* Check in and check out dates */
-  const dates = [
-    {
-      name: "checkIn",
-      label: "Check-in",
-      type: "date",
-      required: true,
-    },
-    {
-      name: "checkOut",
-      label: "Check-out",
-      type: "date",
-      required: true,
-    },
-  ];
-
-  /* Check email form */
-  const checkEmailFields = [
-    { name: "email", label: "Email", type: "email", required: true },
-  ];
-
-  const guestData = [
-    {
-      name: "firstName",
-      label: "First name",
-      type: "text",
-      required: true,
-      maxLength: 100,
-    },
-    {
-      name: "lastName",
-      label: "Last name",
-      type: "text",
-      required: true,
-      maxLength: 100,
-    },
-    {
-      name: "idNumber",
-      label: "Passport or ID number",
-      type: "text",
-      maxLength: 25,
-    },
-    {
-      name: "email",
-      label: "Email",
-      type: "email",
-      required: true,
-      disabled: true,
-      maxLength: 50,
-    },
-    {
-      name: "phoneNumber",
-      type: "text",
-      label: "Phone number",
-      maxLength: 50,
-    },
-    {
-      name: "countryCode",
-      label: "Country Code",
-      type: "text",
-      maxLength: 2,
-    },
-    {
-      name: "city",
-      label: "City",
-      type: "text",
-      maxLength: 50,
-    },
-    {
-      name: "street",
-      label: "Street",
-      type: "text",
-      maxLength: 100,
-    },
-    {
-      name: "postalCode",
-      label: "Postal Code",
-      type: "text",
-      maxLength: 100,
-    },
-  ];
-
-  // Guest data form style
-  const guestDataFormCustomStyle = {
-    form: {
-      display: "flex",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      gap: "1rem",
-      alignItem: "center",
-    },
-    formGroup: {
-      margin: "0",
-    },
-    formButton: {
-      margin: "auto 0 0 auto",
-    },
-  };
-
   // Handle form submit
 
   const checkAvailability = data => {
@@ -544,7 +445,9 @@ export default function Calendar() {
     />
   );
 
-  const formChildren = [];
+  const formChildren = {
+    0: <CheckAvailabilityFrom />,
+  };
 
   // if (reservations === null || roomTypes === null) return <Spinner />;
 
