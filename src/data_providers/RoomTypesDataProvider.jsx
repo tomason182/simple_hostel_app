@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const RoomTypeContext = createContext();
 
 export default function RoomTypeDataProvider({ children }) {
-  const [roomTypesData, setRoomTypesData] = useState([]);
+  const [roomTypes, setRoomTypesData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -46,7 +46,7 @@ export default function RoomTypeDataProvider({ children }) {
   return (
     <RoomTypeContext.Provider
       value={{
-        roomTypesData,
+        roomTypes,
         isLoading,
         error,
         refreshRoomTypeData: fetchRoomTypesData,

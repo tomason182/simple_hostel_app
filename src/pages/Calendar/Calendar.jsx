@@ -1,19 +1,18 @@
 import styles from "./Calendar.module.css";
 import { format, sub, add, setDefaultOptions } from "date-fns";
 import { es, enUS } from "date-fns/locale";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import StepNavigation from "../../components/StepNavigation/StepNavigation";
 import Button from "../../components/Button/Button";
 import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
+import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 
 export default function Calendar() {
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
   const [reservations, setReservations] = useState([]);
-  const [roomTypes, setRoomTypes] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
@@ -21,56 +20,9 @@ export default function Calendar() {
   // Form index
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
+
   setDefaultOptions({ locale: es });
-
-  useEffect(() => {
-    const roomTypesList = [
-      {
-        id: 1,
-        property_id: 1,
-        description: "4max dormitory",
-        type: "dorm",
-        gender: "mix",
-        max_occupancy: 4,
-        inventory: 2,
-        products: [
-          {
-            id: 1,
-            room_name: "El refugio",
-            beds: [10, 11, 12, 14], // IDs from Beds table?
-          },
-          {
-            id: 2,
-            room_name: "El andino",
-            beds: [15, 16, 17, 18],
-          },
-        ],
-      },
-      {
-        id: 2,
-        property_id: 1,
-        description: "Private Dormitory",
-        type: "private",
-        gender: "mix",
-        max_occupancy: 2,
-        inventory: 2,
-        products: [
-          {
-            id: 3,
-            room_name: "El ranchito",
-            beds: [19], // IDs from Beds table?
-          },
-          {
-            id: 4,
-            room_name: "La casita",
-            beds: [20],
-          },
-        ],
-      },
-    ];
-
-    setRoomTypes(roomTypesList);
-  }, []);
 
   useEffect(() => {
     const reservationsList = [
@@ -504,8 +456,12 @@ export default function Calendar() {
           </tr>
         </thead>
         <tbody>
-          {loading ? (
-            <Spinner />
+          {isLoading ? (
+            <tr height={250}>
+              <td colSpan={17}>
+                <Spinner />
+              </td>
+            </tr>
           ) : roomList.length === 0 ? (
             <tr height={250}>
               <td colSpan={17} className={styles.noRoomTypesMessage}>

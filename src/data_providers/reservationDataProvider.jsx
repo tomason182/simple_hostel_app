@@ -5,8 +5,6 @@ export function useGetTodayReservations() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  console.log(reservations);
-
   const fetchTodayReservations = useCallback(() => {
     setLoading(true);
     const today = new Date().toISOString().split("T")[0];
