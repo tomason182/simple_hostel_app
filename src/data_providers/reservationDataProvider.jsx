@@ -5,9 +5,13 @@ export function useGetTodayReservations() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  console.log(reservations);
+
   const fetchTodayReservations = useCallback(() => {
     setLoading(true);
-    const url = import.meta.env.VITE_URL_BASE + "/reservations/find/today";
+    const today = new Date().toISOString().split("T")[0];
+
+    const url = import.meta.env.VITE_URL_BASE + "/reservations/find/" + today;
     const options = {
       mode: "cors",
       method: "GET",

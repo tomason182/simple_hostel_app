@@ -4,6 +4,10 @@ import PropTypes from "prop-types";
 import styles from "./Children.module.css";
 import Modal from "../../components/Modal/Modal";
 import { useState } from "react";
+import {
+  dateFormatHelper,
+  formateDateToLocale,
+} from "../../utils/dateFormatHelper";
 
 export function ReservationsList({ data, error, loading, info }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,18 +25,20 @@ export function ReservationsList({ data, error, loading, info }) {
 
   if (info.type === "coming") {
     filteredData = data.filter(d => {
-      const checkIn = d.check_in.split("-").join("");
+      const checkIn = dateFormatHelper(d.check_in);
       return (
         checkIn === today &&
-        (d.status === "confirmed" || d.status === "provisional")
+        (d.reservation_status === "confirmed" ||
+          d.reservation_status === "provisional")
       );
     });
   } else if (info.type === "leaving") {
     filteredData = data.filter(d => {
-      const checkOut = d.check_out.split("-").join("");
+      const checkOut = dateFormatHelper(d.check_out);
       return (
         checkOut === today &&
-        (d.status === "confirmed" || d.status === "provisional")
+        (d.reservation_status === "confirmed" ||
+          d.reservation_status === "provisional")
       );
     });
   } else {
@@ -45,7 +51,9 @@ export function ReservationsList({ data, error, loading, info }) {
     ) : (
       filteredData.map(d => (
         <li key={d.id} onClick={() => setIsOpen(true)}>
-          <p>{d.guest_info.full_name}</p>
+          <p>
+            {d.first_name} {d.last_name}
+          </p>
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -63,9 +71,9 @@ export function ReservationsList({ data, error, loading, info }) {
               <line x1="8" y1="2" x2="8" y2="6"></line>
               <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
-            {d.check_in} | {d.check_out}
+            {formateDateToLocale(d.check_in)} |{" "}
+            {formateDateToLocale(d.check_out)}
           </span>
-          <span>{d.number_of_guest} pers</span>
         </li>
       ))
     );
