@@ -1,5 +1,11 @@
 export function dateFormatHelper(date) {
-  return date.split("T")[0].split("-").join("");
+  let d = date;
+
+  if (d instanceof Date) {
+    d = date.toISOString();
+  }
+
+  return d.split("T")[0].split("-").join("");
 }
 
 export function formateDateToLocale(date) {

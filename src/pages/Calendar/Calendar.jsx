@@ -1,18 +1,24 @@
 import styles from "./Calendar.module.css";
 import { format, sub, add, setDefaultOptions } from "date-fns";
 import { es, enUS } from "date-fns/locale";
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useContext, useState, useMemo } from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import StepNavigation from "../../components/StepNavigation/StepNavigation";
 import Button from "../../components/Button/Button";
 import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
+import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
+import { dateFormatHelper } from "../../utils/dateFormatHelper";
 
 export default function Calendar() {
   const today = new Date();
+  const lengthOfCalendar = 14;
   const [startDate, setStartDate] = useState(today);
-  const [reservations, setReservations] = useState([]);
+  const toDate = useMemo(
+    () => add(startDate, { days: lengthOfCalendar }),
+    [startDate]
+  );
 
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
@@ -21,125 +27,22 @@ export default function Calendar() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
+  const { reservations, loadingReservations, errorReservations } =
+    useFetchReservationByDateRange(startDate, toDate);
 
   setDefaultOptions({ locale: es });
-
-  useEffect(() => {
-    const reservationsList = [
-      {
-        id: 1,
-        property_id: 1,
-        booking_source: "booking.com",
-        currency: "USD",
-        guest_info: {
-          full_name: "Larry Clark",
-        },
-        check_in: "2025-02-03",
-        check_out: "2025-02-07",
-        number_of_guest: 2,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [10, 11],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 2,
-        property_id: 1,
-        booking_source: "booking.com",
-        currency: "USD",
-        guest_info: {
-          full_name: "Sophia Martinez",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-09",
-        number_of_guest: 1,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [12],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 3,
-        property_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Michael Johnson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-07",
-        number_of_guest: 3,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [15, 16, 17],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 4,
-        property_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Emma Thompson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-12",
-        number_of_guest: 2,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [19],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 5,
-        property_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Daniel Rivera",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-06",
-        number_of_guest: 1,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [20],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-    ];
-
-    setReservations(reservationsList);
-  }, []);
 
   const year = format(startDate, "yyyy");
   const MMM = format(startDate, "MMMM");
 
-  const handleNextBtn = () => setStartDate(add(startDate, { days: 14 }));
-  const handlePrevBtn = () => setStartDate(sub(startDate, { days: 14 }));
+  const handleNextBtn = () =>
+    setStartDate(add(startDate, { days: lengthOfCalendar }));
+  const handlePrevBtn = () =>
+    setStartDate(sub(startDate, { days: lengthOfCalendar }));
 
   // Generate days array
   const firstDayOfCalendar = sub(startDate, { days: 3 });
-  const daysArray = Array.from({ length: 14 }, (_, i) =>
+  const daysArray = Array.from({ length: lengthOfCalendar }, (_, i) =>
     add(firstDayOfCalendar, { days: i })
   );
 
@@ -181,8 +84,8 @@ export default function Calendar() {
   // Reservation finding logic
   function handleReservationClassName(reservation) {
     const expr = parseInt(format(today, "yyyyMMdd"));
-    const checkIn = Number(reservation.checkIn.split("-").join(""));
-    const checkOut = Number(reservation.checkOut.split("-").join(""));
+    const checkIn = Number(dateFormatHelper(reservation.checkIn));
+    const checkOut = Number(dateFormatHelper(reservation.checkOut));
 
     let statusClassName = "confirmed";
 
@@ -191,7 +94,7 @@ export default function Calendar() {
     } else if (checkIn <= expr && checkOut > expr) {
       statusClassName = "inHouse";
     } else {
-      statusClassName = reservation.reservation_status;
+      statusClassName = reservation.status;
     }
     return statusClassName;
   }
@@ -199,10 +102,9 @@ export default function Calendar() {
   // Assigning beds
   function getReservationDetails(day, bedId, type = "find") {
     const currentDay = Number(format(day, "yyyyMMdd"));
-
     const reservation = reservations.find(r => {
-      const checkIn = Number(r.check_in.split("-").join(""));
-      const checkOut = Number(r.check_out.split("-").join(""));
+      const checkIn = Number(dateFormatHelper(r.check_in));
+      const checkOut = Number(dateFormatHelper(r.check_out));
 
       return (
         r.assigned_beds.includes(bedId) &&
@@ -219,8 +121,8 @@ export default function Calendar() {
       return null;
     }
 
-    const checkIn = Number(reservation.check_in.split("-").join(""));
-    const checkOut = Number(reservation.check_out.split("-").join(""));
+    const checkIn = Number(dateFormatHelper(reservation.check_in));
+    const checkOut = Number(dateFormatHelper(reservation.check_out));
     const daysDiff =
       type === "start" ? checkOut - currentDay : checkOut - checkIn;
 
@@ -401,8 +303,6 @@ export default function Calendar() {
     0: <CheckAvailabilityFrom />,
   };
 
-  // if (reservations === null || roomTypes === null) return <Spinner />;
-
   return (
     <>
       <table className={styles.calendarTable}>
@@ -450,13 +350,14 @@ export default function Calendar() {
               </button>
             </th>
           </tr>
-          <tr>
-            {/* <th colSpan={3}></th> */}
-            {days}
-          </tr>
+          <tr>{days}</tr>
         </thead>
         <tbody>
-          {isLoading ? (
+          {error || errorReservations ? (
+            <tr height={250}>
+              <td>An Error occurred fetching room types data</td>
+            </tr>
+          ) : isLoading && loadingReservations ? (
             <tr height={250}>
               <td colSpan={17}>
                 <Spinner />

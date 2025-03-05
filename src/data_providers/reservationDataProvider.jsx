@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
+import { dateFormatHelper } from "../utils/dateFormatHelper";
 
 export function useGetTodayReservations() {
   const [reservations, setReservations] = useState([]);
@@ -88,5 +89,57 @@ export function useGetLatestReservations() {
     loadingLatestReservation: loading,
     errorLatestReservations: error,
     refreshLatestReservationsData: fetchLatestReservation,
+  };
+}
+
+export function useFetchReservationByDateRange(from, to) {
+  const [reservations, setReservations] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fromDate = dateFormatHelper(from);
+  const toDate = dateFormatHelper(to);
+
+  const fetchReservations = useCallback(() => {
+    setIsLoading(true);
+    const url =
+      import.meta.env.VITE_URL_BASE +
+      "/reservations/find-by-range/" +
+      fromDate +
+      "-" +
+      toDate;
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Server Error");
+        }
+        return response.json();
+      })
+      .then(data => setReservations(data))
+      .catch(e => {
+        console.error(e.message);
+        setError(e.message);
+      })
+      .finally(() => setIsLoading(false));
+  }, [fromDate, toDate]);
+
+  useEffect(() => {
+    fetchReservations();
+  }, [fetchReservations]);
+
+  return {
+    reservations,
+    loadingReservations: isLoading,
+    errorReservations: error,
+    refreshReservationsData: fetchReservations,
   };
 }
