@@ -143,3 +143,7 @@ export function useFetchReservationByDateRange(from, to) {
     refreshReservationsData: fetchReservations,
   };
 }
+
+export function useGetAvilability(from, to) {
+  // do something
+}

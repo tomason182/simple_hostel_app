@@ -15,9 +15,10 @@ export default function Calendar() {
   const today = new Date();
   const lengthOfCalendar = 14;
   const [startDate, setStartDate] = useState(today);
+  const fromDate = useMemo(() => sub(startDate, { days: 3 }), [startDate]);
   const toDate = useMemo(
-    () => add(startDate, { days: lengthOfCalendar }),
-    [startDate]
+    () => add(fromDate, { days: lengthOfCalendar }),
+    [fromDate]
   );
 
   // Modal States
@@ -28,7 +29,7 @@ export default function Calendar() {
 
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
   const { reservations, loadingReservations, errorReservations } =
-    useFetchReservationByDateRange(startDate, toDate);
+    useFetchReservationByDateRange(fromDate, toDate);
 
   setDefaultOptions({ locale: es });
 
