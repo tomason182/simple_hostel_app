@@ -1,17 +1,32 @@
 import styles from "./defaultFormStyle.module.css";
-import { useState } from "react";
 import PropTypes from "prop-types";
 
-export default function RoomSelectionForm({ availability, setIndex }) {
-  const [roomSelection, setRoomSelection] = useState({});
-
-  console.log(roomSelection);
-
+export default function RoomSelectionForm({
+  setReservationFormData,
+  availability,
+  setIndex,
+}) {
   function handleRoomSelection(e) {
     const { name, value } = e.target;
-    setRoomSelection({
-      ...roomSelection,
-      [name]: value,
+    setReservationFormData(prev => {
+      let selectedRooms = [...prev.selectedRooms];
+      const findRoom = selectedRooms.find(room => room.id === name);
+
+      if (findRoom) {
+        selectedRooms = prev.selectedRooms.filter(room => room.id != name);
+      }
+
+      const selectedRoom = {
+        id: name,
+        value: value,
+        totalPrice: 45,
+      };
+
+      selectedRooms.push(selectedRoom);
+      return {
+        ...prev,
+        selectedRooms: selectedRooms,
+      };
     });
   }
 
@@ -69,6 +84,7 @@ export default function RoomSelectionForm({ availability, setIndex }) {
 }
 
 RoomSelectionForm.propTypes = {
+  setReservationFormData: PropTypes.func,
   availability: PropTypes.object,
   setIndex: PropTypes.func,
 };
