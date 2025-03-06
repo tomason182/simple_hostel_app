@@ -6,7 +6,10 @@ import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import StepNavigation from "../../components/StepNavigation/StepNavigation";
 import Button from "../../components/Button/Button";
+// Forms
 import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
+import RoomSelectionForm from "../../forms/RoomSelectionForm";
+// Data providers
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
 import { dateFormatHelper } from "../../utils/dateFormatHelper";
@@ -15,6 +18,8 @@ export default function Calendar() {
   const today = new Date();
   const lengthOfCalendar = 14;
   const [startDate, setStartDate] = useState(today);
+  // availability State
+  const [availability, setAvailability] = useState([]);
   const fromDate = useMemo(() => sub(startDate, { days: 3 }), [startDate]);
   const toDate = useMemo(
     () => add(fromDate, { days: lengthOfCalendar }),
@@ -301,7 +306,19 @@ export default function Calendar() {
   );
 
   const formChildren = {
-    0: <CheckAvailabilityFrom />,
+    0: (
+      <CheckAvailabilityFrom
+        setAvailability={setAvailability}
+        setIndex={setCurrentIndex}
+      />
+    ),
+    1: (
+      <RoomSelectionForm
+        availability={availability}
+        setIndex={setCurrentIndex}
+      />
+    ),
+    2: <h3>Guest Information</h3>,
   };
 
   return (

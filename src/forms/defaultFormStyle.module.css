@@ -107,6 +107,47 @@ select {
   outline: none;
 }
 
+/* Select rooms */
+.roomSelectTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.roomSelectTable caption {
+  color: var(--gray-700);
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+}
+
+.roomSelectTable thead th {
+  font-size: 1rem;
+  color: var(--gray-50);
+  text-align: left;
+  background-color: #0056b3;
+  padding: 8px;
+}
+
+.roomSelectTable thead th:last-child,
+.roomSelectTable tbody td:last-child {
+  text-align: right;
+}
+
+.roomSelectTable tbody th,
+.roomSelectTable tbody td {
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  text-align: left;
+  padding: 4px 8px;
+}
+
+.roomSelectTable tbody th {
+  text-align: left;
+}
+
+.roomSelectTable tbody td select {
+  max-width: 50px;
+}
+
 /* checkbox style */
 
 .checkbox {
@@ -161,4 +202,9 @@ select {
 .cancelButton:hover {
   background-color: #f5c6cb;
   color: #721c24;
+}
+
+button:disabled {
+  pointer-events: none;
+  background-color: var(--gray-400);
 }
