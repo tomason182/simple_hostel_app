@@ -2,9 +2,21 @@ import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-export default function CheckAvailabilityFrom({ setAvailability, setIndex }) {
+export default function CheckAvailabilityFrom({
+  setReservationFormData,
+  setAvailability,
+  setIndex,
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  function updateFormData(checkIn, checkOut) {
+    setReservationFormData(prev => ({
+      ...prev,
+      checkIn,
+      checkOut,
+    }));
+  }
 
   const customStyle = {
     form: {
@@ -20,10 +32,10 @@ export default function CheckAvailabilityFrom({ setAvailability, setIndex }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const data = e.target;
+    const formData = e.target;
 
-    const checkIn = data.check_in.value.split("-").join("");
-    const checkOut = data.check_out.value.split("-").join("");
+    const checkIn = formData.check_in.value.split("-").join("");
+    const checkOut = formData.check_out.value.split("-").join("");
 
     setLoading(true);
     const url =
@@ -50,7 +62,9 @@ export default function CheckAvailabilityFrom({ setAvailability, setIndex }) {
         return response.json();
       })
       .then(data => {
-        setAvailability(data), setIndex(1);
+        setAvailability(data);
+        updateFormData(formData.check_in.value, formData.check_out.value);
+        setIndex(1);
       })
       .catch(e => {
         console.error(e.message);
@@ -95,6 +109,7 @@ export default function CheckAvailabilityFrom({ setAvailability, setIndex }) {
 }
 
 CheckAvailabilityFrom.propTypes = {
+  setReservationFormData: PropTypes.func,
   setAvailability: PropTypes.func,
   setIndex: PropTypes.func,
 };
