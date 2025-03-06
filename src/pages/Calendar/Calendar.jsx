@@ -9,6 +9,7 @@ import Button from "../../components/Button/Button";
 // Forms
 import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
 import RoomSelectionForm from "../../forms/RoomSelectionForm";
+import GuestInformationForm from "../../forms/GuestInformationForm";
 // Data providers
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
@@ -18,13 +19,33 @@ export default function Calendar() {
   const today = new Date();
   const lengthOfCalendar = 14;
   const [startDate, setStartDate] = useState(today);
+  // CREATE RESERVATION STATES
   // availability State
   const [availability, setAvailability] = useState([]);
+  const [reservationFormData, setReservationFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    city: "",
+    street: "",
+    postalCode: "",
+    countryCode: "",
+    selectedRooms: [],
+    bookingSource: "",
+    checkIn: "",
+    checkOut: "",
+    reservationStatus: "",
+    paymentStatus: "",
+    specialRequest: "",
+  });
   const fromDate = useMemo(() => sub(startDate, { days: 3 }), [startDate]);
   const toDate = useMemo(
     () => add(fromDate, { days: lengthOfCalendar }),
     [fromDate]
   );
+
+  console.log(reservationFormData);
 
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
@@ -248,41 +269,6 @@ export default function Calendar() {
     );
   }
 
-  /* HANDLING RESERVATION FORM */
-  const nextForm = () => {
-    setCurrentIndex(prevIndex =>
-      prevIndex === formChildren.length ? formChildren.length : prevIndex + 1
-    );
-  };
-
-  // Handle form submit
-
-  const checkAvailability = data => {
-    setTimeout(() => {
-      console.log("Availability retrieve");
-    }, 3000);
-    return data;
-  };
-
-  const handleDatesSubmit = async data => {
-    try {
-      const result = await checkAvailability(data);
-      console.log("Search check-in and check-out dates:", result);
-      nextForm();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const handleEmailSubmit = data => {
-    console.log("Search guest email submitted", data);
-    nextForm();
-  };
-
-  const handleGuestInfoSubmit = data => {
-    console.log("Sending guest information: ", data);
-  };
-
   /* Step Navigation */
   const steps = [
     { label: "1" },
@@ -308,6 +294,7 @@ export default function Calendar() {
   const formChildren = {
     0: (
       <CheckAvailabilityFrom
+        setReservationFormData={setReservationFormData}
         setAvailability={setAvailability}
         setIndex={setCurrentIndex}
       />
@@ -318,7 +305,7 @@ export default function Calendar() {
         setIndex={setCurrentIndex}
       />
     ),
-    2: <h3>Guest Information</h3>,
+    2: <GuestInformationForm />,
   };
 
   return (
