@@ -25,8 +25,6 @@ export default function RatesAndAvailability() {
 
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
 
-  console.log("Room types: ", roomTypes);
-
   /* Modal State */
   const [isOpen, setIsOpen] = useState(false);
 
@@ -34,16 +32,12 @@ export default function RatesAndAvailability() {
   const { reservations, loadingReservations, errorReservations } =
     useFetchReservationByDateRange(fromDate, toDate);
 
-  console.log(reservations);
-
   // Fetch rates and availability
   const {
     ratesAndAvailability,
     loadingRatesAndAvailability,
     errorRatesAndAvailability,
   } = useFetchRatesAndAvailabilityByDateRange(fromDate, toDate);
-
-  console.log("Rates: ", ratesAndAvailability);
 
   /* dates-fns language */
   setDefaultOptions({ locale: es });
