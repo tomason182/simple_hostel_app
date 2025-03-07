@@ -301,6 +301,7 @@ export default function Calendar() {
     ),
     1: (
       <RoomSelectionForm
+        selectedRooms={reservationFormData.selectedRooms}
         setReservationFormData={setReservationFormData}
         availability={availability}
         setIndex={setCurrentIndex}

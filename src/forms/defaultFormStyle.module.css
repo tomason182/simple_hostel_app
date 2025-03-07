@@ -204,7 +204,7 @@ select {
   color: #721c24;
 }
 
-button:disabled {
+.submitButton:disabled {
   pointer-events: none;
   background-color: var(--gray-400);
 }
