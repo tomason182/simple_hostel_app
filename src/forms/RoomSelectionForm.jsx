@@ -100,7 +100,11 @@ export default function RoomSelectionForm({
         <button className={styles.cancelButton} onClick={() => setIndex(0)}>
           Back
         </button>
-        <button className={styles.submitButton} disabled={isDisabled}>
+        <button
+          className={styles.submitButton}
+          disabled={isDisabled}
+          onClick={() => setIndex(2)}
+        >
           Continue
         </button>
       </div>
