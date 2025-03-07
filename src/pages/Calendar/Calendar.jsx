@@ -13,6 +13,7 @@ import GuestInformationForm from "../../forms/GuestInformationForm";
 // Data providers
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
+// Utils and helper functions
 import { dateFormatHelper } from "../../utils/dateFormatHelper";
 
 export default function Calendar() {
@@ -44,8 +45,6 @@ export default function Calendar() {
     () => add(fromDate, { days: lengthOfCalendar }),
     [fromDate]
   );
-
-  console.log(reservationFormData);
 
   // Modal States
   const [isOpen, setIsOpen] = useState(false);

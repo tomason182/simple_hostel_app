@@ -1,213 +1,52 @@
 import { format, setDefaultOptions, sub, add } from "date-fns";
-import { es, enUS } from "date-fns/locale";
+import { es, enUS, tr } from "date-fns/locale";
 import styles from "./RatesAndAvailability.module.css";
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect, Fragment, useContext, useMemo } from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import Button from "../../components/Button/Button";
 import RatesAndAvailabilityFrom from "../../forms/RatesAndAvailabilityFrom";
+// Data providers
+import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
+import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
+import { useFetchRatesAndAvailabilityByDateRange } from "../../../ratesAndAvailabilityDataProvider";
+// Utils
+import { dateFormatHelper } from "../../utils/dateFormatHelper";
 
 export default function RatesAndAvailability() {
   const today = new Date();
+  const lengthOfCalendar = 14;
   const [startDate, setStartDate] = useState(today);
-  const [reservations, setReservations] = useState([]);
-  const [roomTypes, setRoomTypes] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const fromDate = useMemo(() => sub(startDate, { days: 3 }), [startDate]);
+  const toDate = useMemo(
+    () => add(fromDate, { days: lengthOfCalendar }),
+    [fromDate]
+  );
+
+  const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
+
+  console.log("Room types: ", roomTypes);
 
   /* Modal State */
   const [isOpen, setIsOpen] = useState(false);
 
+  // Fetch reservations
+  const { reservations, loadingReservations, errorReservations } =
+    useFetchReservationByDateRange(fromDate, toDate);
+
+  console.log(reservations);
+
+  // Fetch rates and availability
+  const {
+    ratesAndAvailability,
+    loadingRatesAndAvailability,
+    errorRatesAndAvailability,
+  } = useFetchRatesAndAvailabilityByDateRange(fromDate, toDate);
+
+  console.log("Rates: ", ratesAndAvailability);
+
   /* dates-fns language */
   setDefaultOptions({ locale: es });
-
-  useEffect(() => {
-    const roomTypesList = [
-      {
-        id: 1,
-        property_id: 1,
-        description: "4max dormitory",
-        type: "dorm",
-        gender: "mix",
-        max_occupancy: 4,
-        inventory: 2,
-        products: [
-          {
-            id: 1,
-            room_name: "El refugio",
-            beds: [10, 11, 12, 14], // IDs from Beds table?
-          },
-          {
-            id: 2,
-            room_name: "El andino",
-            beds: [15, 16, 17, 18],
-          },
-        ],
-      },
-      {
-        id: 2,
-        property_id: 1,
-        description: "Private Dormitory",
-        type: "private",
-        gender: "mix",
-        max_occupancy: 2,
-        inventory: 2,
-        products: [
-          {
-            id: 3,
-            room_name: "El ranchito",
-            beds: [19], // IDs from Beds table?
-          },
-          {
-            id: 4,
-            room_name: "La casita",
-            beds: [20],
-          },
-        ],
-      },
-    ];
-
-    setRoomTypes(roomTypesList);
-  }, []);
-
-  useEffect(() => {
-    const reservationsList = [
-      {
-        id: 1,
-        property_id: 1,
-        room_type_id: 1,
-        booking_source: "booking.com",
-        currency: "USD",
-        guest_info: {
-          full_name: "Larry Clark",
-        },
-        check_in: "2025-02-03",
-        check_out: "2025-02-07",
-        number_of_guest: 2,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [10, 11],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 2,
-        property_id: 1,
-        room_type_id: 1,
-        booking_source: "booking.com",
-        currency: "USD",
-        guest_info: {
-          full_name: "Sophia Martinez",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-09",
-        number_of_guest: 1,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [12],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 3,
-        property_id: 1,
-        room_type_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Michael Johnson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-07",
-        number_of_guest: 3,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [15, 16, 17],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 4,
-        property_id: 1,
-        room_type_id: 2,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Emma Thompson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-12",
-        number_of_guest: 2,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [19],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 5,
-        property_id: 1,
-        room_type_id: 2,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Daniel Rivera",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-06",
-        number_of_guest: 1,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [19],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-    ];
-
-    setReservations(reservationsList);
-  }, []);
-
-  // Rates and Availability mocked data
-  const ratesAndAvailabilityList = [
-    {
-      id: 1,
-      room_type_id: 1,
-      start_date: "2025-02-08",
-      end_date: "2025-02-09",
-      standard_rate: 25,
-      custom_availability: 6,
-    },
-    {
-      id: 2,
-      room_type_id: 1,
-      start_date: "2025-02-10",
-      end_date: "2025-02-12",
-      standard_rate: 25,
-      custom_availability: 0,
-    },
-    {
-      id: 3,
-      room_type_id: 1,
-      start_date: "2025-02-13",
-      end_date: "2025-02-18",
-      standard_rate: 13,
-      custom_availability: 6,
-    },
-  ];
 
   const year = format(startDate, "yyyy");
   const MMM = format(startDate, "MMM");
@@ -254,57 +93,62 @@ export default function RatesAndAvailability() {
   });
 
   // Room calculation to sell
-  const roomInfo = (day, roomId) => {
+  const roomInfo = (day, room) => {
     const currentDay = Number(format(day, "yyyyMMdd"));
 
-    // Find the room type
-    const roomType = roomTypes.find(r => r.id === roomId);
-    if (!roomType)
-      return { roomToSell: 0, standardRate: 0, bookings: 0, roomStatus: false };
+    const roomTypeBeds = room.products.flatMap(product => product.beds);
 
     // Get rates and availability range for current day and room type
-    const rateAndAvailability = ratesAndAvailabilityList.find(r => {
-      const startDate = Number(r.start_date.split("-").join(""));
-      const endDate = Number(r.end_date.split("-").join(""));
+    const rateAndAvailability = ratesAndAvailability.find(r => {
+      const startDate = Number(dateFormatHelper(r.start_date));
+      const endDate = Number(dateFormatHelper(r.end_date));
 
       return (
-        r.room_type_id === roomId &&
+        r.room_type_id === room.id &&
         currentDay >= startDate &&
         currentDay <= endDate
       );
     });
 
-    // Calculus for rooms to sell and standard rate
-    const roomsToSell =
-      rateAndAvailability?.custom_availability ??
-      roomType.inventory * roomType.max_occupancy;
-
-    const standardRate = rateAndAvailability?.standard_rate ?? 0;
+    const maxOccupancy =
+      room.type === "dorm"
+        ? room.max_occupancy * room.inventory
+        : room.inventory;
 
     // Count bookings for current day
-    const filteredReservations = reservations.filter(r => {
-      const checkIn = r.check_in.split("-").join("");
-      const checkOut = r.check_out.split("-").join("");
+    let bookingsCount = 0;
+    for (const reservation of reservations) {
+      const checkIn = dateFormatHelper(reservation.check_in);
+      const checkOut = dateFormatHelper(reservation.check_out);
+      if (checkIn <= currentDay && checkOut > currentDay) {
+        // Count bookings
+        bookingsCount += reservation.assigned_beds.filter(b =>
+          roomTypeBeds.includes(b)
+        ).length;
+      }
+    }
 
-      return (
-        r.room_type_id === roomId &&
-        checkIn <= currentDay &&
-        checkOut > currentDay
-      );
-    });
+    if (!rateAndAvailability)
+      return {
+        roomsToSell: maxOccupancy,
+        standardRate: 0,
+        bookings: bookingsCount,
+        roomStatus: false,
+      };
 
-    const bookings =
-      roomType.type === "dorm"
-        ? filteredReservations.reduce(
-            (acc, currentValue) => acc + currentValue.number_of_guest,
-            0
-          )
-        : filteredReservations.length;
+    // Calculus for rooms to sell and standard rate
+    const roomsToSell = rateAndAvailability?.custom_availability;
 
-    // Determine room status
-    const roomStatus = roomsToSell > bookings && standardRate > 0;
+    const standardRate = rateAndAvailability?.custom_rate;
 
-    return { roomsToSell, standardRate, bookings, roomStatus };
+    const roomStatus = roomsToSell > bookingsCount;
+
+    return {
+      roomsToSell,
+      standardRate,
+      bookings: bookingsCount,
+      roomStatus: roomStatus,
+    };
   };
 
   // Open and close styling
@@ -334,7 +178,7 @@ export default function RatesAndAvailability() {
 
       {/* Calculate room info once per room per day */}
       {(() => {
-        const roomDataByDay = daysArray.map(day => roomInfo(day, room.id));
+        const roomDataByDay = daysArray.map(day => roomInfo(day, room));
 
         return [
           "Room status",
@@ -435,8 +279,12 @@ export default function RatesAndAvailability() {
           <tr>{days}</tr>
         </thead>
         <tbody>
-          {loading ? (
-            <Spinner />
+          {isLoading && loadingReservations && loadingRatesAndAvailability ? (
+            <tr height={250}>
+              <td colSpan={17}>
+                <Spinner />
+              </td>
+            </tr>
           ) : roomList.length === 0 ? (
             <tr height={250}>
               <td colSpan={17} className={styles.noRoomTypesMessage}>
