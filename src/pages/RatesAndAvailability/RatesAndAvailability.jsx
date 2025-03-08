@@ -1,5 +1,5 @@
 import { format, setDefaultOptions, sub, add } from "date-fns";
-import { es, enUS, tr } from "date-fns/locale";
+import { es, enUS } from "date-fns/locale";
 import styles from "./RatesAndAvailability.module.css";
 import { useState, useEffect, Fragment, useContext, useMemo } from "react";
 import Spinner from "../../components/Spinner/Spinner";
@@ -37,6 +37,7 @@ export default function RatesAndAvailability() {
     ratesAndAvailability,
     loadingRatesAndAvailability,
     errorRatesAndAvailability,
+    refreshRatesAndAvailability,
   } = useFetchRatesAndAvailabilityByDateRange(fromDate, toDate);
 
   /* dates-fns language */
@@ -273,7 +274,15 @@ export default function RatesAndAvailability() {
           <tr>{days}</tr>
         </thead>
         <tbody>
-          {isLoading && loadingReservations && loadingRatesAndAvailability ? (
+          {error || errorRatesAndAvailability || errorReservations ? (
+            <tr height={250}>
+              <td colSpan={17}>
+                An Unexpected error occurred. Please refresh the page.
+              </td>
+            </tr>
+          ) : isLoading &&
+            loadingReservations &&
+            loadingRatesAndAvailability ? (
             <tr height={250}>
               <td colSpan={17}>
                 <Spinner />
@@ -292,7 +301,11 @@ export default function RatesAndAvailability() {
         </tbody>
       </table>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <RatesAndAvailabilityFrom roomTypes={roomTypes} />
+        <RatesAndAvailabilityFrom
+          roomTypes={roomTypes}
+          setIsOpen={setIsOpen}
+          refreshRatesAndAvailability={refreshRatesAndAvailability}
+        />
       </Modal>
     </>
   );
