@@ -1,12 +1,15 @@
 import styles from "./Users.module.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
 import Button from "../../../components/Button/Button";
 import UserForm from "../../../forms/UserForm";
 import Modal from "../../../components/Modal/Modal";
 import PropTypes from "prop-types";
 
-export default function Users({ users, loading }) {
+// Fetch team members
+import useUsersDataProvider from "../../../data_providers/UsersDataProvider";
+
+export default function Users() {
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
   // Form Data state
@@ -18,18 +21,39 @@ export default function Users({ users, loading }) {
     role: "",
   });
 
+  const { users, loading, usersError, refreshUsersData } =
+    useUsersDataProvider();
+
   function editUser(id) {
     const selectedUser = users.find(user => user.id === id);
     if (selectedUser) {
-      setUserData({ ...selectedUser });
+      setUserData({
+        id: selectedUser.id || "",
+        username: selectedUser.username || "",
+        first_name: selectedUser.first_name || "",
+        last_name: selectedUser.last_name || "",
+        role: selectedUser.role || "",
+      });
     }
+  }
+
+  function resetState() {
+    setUserData({
+      id: "",
+      username: "",
+      first_name: "",
+      last_name: "",
+      role: "",
+    });
   }
 
   if (loading) return <Spinner />;
 
   const userList = users.map(user => (
     <li key={user.id}>
-      <h3>{`${user.first_name} ${user.last_name}`}</h3>
+      <h3>{`${user.first_name} ${
+        user.last_name === null ? "" : user.last_name
+      }`}</h3>
       <p>{user.username}</p>
       <span>{user.role}</span>
       <div className={styles.buttonContainer}>
@@ -79,8 +103,18 @@ export default function Users({ users, loading }) {
     <div>
       <Button title="Create User" onClick={() => setIsOpen(true)} />
       <ul className={styles.list}>{userList}</ul>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <UserForm user={userData} />
+      <Modal
+        isOpen={isOpen}
+        onClose={() => {
+          setIsOpen(false);
+          resetState();
+        }}
+      >
+        <UserForm
+          user={userData}
+          setIsOpen={setIsOpen}
+          refreshUsersData={refreshUsersData}
+        />
       </Modal>
     </div>
   );

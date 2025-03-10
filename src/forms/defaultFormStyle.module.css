@@ -5,6 +5,14 @@
   gap: 1rem;
 }
 
+/* Form title */
+.title {
+  text-align: center;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
 /* Form subtitle */
 .subtitle {
   text-align: left;

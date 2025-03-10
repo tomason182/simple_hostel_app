@@ -7,12 +7,9 @@ import Policies from "./components/Policies";
 
 // Fetch property data
 import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
-// Fetch team members
-import useUsersDataProvider from "../../data_providers/UsersDataProvider";
 
 export default function Property() {
   const { propertyData, isLoading, error } = usePropertyDataProvider();
-  const { usersData, usersLoading, usersError } = useUsersDataProvider();
 
   const tabs = [
     {
@@ -22,15 +19,12 @@ export default function Property() {
           propertyData={propertyData}
           loadingPropertyData={isLoading}
           propertyError={error}
-          usersData={usersData}
-          loadingUsersData={usersLoading}
-          usersError={usersError}
         />
       ),
     },
     {
       label: "Users",
-      content: <Users users={usersData} loading={usersLoading} />,
+      content: <Users />,
     },
     {
       label: "Room Types",

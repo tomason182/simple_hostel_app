@@ -7,9 +7,6 @@ export default function PropertyInfo({
   propertyData,
   loadingPropertyData,
   propertyError,
-  usersData,
-  loadingUsersData,
-  usersError,
 }) {
   const contactDetailsActions = [
     {
@@ -22,13 +19,6 @@ export default function PropertyInfo({
     {
       label: "Edit",
       onClick: () => alert("Edit property details"),
-    },
-  ];
-
-  const teamMembersActions = [
-    {
-      label: "Edit",
-      onClick: () => alert("Edit team Members"),
     },
   ];
   if (loadingPropertyData) return <Spinner />;
@@ -110,22 +100,6 @@ export default function PropertyInfo({
             </li>
           </ul>
         </Card>
-        <Card title="Team members" actions={teamMembersActions}>
-          {loadingUsersData ? (
-            <Spinner />
-          ) : (
-            <ul className={styles.teamMembersList}>
-              {usersData.map(user => (
-                <li key={user.id}>
-                  <p>
-                    {user.first_name} {user.last_name}
-                  </p>
-                  <span>{user.role}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
       </div>
     </>
   );
@@ -135,7 +109,4 @@ PropertyInfo.propTypes = {
   propertyData: PropTypes.object.isRequired,
   loadingPropertyData: PropTypes.bool.isRequired,
   propertyError: PropTypes.string,
-  usersData: PropTypes.object.isRequired,
-  loadingUsersData: PropTypes.bool.isRequired,
-  usersError: PropTypes.string.isRequired,
 };

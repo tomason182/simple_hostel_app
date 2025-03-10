@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from "react";
 
 export default function useUsersDataProvider() {
   const [usersData, setUsersData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchUsersData = useCallback(() => {
-    setIsLoading(true);
+    setLoading(true);
     const url = import.meta.env.VITE_URL_BASE + "/users/all";
     const options = {
       mode: "cors",
@@ -29,7 +29,7 @@ export default function useUsersDataProvider() {
       .catch(e => {
         console.log("Error fetching all property users data", e), setError(e);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export default function useUsersDataProvider() {
   }, [fetchUsersData]);
 
   return {
-    usersData,
-    usersLoading: isLoading,
+    users: usersData,
+    loading,
     usersError: error,
     refreshUsersData: fetchUsersData,
   };
