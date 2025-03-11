@@ -2,7 +2,7 @@ import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 
-export default function UserForm({ user, setIsOpen, refreshUserData }) {
+export default function UserForm({ user, setIsOpen, refreshUsersData }) {
   const [userData, setUserData] = useState({
     id: user.id === "" ? -1 : user.id,
     username: user.username,
@@ -40,17 +40,17 @@ export default function UserForm({ user, setIsOpen, refreshUserData }) {
     setLoading(true);
 
     fetch(url, options)
-      .then(response => {
+      .then(async response => {
         if (response.status >= 400) {
-          console.log(response);
-          throw new Error("Server Error");
+          const error = await response.json();
+          console.log(error);
+          throw new Error(error.msg || "Server Error");
         }
 
         return response.json();
       })
-      .then(data => {
-        console.log(data);
-        refreshUserData;
+      .then(() => {
+        refreshUsersData();
         setIsOpen(false);
       })
       .catch(e => setError(e.message))
@@ -58,7 +58,9 @@ export default function UserForm({ user, setIsOpen, refreshUserData }) {
   }
   return (
     <>
-      <h4 className={styles.title}>User Information</h4>
+      <h4 className={styles.title}>
+        {userData.id > 0 ? "Edit User" : "Create User"}
+      </h4>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
           <label>
@@ -91,9 +93,10 @@ export default function UserForm({ user, setIsOpen, refreshUserData }) {
             Email
             <input
               type="email"
-              name="email"
+              name="username"
               required
               aria-required
+              disabled={userData.id > 0}
               value={userData.username}
               onChange={handleChange}
             />
@@ -132,5 +135,5 @@ export default function UserForm({ user, setIsOpen, refreshUserData }) {
 UserForm.propTypes = {
   user: PropTypes.object.isRequired,
   setIsOpen: PropTypes.object.isRequired,
-  refreshUserData: PropTypes.object.isRequired,
+  refreshUsersData: PropTypes.object.isRequired,
 };

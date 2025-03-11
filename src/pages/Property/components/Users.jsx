@@ -49,6 +49,8 @@ export default function Users() {
 
   if (loading) return <Spinner />;
 
+  if (usersError) return <div>Network Error</div>;
+
   const userList = users.map(user => (
     <li key={user.id}>
       <h3>{`${user.first_name} ${
