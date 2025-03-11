@@ -47,6 +47,33 @@ export default function Users() {
     });
   }
 
+  function deleteUser(id) {
+    const url = import.meta.env.VITE_URL_BASE + "/users/profile/delete/" + id;
+    const options = {
+      mode: "cors",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(async response => {
+        if (response.status >= 400) {
+          const error = await response.json();
+          throw new Error(error.msg || "Server Error");
+        }
+        return response.json();
+      })
+      .then(() => alert("User deleted successfully"))
+      .catch(e => {
+        console.error(e);
+        alert(`Unable to delete user. ${e.message}`);
+      })
+      .finally(() => refreshUsersData());
+  }
+
   if (loading) return <Spinner />;
 
   if (usersError) return <div>Network Error</div>;
@@ -59,7 +86,10 @@ export default function Users() {
       <p>{user.username}</p>
       <span>{user.role}</span>
       <div className={styles.buttonContainer}>
-        <button className={styles.deleteBtn}>
+        <button
+          className={styles.deleteBtn}
+          onClick={() => deleteUser(user.id)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
