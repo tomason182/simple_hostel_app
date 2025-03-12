@@ -2,74 +2,119 @@ import styles from "./PropertyInfo.module.css";
 import Spinner from "../../../components/Spinner/Spinner";
 import Card from "../../../components/Card/Card";
 import PropTypes from "prop-types";
+import Modal from "../../../components/Modal/Modal";
+import { useState } from "react";
+// Forms
+import ContactInfoForm from "../../../forms/ContactInfoForm";
+import ProperTyDetailsForm from "../../../forms/PropertyDetailsForm";
 
 export default function PropertyInfo({
   propertyData,
   loadingPropertyData,
   propertyError,
+  refreshPropertyData,
 }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [index, setIndex] = useState(0);
+
+  const contactInfoData = {
+    email: propertyData.contact_info?.email || "",
+    phone_number: propertyData.contact_info?.phone_number || "",
+    country_code: propertyData.contact_info?.country_code || "",
+  };
+
   const contactDetailsActions = [
     {
       label: "Edit",
-      onClick: () => alert("Edit contact details"),
+      onClick: () => {
+        setIndex(0);
+        setIsOpen(true);
+      },
     },
   ];
 
   const propertyDetailsActions = [
     {
       label: "Edit",
-      onClick: () => alert("Edit property details"),
+      onClick: () => {
+        setIndex(1), setIsOpen(true);
+      },
     },
   ];
-  if (loadingPropertyData) return <Spinner />;
+
+  const forms = [
+    {
+      header: "Edit Contact Info",
+      children: (
+        <ContactInfoForm
+          contactInfoData={contactInfoData}
+          setIsOpen={setIsOpen}
+          refreshPropertyData={refreshPropertyData}
+        />
+      ),
+    },
+    {
+      header: "Edit Property Info",
+      children: <ProperTyDetailsForm setIsOpen={setIsOpen} />,
+    },
+  ];
+
+  if (propertyError) return <div>Unexpected error occurred</div>;
 
   return (
     <>
       <h1>{propertyData.property_name}</h1>
       <div className={styles.gridContainer}>
         <Card title="Contact Details" actions={contactDetailsActions}>
-          <ul className={styles.list}>
-            <li>
-              <span>Name:</span> {propertyData.contact_info.name}
-            </li>
-            <li>
-              <span>Email:</span> {propertyData.contact_info.email}
-            </li>
-            <li>
-              <span>Phone number:</span>{" "}
-              {propertyData.contact_info.phone_number}
-            </li>
-          </ul>
+          {loadingPropertyData ? (
+            <Spinner />
+          ) : (
+            <ul className={styles.list}>
+              <li>
+                <span>Email:</span> {contactInfoData.email}
+              </li>
+              <li>
+                <span>Phone number:</span> {contactInfoData.country_code}
+                {contactInfoData.phone_number}
+              </li>
+            </ul>
+          )}
         </Card>
         <Card title="Property Details" actions={propertyDetailsActions}>
-          <ul className={styles.list}>
-            <li>
-              <span>Hostel ID:</span> {propertyData.id}
-            </li>
-            <li>
-              <span>Currency Preference:</span>
-              <ul>
-                <li>
-                  <span>Base currency:</span> {propertyData.base_currency}
-                </li>
-                <li>
-                  <span>Payment currency:</span> {propertyData.payment_currency}
-                </li>
-              </ul>
-            </li>
-            <li>
-              <span>Street:</span> {propertyData.street}
-            </li>
-            <li>
-              <span>City:</span> {propertyData.city}
-            </li>
-            <li>
-              <span>Country:</span> {propertyData.country_code}
-            </li>
-            <li>
-              <span>Postal code:</span> {propertyData.postal_code}
-            </li>
-          </ul>
+          {loadingPropertyData ? (
+            <Spinner />
+          ) : (
+            <ul className={styles.list}>
+              <li>
+                <span>Hostel ID:</span> {propertyData.id}
+              </li>
+              <li>
+                <span>Currency Preference:</span>
+                <ul>
+                  <li>
+                    <span>Base currency:</span>{" "}
+                    {propertyData?.currencies.base_currency}
+                  </li>
+                  <li>
+                    <span>Payment currency:</span>{" "}
+                    {propertyData?.currencies.payment_currency}
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <span>Street:</span> {propertyData?.address.street}
+              </li>
+              <li>
+                <span>City:</span> {propertyData?.address.city}
+              </li>
+              <li>
+                <span>Country:</span> {propertyData?.address.country_code}
+              </li>
+              <li>
+                <span>Postal code:</span> {propertyData?.address.postal_code}
+              </li>
+            </ul>
+          )}
         </Card>
         <Card title="Integration Status">
           <ul className={styles.list}>
@@ -101,6 +146,13 @@ export default function PropertyInfo({
           </ul>
         </Card>
       </div>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        header={forms[index].header}
+      >
+        {forms[index].children}
+      </Modal>
     </>
   );
 }
@@ -109,4 +161,5 @@ PropertyInfo.propTypes = {
   propertyData: PropTypes.object.isRequired,
   loadingPropertyData: PropTypes.bool.isRequired,
   propertyError: PropTypes.string,
+  refreshPropertyData: PropTypes.func.isRequired,
 };

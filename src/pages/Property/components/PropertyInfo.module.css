@@ -14,9 +14,21 @@
   padding: 0.2rem 0;
 }
 
+.list li p {
+  margin: 0.5rem 0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  text-align: right;
+}
+
 .list li span {
   font-family: "Inter-Bold", sans-serif;
   font-weight: bold;
+}
+
+.list li span::after {
+  color: red;
 }
 
 /* Team members list */

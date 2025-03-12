@@ -9,7 +9,10 @@ import Policies from "./components/Policies";
 import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
 
 export default function Property() {
-  const { propertyData, isLoading, error } = usePropertyDataProvider();
+  const { propertyData, isLoading, error, refreshPropertyData } =
+    usePropertyDataProvider();
+
+  console.log(propertyData);
 
   const tabs = [
     {
@@ -19,6 +22,7 @@ export default function Property() {
           propertyData={propertyData}
           loadingPropertyData={isLoading}
           propertyError={error}
+          refreshPropertyData={refreshPropertyData}
         />
       ),
     },
