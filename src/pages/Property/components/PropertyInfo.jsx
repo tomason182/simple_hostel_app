@@ -8,6 +8,9 @@ import { useState } from "react";
 import ContactInfoForm from "../../../forms/ContactInfoForm";
 import ProperTyDetailsForm from "../../../forms/PropertyDetailsForm";
 
+// Countries
+import countries from "../../../utils/country_code.json";
+
 export default function PropertyInfo({
   propertyData,
   loadingPropertyData,
@@ -22,6 +25,23 @@ export default function PropertyInfo({
     phone_number: propertyData.contact_info?.phone_number || "",
     country_code: propertyData.contact_info?.country_code || "",
   };
+
+  const propertyDetailsData = {
+    alpha_2_code: propertyData.address?.alpha_2_code,
+    city: propertyData.address?.city,
+    postal_code: propertyData.address?.postal_code,
+    street: propertyData.address?.street,
+    payment_currency: propertyData.currencies?.payment_currency,
+    base_currency: propertyData.currencies?.base_currency,
+  };
+
+  // Select property country
+
+  const country = countries.find(
+    c => c.value === propertyDetailsData.alpha_2_code
+  );
+
+  console.log(country);
 
   const contactDetailsActions = [
     {
@@ -55,7 +75,13 @@ export default function PropertyInfo({
     },
     {
       header: "Edit Property Info",
-      children: <ProperTyDetailsForm setIsOpen={setIsOpen} />,
+      children: (
+        <ProperTyDetailsForm
+          setIsOpen={setIsOpen}
+          propertyDetailsData={propertyDetailsData}
+          refreshPropertyData={refreshPropertyData}
+        />
+      ),
     },
   ];
 
@@ -108,7 +134,7 @@ export default function PropertyInfo({
                 <span>City:</span> {propertyData?.address.city}
               </li>
               <li>
-                <span>Country:</span> {propertyData?.address.country_code}
+                <span>Country:</span> {country.label}
               </li>
               <li>
                 <span>Postal code:</span> {propertyData?.address.postal_code}

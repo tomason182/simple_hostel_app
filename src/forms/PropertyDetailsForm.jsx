@@ -4,20 +4,39 @@ import countries from "../utils/country_code.json";
 import PropTypes from "prop-types";
 import Spinner from "../components/Spinner/Spinner";
 
-export default function ProperTyDetailsForm({ setIsOpen }) {
+export default function ProperTyDetailsForm({
+  setIsOpen,
+  propertyDetailsData,
+  refreshPropertyData,
+}) {
   const [formData, setFormData] = useState({
-    country_code: "ar",
-    city: "El Chanten",
+    alpha_2_code: "",
+    city: "",
     street: "",
     postal_code: "",
     base_currency: "USD",
     payment_currency: "USD",
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
   const [currenciesError, setCurrenciesError] = useState(null);
   const [cities, setCities] = useState([]);
-  const [isCustomCity, setIsCustomCity] = useState(false);
+  // Insert custom city to list if not exists
+  const isCityInList = cities.some(city => city.city === formData.city);
+  const [isCustomCity, setIsCustomCity] = useState(!isCityInList);
+
+  useEffect(() => {
+    setFormData({
+      alpha_2_code: propertyDetailsData?.alpha_2_code || "",
+      city: propertyDetailsData?.city || "",
+      postal_code: propertyDetailsData?.postal_code || "",
+      street: propertyDetailsData?.street || "",
+      payment_currency: propertyDetailsData.payment_currency || "USD",
+      base_currency: propertyDetailsData.base_currency || "USD",
+    });
+  }, [propertyDetailsData]);
 
   useEffect(() => {
     async function getCitiesList() {
@@ -29,11 +48,11 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
         },
       ]);
 
-      if (formData.country_code === "") return;
+      if (formData.alpha_2_code === "") return;
 
-      const countryCode = formData.country_code;
+      const alpha_2_code = formData.alpha_2_code;
       const url =
-        import.meta.env.VITE_URL_BASE + "/data-provider/cities/" + countryCode;
+        import.meta.env.VITE_URL_BASE + "/data-provider/cities/" + alpha_2_code;
       const options = {
         mode: "cors",
         method: "GET",
@@ -61,7 +80,7 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
     }
 
     getCitiesList();
-  }, [formData.country_code]);
+  }, [formData.alpha_2_code]);
 
   useEffect(() => {
     function getCurrenciesList() {
@@ -103,16 +122,6 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
     }));
   }
 
-  // Insert custom city to list if not exists
-  const isCityInList = cities.some(city => city.city === formData.city);
-
-  const enhancedCities = isCityInList
-    ? cities
-    : cities.push({
-        id: `custom-${Math.floor(Math.random() * 10000)}`,
-        city: formData.city,
-      });
-
   function handleCityChange(e) {
     const selectedCity = e.target.value;
 
@@ -125,8 +134,38 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault(e);
+
+    const url =
+      import.meta.env.VITE_URL_BASE + "/properties/update/property-info";
+    const options = {
+      mode: "cors",
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    };
+    setLoading(true);
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error(error);
+        throw new Error(error.msg || "Server Error");
+      }
+
+      alert("Property Info updated successfully");
+      setIsOpen(false);
+      refreshPropertyData();
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
 
     console.log(formData);
   }
@@ -137,7 +176,7 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
     </option>
   ));
 
-  const countryCodes = countries.map(country => (
+  const alpha2Codes = countries.map(country => (
     <option key={country.value} value={country.value}>
       {country.label}
     </option>
@@ -160,12 +199,14 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
             <label>
               Country
               <select
-                name="country_code"
-                id="country_code"
-                value={formData.country_code}
+                name="alpha_2_code"
+                id="alpha_2_code"
+                value={formData.alpha_2_code}
                 onChange={handleFormChange}
+                required
+                aria-required
               >
-                {countryCodes}
+                {alpha2Codes}
               </select>
             </label>
           </div>
@@ -178,7 +219,7 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
                 value={formData.city}
                 onChange={handleCityChange}
               >
-                {enhancedCities.map(city => (
+                {cities.map(city => (
                   <option key={city.id} value={city.city}>
                     {city.city}
                   </option>
@@ -260,16 +301,22 @@ export default function ProperTyDetailsForm({ setIsOpen }) {
       <div className={styles.buttonGroup}>
         <button
           className={styles.cancelButton}
+          type="button"
           onClick={() => setIsOpen(false)}
         >
           Cancel
         </button>
-        <button className={styles.submitButton}>Submit</button>
+        <button className={styles.submitButton} disabled={loading}>
+          {loading ? "Loading..." : "Submit"}
+        </button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
 }
 
 ProperTyDetailsForm.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
+  propertyDetailsData: PropTypes.object.isRequired,
+  refreshPropertyData: PropTypes.func.isRequired,
 };
