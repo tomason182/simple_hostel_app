@@ -1,9 +1,76 @@
 import styles from "./defaultFormStyle.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 
-export default function RoomTypeForm() {
+export default function RoomTypeForm({
+  roomData,
+  setIsOpen,
+  resetState,
+  refreshRoomTypeData,
+}) {
+  const [formData, setFormData] = useState({
+    id: 0,
+    description: "",
+    type: "private",
+    gender: "mixed",
+    max_occupancy: 0,
+    inventory: 0,
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    setFormData({ ...roomData });
+  }, [roomData]);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const url = import.meta.env.VITE_URL_BASE + "/room-types/create";
+    const options = {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    };
+
+    setLoading(true);
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Server Error");
+        }
+
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === "success") {
+          alert(data.msg);
+          refreshRoomTypeData();
+          setIsOpen(false);
+        } else {
+          setError(data.msg);
+        }
+      })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }
+
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label>
           Room description
@@ -11,10 +78,12 @@ export default function RoomTypeForm() {
             type="text"
             name="description"
             minLength={1}
-            maxLength={100}
+            maxLength={255}
             placeholder="e.g. Bed in 6max mixed dormitory"
             required
             aria-required
+            value={formData.description}
+            onChange={handleChange}
           />
         </label>
       </div>
@@ -27,15 +96,22 @@ export default function RoomTypeForm() {
               <input
                 type="radio"
                 name="type"
-                defaultValue="private"
-                defaultChecked
+                value="private"
+                onChange={handleChange}
+                checked={formData.type === "private"}
               />
             </label>
           </div>
           <div className={styles.radioContainer}>
             <label>
               Dormitory
-              <input type="radio" name="type" defaultValue="dorm" />
+              <input
+                type="radio"
+                name="type"
+                value="dorm"
+                onChange={handleChange}
+                checked={formData.type === "dorm"}
+              />
             </label>
           </div>
         </div>
@@ -49,15 +125,22 @@ export default function RoomTypeForm() {
               <input
                 type="radio"
                 name="gender"
-                defaultValue="mixed"
-                defaultChecked
+                value="mixed"
+                onChange={handleChange}
+                checked={formData.gender === "mixed"}
               />
             </label>
           </div>
           <div className={styles.radioContainer}>
             <label>
               Female
-              <input type="radio" name="gender" defaultValue="female" />
+              <input
+                type="radio"
+                name="gender"
+                value="female"
+                onChange={handleChange}
+                checked={formData.gender === "female"}
+              />
             </label>
           </div>
         </div>
@@ -71,25 +154,53 @@ export default function RoomTypeForm() {
               <input
                 type="number"
                 name="max_occupancy"
+                value={formData.max_occupancy}
+                onChange={handleChange}
                 required
                 aria-required
                 min={1}
-                max={20}
               />
             </label>
           </div>
           <div className={styles.formGroup}>
             <label>
               Inventory
-              <input type="number" name="inventory" required aria-required />
+              <input
+                type="number"
+                name="inventory"
+                value={formData.inventory}
+                onChange={handleChange}
+                required
+                aria-required
+                min={1}
+              />
             </label>
           </div>
         </div>
       </fieldset>
       <div className={styles.buttonGroup}>
-        <button className={styles.cancelButton}>Cancel</button>
-        <button className={styles.submitButton}>Submit</button>
+        <button
+          className={styles.cancelButton}
+          type="button"
+          onClick={() => {
+            setIsOpen(false);
+            resetState();
+          }}
+        >
+          Cancel
+        </button>
+        <button className={styles.submitButton} disabled={loading}>
+          {loading ? "Loading..." : "Submit"}
+        </button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
 }
+
+RoomTypeForm.propTypes = {
+  roomData: PropTypes.object.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
+  refreshRoomTypeData: PropTypes.func.isRequired,
+};

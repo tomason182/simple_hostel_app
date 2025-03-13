@@ -41,8 +41,6 @@ export default function PropertyInfo({
     c => c.value === propertyDetailsData.alpha_2_code
   );
 
-  console.log(country);
-
   const contactDetailsActions = [
     {
       label: "Edit",

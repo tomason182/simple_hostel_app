@@ -1,3 +1,13 @@
+.roomContainer {
+  border: 1px solid var(--gray-200);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  padding: 0.3rem 2rem;
+}
+
+.roomContainer h4 {
+  text-align: left;
+}
+
 .list {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -16,4 +26,27 @@
 .list dd {
   font-family: "Inter", sans-serif;
   text-align: right;
+}
+
+/* Buttons */
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteBtn,
+.editBtn {
+  border: none;
+  padding: 8px 12px;
+  background: none;
+  cursor: pointer;
+}
+
+.deleteBtn svg {
+  stroke: red;
+}
+
+.deleteBtn:hover,
+.editBtn:hover {
+  transform: scale(1.1);
 }
