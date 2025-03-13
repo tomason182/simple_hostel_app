@@ -46,6 +46,35 @@ export default function RoomTypes() {
     });
   }
 
+  function deleteRoomType(id) {
+    const url = import.meta.env.VITE_URL_BASE + "/room-types/delete/" + id;
+    const options = {
+      mode: "cors",
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Server Error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === "error") {
+          alert(data.msg);
+        } else {
+          alert("Room type deleted successfully");
+          refreshRoomTypeData();
+        }
+      })
+      .catch(e => console.error(e.message));
+  }
+
   if (isLoading) return <Spinner />;
 
   if (error) return <p>Server Error. Please, try again</p>;
@@ -70,7 +99,13 @@ export default function RoomTypes() {
                 <dd>{room.inventory}</dd>
               </dl>
               <div className={styles.buttonContainer}>
-                <button className={styles.deleteBtn}>
+                <button
+                  className={styles.deleteBtn}
+                  onClick={() => {
+                    deleteRoomType(room.id);
+                    refreshRoomTypeData();
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
