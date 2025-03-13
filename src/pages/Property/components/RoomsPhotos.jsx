@@ -6,13 +6,15 @@ import styles from "./RoomsPhotos.module.css";
 export default function RoomsPhotos() {
   const [room, setRoom] = useState(null);
   const [images, setImages] = useState([]);
-  const { roomTypesData, isLoading, error } = useContext(RoomTypeContext);
+  const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
+
+  console.log(images);
 
   console.log("Room: ", room);
 
   function handleRoomSelection(e) {
     const roomId = parseInt(e.target.value);
-    const selectedRoom = roomTypesData.find(r => r.id === roomId);
+    const selectedRoom = roomTypes.find(r => r.id === roomId);
     setRoom(selectedRoom);
   }
 
@@ -44,7 +46,9 @@ export default function RoomsPhotos() {
 
   if (isLoading) return <Spinner />;
 
-  if (roomTypesData.length === 0)
+  if (error) return <p>Network error. Please, try again</p>;
+
+  if (roomTypes.length === 0)
     return <p>No room types found. Please, create your room type first.</p>;
 
   return (
@@ -54,7 +58,7 @@ export default function RoomsPhotos() {
       <label>
         <select name="room" onChange={e => handleRoomSelection(e)}>
           <option value="">Select a room type</option>
-          {roomTypesData.map(room => (
+          {roomTypes.map(room => (
             <option key={room.id} value={room.id}>
               {room.description}
             </option>
@@ -117,6 +121,9 @@ export default function RoomsPhotos() {
             </button>
           </div>
         ))}
+      </div>
+      <div>
+        <button className={styles.submitBtn}>Upload</button>
       </div>
     </>
   );
