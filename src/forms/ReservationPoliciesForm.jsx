@@ -5,31 +5,28 @@ import PropTypes from "prop-types";
 export default function ReservationPoliciesForm({
   closeModal,
   reservationPoliciesData,
+  refreshPropertyPolicies,
 }) {
   const [formData, setFormData] = useState({
     min_advance_booking: reservationPoliciesData?.min_advance_booking || "",
     min_length_stay: reservationPoliciesData?.min_length_stay || "",
     max_length_stay: reservationPoliciesData?.max_length_stay || "",
-    allow_same_day_reservation:
-      reservationPoliciesData?.allow_same_day_reservation || false,
-    check_in_from: reservationPoliciesData?.check_in_window.from || "",
-    check_in_to: reservationPoliciesData?.check_in_window.to || "",
-    check_out_until: reservationPoliciesData?.check_out_time.until || "",
-    payment_methods: reservationPoliciesData?.payment_methods || [],
-    online_payment_methods:
-      reservationPoliciesData?.online_payment_methods || [],
+    check_in_from: reservationPoliciesData?.check_in_from || "",
+    check_in_to: reservationPoliciesData?.check_in_to || "",
+    check_out_until: reservationPoliciesData?.check_out_until || "",
+    payment_methods_accepted:
+      reservationPoliciesData?.payment_methods_accepted || [],
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   console.log(formData);
+
   const availablePaymentMethods = [
-    { id: "credit_debit_card", label: "Credit or Debit Card" },
+    { id: "credit_debit", label: "Credit or Debit Card" },
     { id: "cash", label: "cash" },
     { id: "bank_transfer", label: "Bank Transfer" },
-  ];
-  const availableOnlinePaymentMethods = [
-    { id: "paypal", label: "paypal" },
-    { id: "mercado_pago", label: "Mercado Pago" },
-    { id: "bitcoin", label: "bitcoin" },
+    { id: "bitcoin", label: "Bitcoin" },
   ];
 
   function handleInputChange(e) {
@@ -45,37 +42,54 @@ export default function ReservationPoliciesForm({
     if (checked) {
       setFormData(prev => ({
         ...prev,
-        payment_methods: [...prev.payment_methods, value],
+        payment_methods_accepted: [...prev.payment_methods_accepted, value],
       }));
     } else {
       setFormData(prev => ({
         ...prev,
-        payment_methods: prev.payment_methods.filter(
+        payment_methods_accepted: prev.payment_methods_accepted.filter(
           method => method !== value
         ),
       }));
     }
   }
 
-  function handleOnlinePaymentMethodsChange(e) {
-    const { value, checked } = e.target;
-    if (checked) {
-      setFormData(prev => ({
-        ...prev,
-        online_payment_methods: [...prev.online_payment_methods, value],
-      }));
-    } else {
-      setFormData(prev => ({
-        ...prev,
-        online_payment_methods: prev.online_payment_methods.filter(
-          method => method !== value
-        ),
-      }));
-    }
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const url =
+      import.meta.env.VITE_URL_BASE +
+      "/properties/policies/reservations-policies";
+    const options = {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    };
+
+    setLoading(true);
+    fetch(url, options)
+      .then(async response => {
+        if (response.status >= 400) {
+          const error = await response.json();
+          console.error(error);
+          throw new Error("Server Error");
+        }
+        return response.json();
+      })
+      .then(() => {
+        refreshPropertyPolicies();
+        closeModal();
+        alert("Reservation policies updated successfully");
+      })
+      .catch(e => setError(e.message));
   }
 
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
           Minimum length of stay (in nights):
@@ -99,7 +113,8 @@ export default function ReservationPoliciesForm({
             name="max_length_stay"
             value={formData.max_length_stay}
             onChange={e => handleInputChange(e)}
-            min={1}
+            required
+            min={0}
           />
         </label>
       </div>
@@ -117,24 +132,6 @@ export default function ReservationPoliciesForm({
           />
         </label>
       </div>
-      <div className={styles.formGroup}>
-        <label className={styles.labelFlex}>
-          Allow same-day reservations?
-          <select
-            name="allow_same_day_reservation"
-            value={formData.allow_same_day_reservation}
-            onChange={e => handleInputChange(e)}
-            className={styles.inputSmall}
-          >
-            <option name="yes" value={true}>
-              Yes
-            </option>
-            <option name="no" value={false}>
-              No
-            </option>
-          </select>
-        </label>
-      </div>
       <fieldset>
         <legend>Check-in time window</legend>
         <div className={styles.formGroup}>
@@ -149,6 +146,7 @@ export default function ReservationPoliciesForm({
               required
             />
           </label>
+          <br />
           <label className={styles.labelFlex}>
             To:
             <input
@@ -190,27 +188,10 @@ export default function ReservationPoliciesForm({
                   type="checkbox"
                   name={method.id}
                   value={method.id}
-                  checked={formData.payment_methods.includes(method.id)}
+                  checked={formData.payment_methods_accepted.includes(
+                    method.id
+                  )}
                   onChange={e => handlePaymentMethodsChange(e)}
-                />
-              </label>
-            </div>
-          ))}
-        </div>
-      </fieldset>
-      <fieldset>
-        <legend>Online Payment methods accepted</legend>
-        <div className={styles.groupContainer}>
-          {availableOnlinePaymentMethods.map(method => (
-            <div key={method.id}>
-              <label>
-                {method.label}
-                <input
-                  type="checkbox"
-                  name={method.id}
-                  value={method.id}
-                  checked={formData.online_payment_methods.includes(method.id)}
-                  onChange={e => handleOnlinePaymentMethodsChange(e)}
                 />
               </label>
             </div>
@@ -221,8 +202,11 @@ export default function ReservationPoliciesForm({
         <button className={styles.cancelButton} onClick={closeModal}>
           Cancel
         </button>
-        <button className={styles.submitButton}>Submit</button>
+        <button className={styles.submitButton} disabled={loading}>
+          Submit
+        </button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
 }
@@ -233,19 +217,12 @@ ReservationPoliciesForm.propTypes = {
     min_advance_booking: PropTypes.number,
     min_length_stay: PropTypes.number,
     max_length_stay: PropTypes.number,
-    allow_same_day_reservation: PropTypes.bool,
-    check_in_window: PropTypes.shape({
-      from: PropTypes.string,
-      to: PropTypes.string,
-    }),
-    check_out_time: PropTypes.shape({
-      until: PropTypes.string,
-    }),
-    payment_methods: PropTypes.arrayOf(
-      PropTypes.oneOf(["cash", "debit_credit_card", "bank_transfer"])
+    check_in_from: PropTypes.string,
+    check_in_to: PropTypes.string,
+    check_out_until: PropTypes.string,
+    payment_methods_accepted: PropTypes.arrayOf(
+      PropTypes.oneOf(["cash", "debit_credit", "bank_transfer"])
     ),
-    online_payment_methods: PropTypes.arrayOf(
-      PropTypes.oneOf(["paypal", "mercado_pago", "bitcoin"])
-    ),
-  }),
+  }).isRequired,
+  refreshPropertyPolicies: PropTypes.func.isRequired,
 };

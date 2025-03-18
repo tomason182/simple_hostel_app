@@ -2,7 +2,7 @@ import styles from "./Policies.module.css";
 import PropTypes from "prop-types";
 import Card from "../../../components/Card/Card";
 import Modal from "../../../components/Modal/Modal";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // Import forms
 import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
 import AdvancePaymentAndCancellationForm from "../../../forms/AdvancePaymentAndCancellationForm";
@@ -10,49 +10,65 @@ import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
 import ChildrenPoliciesForm from "../../../forms/ChildrenPoliciesForm";
 import Spinner from "../../../components/Spinner/Spinner";
 
-export default function Policies({ policies, isLoading, error }) {
+export default function Policies() {
+  const [policies, setPolicies] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState(null);
 
+  const fetchPropertyPolicies = useCallback(() => {
+    const url = import.meta.env.VITE_URL_BASE + "/properties/policies";
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+    setLoading(true);
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Server Error");
+        }
+        return response.json();
+      })
+      .then(data => setPolicies(data))
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetchPropertyPolicies();
+  }, [fetchPropertyPolicies]);
+
   // Policies States
   const reservationPolicies = {
-    min_length_stay: policies.reservation.min_length_stay || 0,
-    max_length_stay: policies.reservation.max_length_stay || 0,
-    min_advance_booking: policies.reservation.min_advance_booking || 0,
-    allow_same_day_reservation:
-      policies.reservation.allow_same_day_reservation || false,
-    check_in_window: {
-      from: policies.reservation.check_in_window.from || "",
-      to: policies.reservation.check_in_window.to || "",
-    },
-    check_out_time: {
-      until: policies.reservation.check_out_time.until,
-    },
-    payment_methods: policies.reservation.payment_methods || [],
-    online_payment_methods: policies.reservation.online_payment_methods || [],
+    min_length_stay: policies.reservationPolicies?.min_length_stay || 0,
+    max_length_stay: policies.reservationPolicies?.max_length_stay || 0,
+    min_advance_booking: policies.reservationPolicies?.min_advance_booking || 0,
+    check_in_from: policies.reservationPolicies?.check_in_from || "",
+    check_in_to: policies.reservationPolicies?.check_in_to || "",
+    check_out_until: policies.reservationPolicies?.check_out_until || "",
+    payment_methods_accepted:
+      policies.reservationPolicies?.payment_methods_accepted || [],
   };
 
   const advancePaymentPolicies = {
-    required: policies.advance_payment.required || false,
-    amount: policies.advance_payment.amount || 0,
-    payment_methods: policies.advance_payment.payment_methods || [],
-  };
-
-  const cancellationPolicies = {
-    type: policies.cancellation.type || "strict",
-    cancellation_notice_period:
-      policies.cancellation.cancellation_notice_period || 0,
-    amount_refunded: policies.cancellation.amount_refunded || 0,
+    required:
+      policies.advancePaymentPolicies?.advance_payment_required || false,
+    deposit_amount: policies.advancePaymentPolicies?.deposit_amount || 0,
   };
 
   const childrenPolicies = {
-    children_allowed: policies.children_policies.children_allowed || false,
-    min_age: policies.children_policies.min_age || 0,
-    allowed_room_types: policies.children_policies.allowed_room_types || null,
-    free_stay_age: policies.children_policies.free_stay_age || 0,
+    children_allowed: policies.childrenPolicies?.allow_children || false,
+    min_age: policies.childrenPolicies?.children_min_age || 0,
+    allowed_room_types: policies.childrenPolicies?.minors_room_types || null,
+    free_stay_age: policies.childrenPolicies?.free_stay_age || 0,
   };
-
-  console.log("Children Policies: ", childrenPolicies);
 
   const formSelector = {
     1: {
@@ -61,6 +77,7 @@ export default function Policies({ policies, isLoading, error }) {
         <ReservationPoliciesForm
           reservationPoliciesData={reservationPolicies}
           closeModal={() => setIsOpen(false)}
+          refreshPropertyPolicies={fetchPropertyPolicies}
         />
       ),
     },
@@ -73,7 +90,6 @@ export default function Policies({ policies, isLoading, error }) {
       form: (
         <AdvancePaymentAndCancellationForm
           advancePaymentData={advancePaymentPolicies}
-          cancellationData={cancellationPolicies}
           closeModal={() => setIsOpen(false)}
         />
       ),
@@ -144,7 +160,7 @@ export default function Policies({ policies, isLoading, error }) {
     },
   };
 
-  if (isLoading) return <Spinner />;
+  if (loading) return <Spinner />;
 
   if (error) return <h1>Error Page</h1>;
 
@@ -168,35 +184,28 @@ export default function Policies({ policies, isLoading, error }) {
                 {reservationPolicies.max_length_stay} days
               </li>
               <li>
+                <span>Allow same day reservation:</span>{" "}
+                {reservationPolicies.min_advance_booking !== 0 ? "No" : "Yes"}
+              </li>
+              <li>
                 <span>Minimum advance booking:</span>{" "}
-                {reservationPolicies.min_advance_booking}
+                {reservationPolicies.min_advance_booking === 0
+                  ? "---"
+                  : reservationPolicies.min_advance_booking}
               </li>
               <li>
-                <span>allow same day reservation:</span>{" "}
-                {reservationPolicies.allow_same_day_reservation ? "Yes" : "No"}
+                <span>Check-in:</span>
+                {reservationPolicies.check_in_from} -{" "}
+                {reservationPolicies.check_in_to}
               </li>
               <li>
-                <span>Check-in window:</span>
-                {reservationPolicies.check_in_window.from} -{" "}
-                {reservationPolicies.check_in_window.to}
+                <span>check-out:</span> {reservationPolicies.check_out_until}
               </li>
               <li>
-                <span>check-out time</span>{" "}
-                {reservationPolicies.check_out_time.until}
-              </li>
-              <li>
-                <span>Payment method:</span>
+                <span>Payment methods accepted:</span>
                 <ul>
-                  {reservationPolicies.payment_methods.map((m, i) => (
-                    <li key={i}>{m}</li>
-                  ))}
-                </ul>
-              </li>
-              <li>
-                <span>Online Payment methods</span>
-                <ul>
-                  {reservationPolicies.online_payment_methods.map((m, i) => (
-                    <li key={i}>{m}</li>
+                  {reservationPolicies.payment_methods_accepted.map(method => (
+                    <li key={method}>{method}</li>
                   ))}
                 </ul>
               </li>
@@ -211,22 +220,22 @@ export default function Policies({ policies, isLoading, error }) {
           <h4>Advance Payment</h4>
           <ul className={styles.list}>
             <li>
-              {policies.advance_payment.required
+              {advancePaymentPolicies.required === 1
                 ? `You required ${
-                    policies.advance_payment.amount * 10
+                    advancePaymentPolicies.deposit_amount * 100
                   } % of deposit when guest make a reservation`
                 : "You DO NOT required an advance payment for guest reservations"}
             </li>
           </ul>
           <h4>Cancellations</h4>
-          <p>{policies.cancellation.type}</p>
+          <p>{policies.cancellation?.type}</p>
           <p>
-            {policies.cancellation.type === "strict"
+            {policies.cancellation?.type === "strict"
               ? "You will not refund the deposit if guest cancel anytime"
               : `You will refund ${
-                  policies.cancellation.amount_refunded * 100
+                  policies.cancellation?.amount_refunded * 100
                 }% of the deposit if the guest cancel ${
-                  policies.cancellation.cancellation_notice_period
+                  policies.cancellation?.cancellation_notice_period
                 } days before arrival.`}
           </p>
         </Card>
@@ -241,14 +250,14 @@ export default function Policies({ policies, isLoading, error }) {
               {childrenPolicies.children_allowed &&
               childrenPolicies.min_age === 0
                 ? "Children of all age are allow in your property"
-                : !policies.children_policies.children_allowed
+                : !policies.children_policies?.children_allowed
                 ? "Children are not allow in your property"
-                : `Children of ${policies.children_policies.min_age} years old or greater are allow in your property`}
+                : `Children of ${policies.children_policies?.min_age} years old or greater are allow in your property`}
             </li>
             <li>
               {childrenPolicies.allowed_room_types &&
                 `Children are allow in ${
-                  policies.children_policies.allowed_room_types ===
+                  policies.children_policies?.allowed_room_types ===
                   "private_room"
                     ? "Private Rooms only"
                     : "any Room"
@@ -256,7 +265,7 @@ export default function Policies({ policies, isLoading, error }) {
             </li>
             <li>
               {childrenPolicies.free_stay_age > 0 &&
-                `Children of ${policies.children_policies.free_stay_age} years old can stay for free`}
+                `Children of ${policies.children_policies?.free_stay_age} years old can stay for free`}
             </li>
           </ul>
         </Card>
@@ -270,40 +279,45 @@ export default function Policies({ policies, isLoading, error }) {
             <li>Quiet hours</li>
             <ul>
               <li>
-                From: {policies.other_policies.house_rules.quiet_hours.from}
+                From: {policies.other_policies?.house_rules.quiet_hours.from}
               </li>
-              <li>To: {policies.other_policies.house_rules.quiet_hours.to}</li>
+              <li>To: {policies.other_policies?.house_rules.quiet_hours.to}</li>
             </ul>
             <li>
               Smoking areas:{" "}
-              {policies.other_policies.house_rules.smoking_areas ? "Yes" : "No"}
+              {policies.other_policies?.house_rules.smoking_areas
+                ? "Yes"
+                : "No"}
             </li>
             <li>
               Are external guest allowed?:{" "}
-              {policies.other_policies.house_rules.external_guest_allowed
+              {policies.other_policies?.house_rules.external_guest_allowed
                 ? "Yes"
                 : "No"}
             </li>
             <li>
               Are pets allowed?:{" "}
-              {policies.other_policies.house_rules.pets_allowed ? "Yes" : "No"}
+              {policies.other_policies?.house_rules.pets_allowed ? "Yes" : "No"}
             </li>
           </ul>
           <h4>Special services</h4>
           <ul>
-            {policies.other_policies.special_services.luggage_storage
+            {policies.other_policies?.special_services.luggage_storage
               .available && (
               <li>
                 Luggage storage is available for $
-                {policies.other_policies.special_services.luggage_storage.price}
+                {
+                  policies.other_policies?.special_services.luggage_storage
+                    .price
+                }
               </li>
             )}
-            {policies.other_policies.special_services.airport_pickup_service
+            {policies.other_policies?.special_services.airport_pickup_service
               .available && (
               <li>
                 Airport pickup service is available for $
                 {
-                  policies.other_policies.special_services
+                  policies.other_policies?.special_services
                     .airport_pickup_service.price
                 }
               </li>
