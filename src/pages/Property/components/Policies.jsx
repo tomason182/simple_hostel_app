@@ -86,6 +86,8 @@ export default function Policies() {
     [policies]
   );
 
+  console.log(childrenPolicies);
+
   const formSelector = useMemo(
     () => ({
       1: {
@@ -291,27 +293,29 @@ export default function Policies() {
           customStyle={customStyle}
         >
           <ul className={styles.list}>
-            <li>
-              {childrenPolicies.children_allowed &&
-              childrenPolicies.min_age === 0
-                ? "Children of all age are allow in your property"
-                : !policies.children_policies?.children_allowed
-                ? "Children are not allow in your property"
-                : `Children of ${policies.children_policies?.min_age} years old or greater are allow in your property`}
-            </li>
-            <li>
-              {childrenPolicies.allowed_room_types &&
-                `Children are allow in ${
-                  policies.children_policies?.allowed_room_types ===
-                  "private_room"
-                    ? "Private Rooms only"
-                    : "any Room"
-                }`}
-            </li>
-            <li>
-              {childrenPolicies.free_stay_age > 0 &&
-                `Children of ${policies.children_policies?.free_stay_age} years old can stay for free`}
-            </li>
+            {childrenPolicies.children_allowed === 0 ||
+            childrenPolicies.children_allowed === false ? (
+              <li>Children are not allowed in your property</li>
+            ) : (
+              <>
+                <li>
+                  {childrenPolicies.min_age === 0
+                    ? "Children of all age are allowed in your property"
+                    : `Children of ${childrenPolicies?.min_age} years old or greater are allow in your property`}
+                </li>
+                <li>
+                  {childrenPolicies.allowed_room_types === "only_private"
+                    ? "children are allowed in private rooms only"
+                    : childrenPolicies.allowed_room_types === "only_dorm"
+                    ? "Children are allowed only in dormitories"
+                    : "Children are allowed in any kind of room"}
+                </li>
+                <li>
+                  {childrenPolicies.free_stay_age > 0 &&
+                    `Children of ${childrenPolicies?.free_stay_age} years old can stay for free`}
+                </li>
+              </>
+            )}
           </ul>
         </Card>
         <Card
