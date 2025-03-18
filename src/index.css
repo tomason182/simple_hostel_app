@@ -39,6 +39,7 @@
 
   /* Buttons color */
   --button-primary: #007bff;
+  --button-dark: #0056b3;
 
   font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

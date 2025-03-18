@@ -2,10 +2,11 @@ import styles from "./Policies.module.css";
 import PropTypes from "prop-types";
 import Card from "../../../components/Card/Card";
 import Modal from "../../../components/Modal/Modal";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 // Import forms
 import ReservationPoliciesForm from "../../../forms/ReservationPoliciesForm";
-import AdvancePaymentAndCancellationForm from "../../../forms/AdvancePaymentAndCancellationForm";
+import AdvancePaymentPolicyForm from "../../../forms/AdvancePaymentPolicyForm";
+import CancellationPoliciesForm from "../../../forms/CancellationPoliciesForm";
 import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
 import ChildrenPoliciesForm from "../../../forms/ChildrenPoliciesForm";
 import Spinner from "../../../components/Spinner/Spinner";
@@ -46,69 +47,99 @@ export default function Policies() {
   }, [fetchPropertyPolicies]);
 
   // Policies States
-  const reservationPolicies = {
-    min_length_stay: policies.reservationPolicies?.min_length_stay || 0,
-    max_length_stay: policies.reservationPolicies?.max_length_stay || 0,
-    min_advance_booking: policies.reservationPolicies?.min_advance_booking || 0,
-    check_in_from: policies.reservationPolicies?.check_in_from || "",
-    check_in_to: policies.reservationPolicies?.check_in_to || "",
-    check_out_until: policies.reservationPolicies?.check_out_until || "",
-    payment_methods_accepted:
-      policies.reservationPolicies?.payment_methods_accepted || [],
-  };
+  const reservationPolicies = useMemo(
+    () => ({
+      min_length_stay: policies.reservationPolicies?.min_length_stay || 0,
+      max_length_stay: policies.reservationPolicies?.max_length_stay || 0,
+      min_advance_booking:
+        policies.reservationPolicies?.min_advance_booking || 0,
+      check_in_from: policies.reservationPolicies?.check_in_from || "",
+      check_in_to: policies.reservationPolicies?.check_in_to || "",
+      check_out_until: policies.reservationPolicies?.check_out_until || "",
+      payment_methods_accepted:
+        policies.reservationPolicies?.payment_methods_accepted || [],
+    }),
+    [policies]
+  ); // Recalculate only when policies change
 
-  const advancePaymentPolicies = {
-    required:
-      policies.advancePaymentPolicies?.advance_payment_required || false,
-    deposit_amount: policies.advancePaymentPolicies?.deposit_amount || 0,
-  };
+  const advancePaymentPolicies = useMemo(
+    () => ({
+      required:
+        policies.advancePaymentPolicies?.advance_payment_required || false,
+      deposit_amount: policies.advancePaymentPolicies?.deposit_amount || 0,
+    }),
+    [policies]
+  );
 
-  const childrenPolicies = {
-    children_allowed: policies.childrenPolicies?.allow_children || false,
-    min_age: policies.childrenPolicies?.children_min_age || 0,
-    allowed_room_types: policies.childrenPolicies?.minors_room_types || null,
-    free_stay_age: policies.childrenPolicies?.free_stay_age || 0,
-  };
+  const cancellationPolicies = useMemo(
+    () => policies?.cancellationPolicies,
+    [policies]
+  );
 
-  const formSelector = {
-    1: {
-      header: <h3 className={styles.header}>Reservation Policies</h3>,
-      form: (
-        <ReservationPoliciesForm
-          reservationPoliciesData={reservationPolicies}
-          closeModal={() => setIsOpen(false)}
-          refreshPropertyPolicies={fetchPropertyPolicies}
-        />
-      ),
-    },
-    2: {
-      header: (
-        <h3 className={styles.header}>
-          Advance Payment and Cancellation Policies
-        </h3>
-      ),
-      form: (
-        <AdvancePaymentAndCancellationForm
-          advancePaymentData={advancePaymentPolicies}
-          closeModal={() => setIsOpen(false)}
-        />
-      ),
-    },
-    3: {
-      header: <h3 className={styles.header}>Children Policies</h3>,
-      form: (
-        <ChildrenPoliciesForm
-          childrenPoliciesData={childrenPolicies}
-          closeModal={() => setIsOpen(false)}
-        />
-      ),
-    },
+  const childrenPolicies = useMemo(
+    () => ({
+      children_allowed: policies.childrenPolicies?.allow_children || false,
+      min_age: policies.childrenPolicies?.children_min_age || 0,
+      allowed_room_types: policies.childrenPolicies?.minors_room_types || null,
+      free_stay_age: policies.childrenPolicies?.free_stay_age || 0,
+    }),
+    [policies]
+  );
 
-    4: {
-      header: <h3 className={styles.header}>Other Property Policies</h3>,
-      form: <OtherPoliciesForm />,
-    },
-  };
+  const formSelector = useMemo(
+    () => ({
+      1: {
+        header: <h3 className={styles.header}>Reservation Policies</h3>,
+        form: (
+          <ReservationPoliciesForm
+            reservationPoliciesData={reservationPolicies}
+            closeModal={() => setIsOpen(false)}
+            refreshPropertyPolicies={fetchPropertyPolicies}
+          />
+        ),
+      },
+      2: {
+        header: <h3 className={styles.header}>Advance Payment Policies</h3>,
+        form: (
+          <AdvancePaymentPolicyForm
+            advancePaymentData={advancePaymentPolicies}
+            closeModal={() => setIsOpen(false)}
+            refreshPropertyPolicies={fetchPropertyPolicies}
+          />
+        ),
+      },
+      3: {
+        header: <h3 className={styles.header}>Cancellation Policies</h3>,
+        form: (
+          <CancellationPoliciesForm
+            cancellationPolicies={cancellationPolicies}
+            refreshPropertyPolicies={fetchPropertyPolicies}
+            closeModal={() => setIsOpen(false)}
+          />
+        ),
+      },
+      4: {
+        header: <h3 className={styles.header}>Children Policies</h3>,
+        form: (
+          <ChildrenPoliciesForm
+            childrenPoliciesData={childrenPolicies}
+            closeModal={() => setIsOpen(false)}
+          />
+        ),
+      },
+      5: {
+        header: <h3 className={styles.header}>Other Property Policies</h3>,
+        form: <OtherPoliciesForm />,
+      },
+    }),
+    [
+      reservationPolicies,
+      advancePaymentPolicies,
+      cancellationPolicies,
+      childrenPolicies,
+      fetchPropertyPolicies,
+    ]
+  );
 
   function handleFormSelection(id) {
     setForm(formSelector[id]);
@@ -124,21 +155,11 @@ export default function Policies() {
     },
   ];
 
-  const actionPayment = [
-    {
-      label: "Edit",
-      onClick: () => {
-        handleFormSelection(2);
-        setIsOpen(true);
-      },
-    },
-  ];
-
   const actionChildren = [
     {
       label: "Edit",
       onClick: () => {
-        handleFormSelection(3);
+        handleFormSelection(4);
         setIsOpen(true);
       },
     },
@@ -148,7 +169,7 @@ export default function Policies() {
     {
       label: "Edit",
       onClick: () => {
-        handleFormSelection(4);
+        handleFormSelection(5);
         setIsOpen(true);
       },
     },
@@ -214,30 +235,54 @@ export default function Policies() {
         </Card>
         <Card
           title="Advance Payment & Cancellation Policies"
-          actions={actionPayment}
           customStyle={customStyle}
         >
           <h4>Advance Payment</h4>
           <ul className={styles.list}>
             <li>
-              {advancePaymentPolicies.required === 1
+              {advancePaymentPolicies.required === null
+                ? "No advance payment policies added"
+                : advancePaymentPolicies.required === 1
                 ? `You required ${
                     advancePaymentPolicies.deposit_amount * 100
                   } % of deposit when guest make a reservation`
                 : "You DO NOT required an advance payment for guest reservations"}
             </li>
           </ul>
+          <button
+            className={styles.button}
+            onClick={() => {
+              handleFormSelection(2);
+              setIsOpen(true);
+            }}
+          >
+            ADD
+          </button>
+          <br />
           <h4>Cancellations</h4>
-          <p>{policies.cancellation?.type}</p>
-          <p>
-            {policies.cancellation?.type === "strict"
-              ? "You will not refund the deposit if guest cancel anytime"
-              : `You will refund ${
-                  policies.cancellation?.amount_refunded * 100
-                }% of the deposit if the guest cancel ${
-                  policies.cancellation?.cancellation_notice_period
-                } days before arrival.`}
-          </p>
+          <ul className={styles.list}>
+            {cancellationPolicies[0] === null ? (
+              <li>No cancellation policies added</li>
+            ) : advancePaymentPolicies.required === 0 ? (
+              "Cancellation policies will no be display when advance payment is not required"
+            ) : (
+              cancellationPolicies.map(policy => (
+                <li key={policy.id}>
+                  {policy.amount_refund * 100}% of deposit refunded if cancel{" "}
+                  {policy.days_before_arrival} days before arrival
+                </li>
+              ))
+            )}
+          </ul>
+          <button
+            className={styles.button}
+            onClick={() => {
+              handleFormSelection(3);
+              setIsOpen(true);
+            }}
+          >
+            ADD
+          </button>
         </Card>
 
         <Card

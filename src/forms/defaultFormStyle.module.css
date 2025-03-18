@@ -191,7 +191,7 @@ select {
 }
 
 .submitButton:hover {
-  background: #0056b3;
+  background: var(--button-dark);
 }
 
 .cancelButton {
@@ -215,4 +215,23 @@ select {
 .submitButton:disabled {
   pointer-events: none;
   background-color: var(--gray-400);
+}
+
+/* List */
+.list {
+  text-align: left;
+  list-style: none;
+}
+
+.list li {
+  margin-bottom: 1rem;
+  border: 1px solid var(--gray-200);
+  padding: 1rem;
+  color: var(--gray-600);
+  box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list li div button {
+  margin: 0.5rem;
+  cursor: pointer;
 }
