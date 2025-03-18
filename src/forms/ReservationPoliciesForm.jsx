@@ -8,12 +8,12 @@ export default function ReservationPoliciesForm({
   refreshPropertyPolicies,
 }) {
   const [formData, setFormData] = useState({
-    min_advance_booking: reservationPoliciesData?.min_advance_booking || "",
-    min_length_stay: reservationPoliciesData?.min_length_stay || "",
-    max_length_stay: reservationPoliciesData?.max_length_stay || "",
-    check_in_from: reservationPoliciesData?.check_in_from || "",
-    check_in_to: reservationPoliciesData?.check_in_to || "",
-    check_out_until: reservationPoliciesData?.check_out_until || "",
+    min_advance_booking: reservationPoliciesData?.min_advance_booking || 1,
+    min_length_stay: reservationPoliciesData?.min_length_stay || 0,
+    max_length_stay: reservationPoliciesData?.max_length_stay || 0,
+    check_in_from: reservationPoliciesData?.check_in_from || "11:00",
+    check_in_to: reservationPoliciesData?.check_in_to || "14:00",
+    check_out_until: reservationPoliciesData?.check_out_until || "21:00",
     payment_methods_accepted:
       reservationPoliciesData?.payment_methods_accepted || [],
   });
