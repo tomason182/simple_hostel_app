@@ -8,7 +8,7 @@ export default function AdvancePaymentPolicyForm({
   refreshPropertyPolicies,
 }) {
   const [formData, setFormData] = useState({
-    advance_payment_required: advancePaymentData.required || 0,
+    advance_payment_required: advancePaymentData.required || false,
     deposit_amount: parseFloat(advancePaymentData.deposit_amount) || 0,
   });
   const [loading, setLoading] = useState(false);
@@ -29,7 +29,7 @@ export default function AdvancePaymentPolicyForm({
     e.preventDefault();
 
     const body = {
-      advance_payment_required: parseInt(formData.advance_payment_required),
+      advance_payment_required: formData.advance_payment_required,
       deposit_amount: parseFloat(formData.deposit_amount),
     };
 
@@ -84,8 +84,8 @@ export default function AdvancePaymentPolicyForm({
             onChange={handleFormChange}
             value={formData.advance_payment_required}
           >
-            <option value={0}>No</option>
-            <option value={1}>Yes</option>
+            <option value={false}>No</option>
+            <option value={true}>Yes</option>
           </select>
         </label>
       </div>

@@ -5,13 +5,16 @@ import PropTypes from "prop-types";
 export default function ChildrenPoliciesForm({
   closeModal,
   childrenPoliciesData,
+  refreshPropertyData,
 }) {
   const [formData, setFormData] = useState({
-    children_allow: childrenPoliciesData?.children_allowed || false,
-    min_age: childrenPoliciesData?.min_age || 0,
-    allowed_room_types: childrenPoliciesData?.allowed_room_types || null,
+    allow_children: childrenPoliciesData?.children_allowed || false,
+    children_min_age: childrenPoliciesData?.min_age || 0,
+    minors_room_types: childrenPoliciesData?.allowed_room_types || "all_rooms",
     free_stay_age: childrenPoliciesData?.free_stay_age || 0,
   });
+
+  console.log(formData);
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -20,14 +23,43 @@ export default function ChildrenPoliciesForm({
       [name]: value,
     }));
   }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const url =
+      import.meta.env.VITE_URL_BASE + "/properties/policies/children-policies";
+    const options = {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to update children policies. Server error");
+        }
+        return response.json();
+      })
+      .then(() => {
+        closeModal();
+        refreshPropertyData();
+        alert("Children policy created successfully");
+      });
+  }
   return (
-    <form className={styles.form}>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
           Are children allowed in your property?
           <select
-            name="children_allow"
-            value={formData.children_allow}
+            name="allow_children"
+            value={formData.allow_children}
             onChange={e => handleInputChange(e)}
             className={styles.inputSmall}
           >
@@ -42,8 +74,8 @@ export default function ChildrenPoliciesForm({
           <input
             type="number"
             className={styles.inputSmall}
-            name="min_age"
-            value={formData.min_age}
+            name="children_min_age"
+            value={formData.children_min_age}
             onChange={e => handleInputChange(e)}
           />
         </label>
@@ -54,13 +86,13 @@ export default function ChildrenPoliciesForm({
           <select
             type="number"
             className={styles.inputMedium}
-            name="allowed_room_types"
-            value={formData.allowed_room_types}
+            name="minors_room_types"
+            value={formData.minors_room_types}
             onChange={e => handleInputChange(e)}
           >
-            <option value="all">All room types</option>
-            <option value="private_room">Only Private Rooms</option>
-            <option value="dorm">Only dormitories</option>
+            <option value="all_rooms">All room types</option>
+            <option value="only_private">Only Private Rooms</option>
+            <option value="only_dorm">Only dormitories</option>
           </select>
         </label>
       </div>
@@ -89,4 +121,5 @@ export default function ChildrenPoliciesForm({
 ChildrenPoliciesForm.propTypes = {
   closeModal: PropTypes.func.isRequired,
   childrenPoliciesData: PropTypes.object.isRequired,
+  refreshPropertyData: PropTypes.func.isRequired,
 };

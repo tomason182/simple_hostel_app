@@ -86,7 +86,7 @@ export default function Policies() {
     [policies]
   );
 
-  console.log(childrenPolicies);
+  console.log(advancePaymentPolicies);
 
   const formSelector = useMemo(
     () => ({
@@ -126,6 +126,7 @@ export default function Policies() {
           <ChildrenPoliciesForm
             childrenPoliciesData={childrenPolicies}
             closeModal={() => setIsOpen(false)}
+            refreshPropertyData={fetchPropertyPolicies}
           />
         ),
       },
@@ -242,9 +243,9 @@ export default function Policies() {
           <h4>Advance Payment</h4>
           <ul className={styles.list}>
             <li>
-              {advancePaymentPolicies.required === null
-                ? "No advance payment policies added"
-                : advancePaymentPolicies.required === 1
+              {advancePaymentPolicies.required === false
+                ? "You are not requiring and advance payment for reservations"
+                : advancePaymentPolicies.required === true
                 ? `You required ${
                     advancePaymentPolicies.deposit_amount * 100
                   } % of deposit when guest make a reservation`
