@@ -86,7 +86,19 @@ export default function Policies() {
     [policies]
   );
 
-  console.log(advancePaymentPolicies);
+  const otherPolicies = useMemo(
+    () => ({
+      external_guest_allowed:
+        policies.otherPolicies?.external_guest_allowed || false,
+      pets_allowed: policies.otherPolicies?.pets_allowed || false,
+      quiet_hours_from: policies.otherPolicies?.quiet_hours_from || null,
+      quiet_hours_to: policies.otherPolicies?.quiet_hours_to || null,
+      smoking_areas: policies.otherPolicies?.smoking_areas || false,
+    }),
+    [policies]
+  );
+
+  console.log(otherPolicies);
 
   const formSelector = useMemo(
     () => ({
@@ -132,7 +144,13 @@ export default function Policies() {
       },
       5: {
         header: <h3 className={styles.header}>Other Property Policies</h3>,
-        form: <OtherPoliciesForm />,
+        form: (
+          <OtherPoliciesForm
+            otherPoliciesData={otherPolicies}
+            closeModal={() => setIsOpen(false)}
+            refreshPropertyData={fetchPropertyPolicies}
+          />
+        ),
       },
     }),
     [
@@ -140,6 +158,7 @@ export default function Policies() {
       advancePaymentPolicies,
       cancellationPolicies,
       childrenPolicies,
+      otherPolicies,
       fetchPropertyPolicies,
     ]
   );
@@ -325,53 +344,20 @@ export default function Policies() {
           customStyle={customStyle}
         >
           <h4>House rules</h4>
-          <ul>
-            <li>Quiet hours</li>
-            <ul>
-              <li>
-                From: {policies.other_policies?.house_rules.quiet_hours.from}
-              </li>
-              <li>To: {policies.other_policies?.house_rules.quiet_hours.to}</li>
+          <ul className={styles.list}>
+            <li>Quiet hours:</li>
+            <ul className={styles.list}>
+              <li>From: {otherPolicies.quiet_hours_from || "--"}</li>
+              <li>To: {otherPolicies.quiet_hours_to || "--"}</li>
             </ul>
-            <li>
-              Smoking areas:{" "}
-              {policies.other_policies?.house_rules.smoking_areas
-                ? "Yes"
-                : "No"}
-            </li>
+            <li>Smoking areas: {otherPolicies.smoking_areas ? "Yes" : "No"}</li>
             <li>
               Are external guest allowed?:{" "}
-              {policies.other_policies?.house_rules.external_guest_allowed
-                ? "Yes"
-                : "No"}
+              {otherPolicies.external_guest_allowed ? "Yes" : "No"}
             </li>
             <li>
-              Are pets allowed?:{" "}
-              {policies.other_policies?.house_rules.pets_allowed ? "Yes" : "No"}
+              Are pets allowed?: {otherPolicies.pets_allowed ? "Yes" : "No"}
             </li>
-          </ul>
-          <h4>Special services</h4>
-          <ul>
-            {policies.other_policies?.special_services.luggage_storage
-              .available && (
-              <li>
-                Luggage storage is available for $
-                {
-                  policies.other_policies?.special_services.luggage_storage
-                    .price
-                }
-              </li>
-            )}
-            {policies.other_policies?.special_services.airport_pickup_service
-              .available && (
-              <li>
-                Airport pickup service is available for $
-                {
-                  policies.other_policies?.special_services
-                    .airport_pickup_service.price
-                }
-              </li>
-            )}
           </ul>
         </Card>
       </div>

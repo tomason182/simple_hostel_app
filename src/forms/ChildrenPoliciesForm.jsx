@@ -13,6 +13,8 @@ export default function ChildrenPoliciesForm({
     minors_room_types: childrenPoliciesData?.allowed_room_types || "all_rooms",
     free_stay_age: childrenPoliciesData?.free_stay_age || 0,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   console.log(formData);
 
@@ -38,7 +40,8 @@ export default function ChildrenPoliciesForm({
       credentials: "include",
       body: JSON.stringify(formData),
     };
-
+    setError(null);
+    setLoading(true);
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
@@ -50,7 +53,9 @@ export default function ChildrenPoliciesForm({
         closeModal();
         refreshPropertyData();
         alert("Children policy created successfully");
-      });
+      })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
   }
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -112,8 +117,11 @@ export default function ChildrenPoliciesForm({
         <button className={styles.cancelButton} onClick={closeModal}>
           Cancel
         </button>
-        <button className={styles.submitButton}>Submit</button>
+        <button className={styles.submitButton} disabled={loading}>
+          Submit
+        </button>
       </div>
+      {error && <p className={styles.error}>{error}</p>}
     </form>
   );
 }
