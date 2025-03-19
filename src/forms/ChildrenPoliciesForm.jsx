@@ -8,7 +8,8 @@ export default function ChildrenPoliciesForm({
   refreshPropertyData,
 }) {
   const [formData, setFormData] = useState({
-    allow_children: childrenPoliciesData?.children_allowed || false,
+    allow_children:
+      childrenPoliciesData?.children_allowed.toString() || "false",
     children_min_age: childrenPoliciesData?.min_age || 0,
     minors_room_types: childrenPoliciesData?.allowed_room_types || "all_rooms",
     free_stay_age: childrenPoliciesData?.free_stay_age || 0,
@@ -68,8 +69,8 @@ export default function ChildrenPoliciesForm({
             onChange={e => handleInputChange(e)}
             className={styles.inputSmall}
           >
-            <option value={true}>Yes</option>
-            <option value={false}>No</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
           </select>
         </label>
       </div>
