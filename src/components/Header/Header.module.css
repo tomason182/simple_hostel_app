@@ -91,10 +91,10 @@
 .profileMenu {
   border: none;
   border-radius: 5px;
-  background-color: var(--gray-50);
+  background-color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 0.75rem 0;
+  padding: 1rem 0;
   position: absolute;
   right: 0;
   top: 100%;
@@ -120,15 +120,16 @@
 .profileMenu a {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--gray-500);
-  font-size: small;
+  gap: 1rem;
+  color: var(--gray-900);
+  font-size: 0.875rem;
   width: 100%;
   padding: 0.25rem 0.75rem;
+  text-decoration: none;
 }
 
 .profileMenu a svg {
-  stroke: var(--gray-500);
+  stroke: var(--gray-900);
 }
 
 .profileMenu a:hover {
