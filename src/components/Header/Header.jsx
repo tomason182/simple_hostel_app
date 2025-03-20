@@ -1,9 +1,10 @@
 import styles from "./Header.module.css";
-import PropTypes from "prop-types";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router";
+import { UserProfileContext } from "../../data_providers/UserProfileProvider";
 
-export default function Header({ user, propertyName }) {
+export default function Header() {
+  const { userProfile, isLoading, error } = useContext(UserProfileContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -61,12 +62,16 @@ export default function Header({ user, propertyName }) {
       <div className={styles.rightSection}>
         {/* Property & User info*/}
         <div className={styles.userInfo}>
-          <p className={styles.propertyName}>
-            {propertyName ? propertyName : "Loading..."}
-          </p>
-          <p className={styles.userName}>
-            Hello, {user ? user.name : "Loading..."}
-          </p>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p>Error loading user profile</p>
+          ) : (
+            <>
+              <p className={styles.propertyName}>{userProfile.property_name}</p>
+              <p className={styles.userName}>Hello, {userProfile.first_name}</p>
+            </>
+          )}
         </div>
 
         {/* Action Buttons */}
@@ -165,8 +170,3 @@ export default function Header({ user, propertyName }) {
     </header>
   );
 }
-
-Header.propTypes = {
-  user: PropTypes.object.isRequired,
-  propertyName: PropTypes.string.isRequired,
-};

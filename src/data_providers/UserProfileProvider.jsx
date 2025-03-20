@@ -5,9 +5,12 @@ const UserProfileContext = createContext();
 
 export default function UserProfileProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchUserProfileData = useCallback(() => {
-    const url = import.meta.env.VITE_URL_BASE + "users/profile";
+    setIsLoading(true);
+    const url = import.meta.env.VITE_URL_BASE + "/users/profile";
     const options = {
       mode: "cors",
       method: "GET",
@@ -18,9 +21,15 @@ export default function UserProfileProvider({ children }) {
     };
 
     fetch(url, options)
-      .then(r => r.json())
+      .then(r => {
+        if (r.status >= 400) {
+          throw new Error("Failed to fetch user profile");
+        }
+        return r.json();
+      })
       .then(data => setUserProfile(data))
-      .catch(e => console.error("Error fetching users data: ", e));
+      .catch(e => setError(e.message))
+      .finally(() => setIsLoading(false));
   }, []);
 
   useEffect(() => {
@@ -29,7 +38,12 @@ export default function UserProfileProvider({ children }) {
 
   return (
     <UserProfileContext.Provider
-      value={{ userProfile, refreshUserProfile: fetchUserProfileData }}
+      value={{
+        userProfile,
+        isLoading,
+        error,
+        refreshUserProfile: fetchUserProfileData,
+      }}
     >
       {children}
     </UserProfileContext.Provider>
