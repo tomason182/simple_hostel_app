@@ -1,0 +1,15 @@
+.amenitiesForm fieldset {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 1rem;
+  border: 1px solid var(--gray-300);
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+.amenitiesForm fieldset label {
+  font-size: 0.75rem;
+  font-family: "Inter", sans-serif;
+}

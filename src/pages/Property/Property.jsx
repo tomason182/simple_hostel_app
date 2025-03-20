@@ -4,6 +4,7 @@ import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
 import Policies from "./components/Policies";
+import Amenities from "./components/Amenities";
 
 // Fetch property data
 import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
@@ -50,7 +51,7 @@ export default function Property() {
     },
     {
       label: "Room amenities",
-      content: <h1>Rooms amenities</h1>,
+      content: <Amenities />,
     },
   ];
 
