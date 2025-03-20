@@ -1,0 +1,31 @@
+.mainContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.sideBar,
+.mainContent {
+  border: 1px solid var(--gray-200);
+}
+
+.sideBar {
+  flex: 1;
+}
+
+.mainContent {
+  flex: 2;
+}
+
+@media (max-width: 750px) {
+  .mainContainer {
+    margin-top: 0;
+  }
+  .sideBar {
+    min-width: 100%;
+  }
+
+  .content {
+    min-width: 100%;
+  }
+}

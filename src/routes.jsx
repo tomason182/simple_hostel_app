@@ -4,6 +4,7 @@ import Calendar from "./pages/Calendar/Calendar";
 import RatesAndAvailability from "./pages/RatesAndAvailability/RatesAndAvailability";
 import Reservations from "./pages/Reservations/Reservations";
 import Property from "./pages/Property/Property";
+import Profile from "./pages/User/Profile";
 
 const routes = [
   {
@@ -41,6 +42,10 @@ const routes = [
       {
         path: "reports",
         element: <h1>Reports Page</h1>,
+      },
+      {
+        path: "users/profile",
+        element: <Profile />,
       },
     ],
   },

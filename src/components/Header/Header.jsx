@@ -115,7 +115,7 @@ export default function Header() {
           className={`${styles.profileMenu} ${isMenuOpen ? styles.active : ""}`}
           ref={menuRef}
         >
-          <Link to="users/profile/edit" onClick={() => setIsMenuOpen(false)}>
+          <Link to="users/profile" onClick={() => setIsMenuOpen(false)}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"
