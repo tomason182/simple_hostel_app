@@ -13,6 +13,8 @@ export default function ProfileEditForm() {
     username: "",
     role: "",
   });
+
+  console.log(formData);
   const [loadingForm, setLoadingForm] = useState(false);
 
   useEffect(() => {
@@ -42,10 +44,10 @@ export default function ProfileEditForm() {
 
     const formBody = {
       first_name: formData.first_name,
-      lastName: formData.last_name,
+      last_name: formData.last_name,
     };
 
-    const url = import.meta.env.VITE_URL_BASE + "users/profile";
+    const url = import.meta.env.VITE_URL_BASE + "/users/profile";
     const options = {
       mode: "cors",
       method: "PUT",
