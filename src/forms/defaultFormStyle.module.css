@@ -17,8 +17,15 @@
 .subtitle {
   text-align: left;
   font-family: "Inter-Bold", sans-serif;
+  color: var(--gray-500);
   font-weight: bold;
   font-size: 0.875rem;
+}
+
+/* Form notes */
+.note {
+  color: var(--gray-400);
+  font-size: 0.785rem;
 }
 
 /* Group containers */

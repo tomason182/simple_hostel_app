@@ -24,6 +24,7 @@ export default function Profile() {
               height="24"
               viewBox="0 0 24 24"
               fill="none"
+              stroke="00000"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -46,6 +47,7 @@ export default function Profile() {
               height="24"
               viewBox="0 0 24 24"
               fill="none"
+              stroke="00000"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -60,15 +62,20 @@ export default function Profile() {
       {toggle === 0 ? (
         <div className={styles.mainContent}>
           <div className={styles.content}>
+            <h3>Profile</h3>
             <ProfileEditForm />
           </div>
           <div className={styles.content}>
+            <h3>Delete Your Account</h3>
             <DeleteAccountForm />
           </div>
         </div>
       ) : (
-        <div className={styles.content}>
-          <PasswordEditForm />
+        <div className={styles.mainContent}>
+          <div className={styles.content}>
+            <h3>Change your password</h3>
+            <PasswordEditForm />
+          </div>
         </div>
       )}
     </div>

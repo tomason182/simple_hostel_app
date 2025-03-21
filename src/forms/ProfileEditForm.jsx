@@ -76,9 +76,8 @@ export default function ProfileEditForm() {
   if (error) return <p>Error fetching user profile</p>;
 
   return (
-    <>
-      <h3>Profile</h3>
-      <form className={styles.userEditForm} onSubmit={handleFormSubmit}>
+    <form className={styles.form} onSubmit={handleFormSubmit}>
+      <div className={styles.formGroup}>
         <label>
           First Name
           <input
@@ -88,25 +87,31 @@ export default function ProfileEditForm() {
             onChange={handleFormChange}
           />
         </label>
+      </div>
+      <div className={styles.formGroup}>
         <label>
           Last Name
           <input
             type="text"
-            name="lastName"
-            value={formData.lastName}
+            name="last_name"
+            value={formData.last_name}
             onChange={handleFormChange}
           />
         </label>
+      </div>
+      <div className={styles.formGroup}>
         <label>
           Email
           <input
             type="email"
-            name="email"
+            name="username"
             disabled
-            value={formData.email}
+            value={formData.username}
             onChange={handleFormChange}
           />
         </label>
+      </div>
+      <div className={styles.formGroup}>
         <label>
           Role
           <input
@@ -117,10 +122,16 @@ export default function ProfileEditForm() {
             disabled
           />
         </label>
-        <button type="submit" disabled={loadingForm}>
+      </div>
+      <div className={styles.buttonGroup} style={{ justifyContent: "right" }}>
+        <button
+          className={styles.submitButton}
+          type="submit"
+          disabled={loadingForm}
+        >
           Save
         </button>
-      </form>
-    </>
+      </div>
+    </form>
   );
 }
