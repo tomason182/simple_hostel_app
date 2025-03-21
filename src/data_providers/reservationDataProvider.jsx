@@ -54,7 +54,7 @@ export function useGetLatestReservations() {
 
   const fetchLatestReservation = useCallback(() => {
     setLoading(true);
-    const url = import.meta.env.VITE_URL_BASE + "/reservations/find/latest";
+    const url = import.meta.env.VITE_URL_BASE + "/reservations/latest";
     const options = {
       mode: "cors",
       method: "GET",
