@@ -14,7 +14,6 @@ export default function ProfileEditForm() {
     role: "",
   });
 
-  console.log(formData);
   const [loadingForm, setLoadingForm] = useState(false);
 
   useEffect(() => {
