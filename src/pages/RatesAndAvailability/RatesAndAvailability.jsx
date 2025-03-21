@@ -1,7 +1,7 @@
 import { format, setDefaultOptions, sub, add } from "date-fns";
 import { es, enUS } from "date-fns/locale";
 import styles from "./RatesAndAvailability.module.css";
-import { useState, useEffect, Fragment, useContext, useMemo } from "react";
+import { useState, Fragment, useContext, useMemo } from "react";
 import Spinner from "../../components/Spinner/Spinner";
 import Modal from "../../components/Modal/Modal";
 import Button from "../../components/Button/Button";
@@ -132,7 +132,7 @@ export default function RatesAndAvailability() {
       };
 
     // Calculus for rooms to sell and standard rate
-    const roomsToSell = rateAndAvailability?.custom_availability;
+    const roomsToSell = rateAndAvailability?.rooms_to_sell;
 
     const standardRate = rateAndAvailability?.custom_rate;
 
