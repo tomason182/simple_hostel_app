@@ -20,7 +20,24 @@ export default function Header() {
   }, [isMenuOpen]);
 
   function handleLogOut() {
-    alert("User logged out");
+    const url = import.meta.env.VITE_URL_BASE + "/users/logout";
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options).then(response => {
+      if (response.status >= 400) {
+        alert("Unable to log you out. Please try again");
+        return;
+      }
+
+      window.location.replace("http://localhost:8080");
+    });
   }
 
   return (
