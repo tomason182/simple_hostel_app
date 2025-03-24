@@ -11,11 +11,24 @@ export default function CheckAvailabilityFrom({
   const [error, setError] = useState(null);
 
   function updateFormData(checkIn, checkOut) {
-    setReservationFormData(prev => ({
-      ...prev,
-      checkIn,
-      checkOut,
-    }));
+    setReservationFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneCode: "",
+      phoneNumber: "",
+      city: "",
+      street: "",
+      postalCode: "",
+      countryCode: "",
+      selectedRooms: [],
+      bookingSource: "",
+      checkIn: checkIn,
+      checkOut: checkOut,
+      reservationStatus: "",
+      paymentStatus: "",
+      specialRequest: "",
+    });
   }
 
   const customStyle = {
@@ -36,6 +49,11 @@ export default function CheckAvailabilityFrom({
 
     const checkIn = formData.check_in.value.split("-").join("");
     const checkOut = formData.check_out.value.split("-").join("");
+
+    if (parseInt(checkIn) >= parseInt(checkOut)) {
+      setError("Invalid dates ranges");
+      return false;
+    }
 
     setLoading(true);
     const url =
@@ -102,7 +120,7 @@ export default function CheckAvailabilityFrom({
             {loading ? "Loading..." : "Search Availability"}
           </button>
         </div>
-        <div>{error && error}</div>
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </>
   );

@@ -104,7 +104,8 @@
 }
 
 input,
-select {
+select,
+textarea {
   padding: 0.5rem;
   font-size: 0.875rem;
   width: 100%;
@@ -135,9 +136,9 @@ select {
 }
 
 .roomSelectTable thead th {
-  font-size: 1rem;
+  font-size: 0.875rem;
   color: var(--gray-50);
-  text-align: left;
+  text-align: center;
   background-color: #0056b3;
   padding: 8px;
 }
@@ -241,4 +242,47 @@ select {
 .list li div button {
   margin: 0.5rem;
   cursor: pointer;
+}
+
+/* Search box */
+.searchBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Reservation details table */
+.reservationDetailsTable {
+  width: 80%;
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+.reservationDetailsTable caption {
+  color: var(--gray-500);
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.reservationDetailsTable tbody th {
+  border-top: 1px solid var(--gray-300);
+  border-left: 1px solid var(--gray-300);
+  border-bottom: 1px solid var(--gray-300);
+}
+
+.reservationDetailsTable tbody td {
+  border-top: 1px solid var(--gray-300);
+  border-right: 1px solid var(--gray-300);
+  border-bottom: 1px solid var(--gray-300);
+}
+
+.reservationDetailsTable tbody th {
+  color: var(--gray-600);
+  text-align: left;
+  padding-left: 1rem;
+}
+
+.reservationDetailsTable tbody td {
+  color: var(--gray-900);
+  padding: 1rem;
 }

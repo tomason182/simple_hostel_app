@@ -14,7 +14,7 @@ export default function RoomSelectionForm({
     let hasBedAssigned = false;
 
     selectedRooms.forEach(room => {
-      if (room.value > 0) {
+      if (room.number_of_rooms > 0) {
         hasBedAssigned = true;
       }
     });
@@ -22,20 +22,31 @@ export default function RoomSelectionForm({
     setIsDisable(!hasBedAssigned);
   }, [selectedRooms]);
 
+  function handleRoomValue(id) {
+    const room = selectedRooms.find(room => parseInt(room.room_type_id) === id);
+    if (room !== undefined) {
+      return room.number_of_rooms;
+    } else {
+      return "";
+    }
+  }
+
   function handleRoomSelection(e) {
     const { name, value, dataset } = e.target;
     setReservationFormData(prev => {
       let selectedRooms = [...prev.selectedRooms];
-      const findRoom = selectedRooms.find(room => room.id === name);
+      const findRoom = selectedRooms.find(room => room.room_type_id === name);
 
       if (findRoom) {
-        selectedRooms = prev.selectedRooms.filter(room => room.id != name);
+        selectedRooms = prev.selectedRooms.filter(
+          room => room.room_type_id != name
+        );
       }
 
       const selectedRoom = {
-        id: name,
-        value: value,
-        totalPrice: dataset.price * value,
+        room_type_id: name,
+        number_of_rooms: value,
+        total_amount: dataset.price * value,
       };
 
       selectedRooms.push(selectedRoom);
@@ -55,18 +66,21 @@ export default function RoomSelectionForm({
           {a.type === "dorm" ? 1 : a.max_occupancy}
         </td>
         <td style={{ textAlign: "center" }}>
-          {a.avgRate} {availability?.currencies.base_currency}/
+          {a.totalRate} {availability?.currencies.base_currency}/
           {a.type === "dorm" ? "pers" : "room"}
         </td>
         <td>
           <select
             name={a.id}
             id={a.id}
-            data-price={a.avgRate}
+            data-price={a.totalRate}
             onChange={handleRoomSelection}
+            value={handleRoomValue(a.id)}
           >
             {Array.from({ length: a.availability + 1 }, (_, i) => (
-              <option key={`${a.id}-${i}`}>{i}</option>
+              <option key={`${a.id}-${i}`} value={i}>
+                {i}
+              </option>
             ))}
           </select>
         </td>
@@ -79,9 +93,9 @@ export default function RoomSelectionForm({
         <thead>
           <tr>
             <th scope="col">Room type</th>
-            <th scope="col">Number of Guest</th>
+            <th scope="col">Guests</th>
             <th scope="col">Price for {availability.totalNights} nights</th>
-            <th scope="col">Select rooms</th>
+            <th scope="col">Select beds</th>
           </tr>
         </thead>
         <tbody>
@@ -96,6 +110,7 @@ export default function RoomSelectionForm({
           )}
         </tbody>
       </table>
+      <br />
       <div className={styles.buttonGroup}>
         <button className={styles.cancelButton} onClick={() => setIndex(0)}>
           Back
