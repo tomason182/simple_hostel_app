@@ -44,8 +44,8 @@ export default function RoomSelectionForm({
       }
 
       const selectedRoom = {
-        room_type_id: name,
-        number_of_rooms: value,
+        room_type_id: parseInt(name),
+        number_of_rooms: parseInt(value),
         total_amount: dataset.price * value,
       };
 

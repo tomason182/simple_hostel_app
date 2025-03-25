@@ -10,6 +10,7 @@ import Button from "../../components/Button/Button";
 import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
 import RoomSelectionForm from "../../forms/RoomSelectionForm";
 import GuestInformationForm from "../../forms/GuestInformationForm";
+import ReservationDetails from "../../forms/ReservationDetails";
 // Data providers
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
@@ -27,11 +28,13 @@ export default function Calendar() {
     firstName: "",
     lastName: "",
     email: "",
+    phoneCode: "",
     phoneNumber: "",
     city: "",
     street: "",
     postalCode: "",
     countryCode: "",
+    currency: "",
     selectedRooms: [],
     bookingSource: "",
     checkIn: "",
@@ -53,8 +56,12 @@ export default function Calendar() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
-  const { reservations, loadingReservations, errorReservations } =
-    useFetchReservationByDateRange(fromDate, toDate);
+  const {
+    reservations,
+    loadingReservations,
+    errorReservations,
+    refreshReservationsData,
+  } = useFetchReservationByDateRange(fromDate, toDate);
 
   setDefaultOptions({ locale: es });
 
@@ -127,10 +134,10 @@ export default function Calendar() {
 
   // Assigning beds
   function getReservationDetails(day, bedId, type = "find") {
-    const currentDay = Number(format(day, "yyyyMMdd"));
+    const currentDay = new Date(day.toISOString().split("T")[0]);
     const reservation = reservations.find(r => {
-      const checkIn = Number(dateFormatHelper(r.check_in));
-      const checkOut = Number(dateFormatHelper(r.check_out));
+      const checkIn = new Date(r.check_in.split("T")[0]);
+      const checkOut = new Date(r.check_out.split("T")[0]);
 
       return (
         r.assigned_beds.includes(bedId) &&
@@ -147,8 +154,9 @@ export default function Calendar() {
       return null;
     }
 
-    const checkIn = Number(dateFormatHelper(reservation.check_in));
-    const checkOut = Number(dateFormatHelper(reservation.check_out));
+    const checkIn = new Date(reservation.check_in.split("T")[0]);
+    const checkOut = new Date(reservation.check_out.split("T")[0]);
+
     const daysDiff =
       type === "start" ? checkOut - currentDay : checkOut - checkIn;
 
@@ -157,7 +165,7 @@ export default function Calendar() {
       checkIn: reservation.check_in,
       checkOut: reservation.check_out,
       status: reservation.reservation_status,
-      nights: daysDiff,
+      nights: daysDiff / (1000 * 3600 * 24),
     };
   }
 
@@ -285,7 +293,7 @@ export default function Calendar() {
     <StepNavigation
       activeStep={currentIndex}
       steps={steps}
-      clickableSteps={true}
+      clickableSteps={false}
       onStepClick={onStepClick}
     />
   );
@@ -306,7 +314,23 @@ export default function Calendar() {
         setIndex={setCurrentIndex}
       />
     ),
-    2: <GuestInformationForm />,
+    2: (
+      <GuestInformationForm
+        formData={reservationFormData}
+        setReservationFormData={setReservationFormData}
+        setIndex={setCurrentIndex}
+      />
+    ),
+    3: (
+      <ReservationDetails
+        data={reservationFormData}
+        availability={availability}
+        setIndex={setCurrentIndex}
+        setIsOpen={setIsOpen}
+        refreshReservationsData={refreshReservationsData}
+      />
+    ),
+    4: <h4>Confirmation message</h4>,
   };
 
   return (

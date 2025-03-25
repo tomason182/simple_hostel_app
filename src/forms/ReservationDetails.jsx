@@ -1,7 +1,17 @@
 import PropTypes from "prop-types";
 import styles from "./defaultFormStyle.module.css";
+import { useState } from "react";
 
-export default function ReservationDetails({ data, availability }) {
+export default function ReservationDetails({
+  data,
+  availability,
+  setIsOpen,
+  setIndex,
+  refreshReservationsData,
+}) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
   function findDescription(id) {
     const room = availability.roomList.find(room => room.id === parseInt(id));
     return room.description || "";
@@ -36,6 +46,55 @@ export default function ReservationDetails({ data, availability }) {
     return new Intl.DateTimeFormat(lang, options).format(formattedDate);
   }
 
+  function removeEmptyFields(obj) {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([_, value]) => value !== "")
+    );
+  }
+
+  function submitFormData() {
+    setLoading(true);
+
+    const formBody = removeEmptyFields(data);
+    formBody.currency = currency;
+
+    const url = import.meta.env.VITE_URL_BASE + "/reservations/new";
+    const options = {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formBody),
+    };
+
+    fetch(url, options)
+      .then(async response => {
+        if (response.status === 400) {
+          const errors = await response.json();
+          console.error(errors);
+          throw Error("Invalid fields");
+        }
+        if (response.status > 400) {
+          throw new Error("Server error. Unable to create reservation");
+        }
+
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === "error") {
+          setError(data.msg);
+          return false;
+        }
+        alert("Reservation created successfully");
+        setIsOpen(false);
+        refreshReservationsData();
+      })
+      .catch(e => alert(e.message))
+      .finally(() => setLoading(false));
+  }
+
   return (
     <>
       <table className={styles.reservationDetailsTable}>
@@ -63,12 +122,15 @@ export default function ReservationDetails({ data, availability }) {
             <th>Total nights</th>
             <td>{availability.totalNights}</td>
           </tr>
-        </tbody>
-      </table>
-      <br />
-      <table className={styles.reservationDetailsTable}>
-        <caption>Price details</caption>
-        <tbody>
+          <tr>
+            <th>Booking source</th>
+            <td>{data.bookingSource}</td>
+          </tr>
+          <tr>
+            <th colSpan={2} style={{ textAlign: "center", height: "50px" }}>
+              Selected rooms
+            </th>
+          </tr>
           {data.selectedRooms.map(room => (
             <tr key={room.room_type_id}>
               <th>
@@ -79,23 +141,31 @@ export default function ReservationDetails({ data, availability }) {
               </td>
             </tr>
           ))}
-          <tr>
-            <th colSpan={2} style={{ textAlign: "center", height: "50px" }}>
-              Payment details
-            </th>
-          </tr>
-          <tr>
-            <th>Deposit ({depositPercentage * 100} %)</th>
-            <td>
-              {currency} {depositAmount}
-            </td>
-          </tr>
-          <tr>
-            <th>To pay on arrival</th>
-            <td>
-              {currency} {payOnArrival}
-            </td>
-          </tr>
+        </tbody>
+      </table>
+      <br />
+      <table className={styles.reservationDetailsTable}>
+        <caption>Price details</caption>
+        <tbody>
+          {data.bookingSource === "direct" ? (
+            <>
+              <tr>
+                <th>Deposit ({depositPercentage * 100} %)</th>
+                <td>
+                  {currency} {depositAmount}
+                </td>
+              </tr>
+              <tr>
+                <th>To pay on arrival</th>
+                <td>
+                  {currency} {payOnArrival}
+                </td>
+              </tr>
+            </>
+          ) : (
+            ""
+          )}
+
           <tr>
             <th>Total</th>
             <td>
@@ -106,9 +176,24 @@ export default function ReservationDetails({ data, availability }) {
       </table>
       <br />
       <div className={styles.buttonGroup}>
-        <button className={styles.cancelButton}>cancel</button>
-        <button className={styles.submitButton}>Continue</button>
+        <button
+          className={styles.cancelButton}
+          onClick={() => {
+            setIndex(0);
+            setIsOpen(false);
+          }}
+        >
+          cancel
+        </button>
+        <button
+          className={styles.submitButton}
+          disabled={loading}
+          onClick={() => submitFormData()}
+        >
+          Continue
+        </button>
       </div>
+      <div>{error && <p>{error}</p>}</div>
     </>
   );
 }
@@ -116,4 +201,7 @@ export default function ReservationDetails({ data, availability }) {
 ReservationDetails.propTypes = {
   data: PropTypes.object.isRequired,
   availability: PropTypes.array.isRequired,
+  refreshReservationsData: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+  setIndex: PropTypes.func.isRequired,
 };

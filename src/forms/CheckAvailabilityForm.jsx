@@ -56,6 +56,7 @@ export default function CheckAvailabilityFrom({
     }
 
     setLoading(true);
+    setError(null);
     const url =
       import.meta.env.VITE_URL_BASE +
       "/reservations/check-availability/" +
@@ -72,14 +73,19 @@ export default function CheckAvailabilityFrom({
     };
 
     fetch(url, options)
-      .then(response => {
+      .then(async response => {
         if (response.status >= 400) {
-          throw new Error("Server Error");
+          const error = await response.json();
+          throw new Error(error.msg || "Server error");
         }
 
         return response.json();
       })
       .then(data => {
+        if (data.status === "error") {
+          setError(data.msg);
+          return false;
+        }
         setAvailability(data);
         updateFormData(formData.check_in.value, formData.check_out.value);
         setIndex(1);
