@@ -32,13 +32,14 @@ export default function GuestInformationForm({
               name="bookingSource"
               id="bookingSource"
               onChange={handleChange}
+              value={formData.bookingSource}
               required
               aria-required
             >
               <option value="">Select one...</option>
               <option value="direct">Direct booking</option>
               <option value="booking.com">Booking.com</option>
-              <option value="hostelworld.com">Hostelworld.com</option>
+              <option value="hostelWorld.com">HostelWorld.com</option>
               <option value="website">Website</option>
             </select>
           </label>
@@ -49,6 +50,7 @@ export default function GuestInformationForm({
             <select
               name="paymentStatus"
               id="paymentStatus"
+              value={formData.paymentStatus}
               onChange={handleChange}
               required
               aria-required
@@ -69,6 +71,7 @@ export default function GuestInformationForm({
               name="reservationStatus"
               id="reservationStatus"
               onChange={handleChange}
+              value={formData.reservationStatus}
               required
               aria-required
             >

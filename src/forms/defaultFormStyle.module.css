@@ -17,15 +17,20 @@
 .subtitle {
   text-align: left;
   font-family: "Inter-Bold", sans-serif;
-  color: var(--gray-500);
+  color: var(--gray-700);
   font-weight: bold;
-  font-size: 0.875rem;
+  font-size: 0.975rem;
 }
 
 /* Form notes */
 .note {
   color: var(--gray-400);
   font-size: 0.785rem;
+}
+
+.paragraph {
+  color: var(--gray-600);
+  font-size: 0.875rem;
 }
 
 /* Group containers */

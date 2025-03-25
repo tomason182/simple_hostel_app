@@ -1,17 +1,14 @@
 import PropTypes from "prop-types";
 import styles from "./defaultFormStyle.module.css";
-import { useState } from "react";
 
 export default function ReservationDetails({
   data,
   availability,
-  setIsOpen,
   setIndex,
+  setLoading,
+  setError,
   refreshReservationsData,
 }) {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
   function findDescription(id) {
     const room = availability.roomList.find(room => room.id === parseInt(id));
     return room.description || "";
@@ -48,12 +45,14 @@ export default function ReservationDetails({
 
   function removeEmptyFields(obj) {
     return Object.fromEntries(
+      // eslint-disable-next-line no-unused-vars
       Object.entries(obj).filter(([_, value]) => value !== "")
     );
   }
 
   function submitFormData() {
     setLoading(true);
+    setIndex(4);
 
     const formBody = removeEmptyFields(data);
     formBody.currency = currency;
@@ -85,14 +84,13 @@ export default function ReservationDetails({
       .then(data => {
         if (data.status === "error") {
           setError(data.msg);
-          return false;
         }
-        alert("Reservation created successfully");
-        setIsOpen(false);
-        refreshReservationsData();
       })
-      .catch(e => alert(e.message))
-      .finally(() => setLoading(false));
+      .catch(e => setError(e.message))
+      .finally(() => {
+        setLoading(false);
+        refreshReservationsData();
+      });
   }
 
   return (
@@ -179,21 +177,18 @@ export default function ReservationDetails({
         <button
           className={styles.cancelButton}
           onClick={() => {
-            setIndex(0);
-            setIsOpen(false);
+            setIndex(2);
           }}
         >
-          cancel
+          Back
         </button>
         <button
           className={styles.submitButton}
-          disabled={loading}
           onClick={() => submitFormData()}
         >
-          Continue
+          Confirm Reservation
         </button>
       </div>
-      <div>{error && <p>{error}</p>}</div>
     </>
   );
 }
@@ -201,7 +196,8 @@ export default function ReservationDetails({
 ReservationDetails.propTypes = {
   data: PropTypes.object.isRequired,
   availability: PropTypes.array.isRequired,
-  refreshReservationsData: PropTypes.func.isRequired,
-  setIsOpen: PropTypes.func.isRequired,
   setIndex: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  refreshReservationsData: PropTypes.func.isRequired,
 };

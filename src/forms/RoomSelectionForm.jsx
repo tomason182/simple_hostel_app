@@ -75,7 +75,6 @@ export default function RoomSelectionForm({
             id={a.id}
             data-price={a.totalRate}
             onChange={handleRoomSelection}
-            value={handleRoomValue(a.id)}
           >
             {Array.from({ length: a.availability + 1 }, (_, i) => (
               <option key={`${a.id}-${i}`} value={i}>
