@@ -1,6 +1,5 @@
 import { useState } from "react";
 import styles from "./Reservations.module.css";
-import Modal from "../../components/Modal/Modal";
 import ReservationDetails from "./components/ReservationDetails";
 import Spinner from "../../components/Spinner/Spinner";
 import { formateDateToLocale } from "../../utils/dateFormatHelper";
@@ -10,8 +9,6 @@ export default function Reservations() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Modal states
-  const [isOpen, setIsOpen] = useState(false);
   const [showReservation, setShowReservation] = useState(false);
 
   function handleSubmit(e) {

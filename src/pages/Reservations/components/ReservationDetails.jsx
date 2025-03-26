@@ -6,9 +6,11 @@ import Modal from "../../../components/Modal/Modal";
 
 // Forms
 import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesForm";
+import UpdateGuestInformation from "../../../forms/UpdateGuestInformation";
 
 export default function ReservationDetails({ id }) {
   const [activeTab, setActiveTab] = useState(0);
+  const [index, setIndex] = useState(0);
   const [reservationData, setReservationData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,11 +22,7 @@ export default function ReservationDetails({ id }) {
     const mockedReservation = {
       reservation_id: 1,
       guest_id: 34,
-      property_id: 4,
-      room_type_id: 7,
       booking_source: "website",
-      number_of_guest: 2,
-      total_price: 243,
       currency: "USD",
       advanced_payment: 133,
       advanced_payment_status: "paid",
@@ -56,6 +54,7 @@ export default function ReservationDetails({ id }) {
       content: (
         <ReservationInfo
           setIsOpen={setIsOpen}
+          setIndex={setIndex}
           reservationData={reservationData}
         />
       ),
@@ -64,8 +63,8 @@ export default function ReservationDetails({ id }) {
       label: "Guest Info",
       content: (
         <GuestInfo
-          loading={loading}
-          error={error}
+          setIsOpen={setIsOpen}
+          setIndex={setIndex}
           reservationData={reservationData}
         />
       ),
@@ -79,6 +78,25 @@ export default function ReservationDetails({ id }) {
           reservationData={reservationData}
         />
       ),
+    },
+  ];
+
+  const forms = [
+    {
+      header: "Change reservation date",
+      content: <ChangeReservationsDatesForm setIsOpen={setIsOpen} />,
+    },
+    {
+      header: "Cancel reservation",
+      content: <h1>Cancel reservation?</h1>,
+    },
+    {
+      header: "Mark reservation as no-show",
+      content: <h1>Mark reservation as no show?</h1>,
+    },
+    {
+      header: "Update guest information",
+      content: <UpdateGuestInformation setIsOpen={setIsOpen} />,
     },
   ];
 
@@ -107,15 +125,16 @@ export default function ReservationDetails({ id }) {
       <Modal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        header="Change reservations Dates"
+        header={forms[index].header}
+        display={index === 3 ? "fixed" : "center"}
       >
-        <ChangeReservationsDatesForm setIsOpen={setIsOpen} />
+        {forms[index].content}
       </Modal>
     </div>
   );
 }
 
-function ReservationInfo({ reservationData, setIsOpen }) {
+function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
   const options = {
     weekday: "long",
     year: "numeric",
@@ -173,15 +192,33 @@ function ReservationInfo({ reservationData, setIsOpen }) {
 
       <div className={styles.controlPanel}>
         <h5>Update this reservation</h5>
-        <button>Cancel Reservation</button>
-        <button>Mark reservation as no-show</button>
-        <button onClick={() => setIsOpen(true)}>Change dates</button>
+        <button
+          onClick={() => {
+            setIndex(1), setIsOpen(true);
+          }}
+        >
+          Cancel Reservation
+        </button>
+        <button
+          onClick={() => {
+            setIndex(2), setIsOpen(true);
+          }}
+        >
+          Mark reservation as no-show
+        </button>
+        <button
+          onClick={() => {
+            setIndex(0), setIsOpen(true);
+          }}
+        >
+          Change dates
+        </button>
       </div>
     </>
   );
 }
 
-function GuestInfo({ reservationData }) {
+function GuestInfo({ reservationData, setIndex, setIsOpen }) {
   return (
     <>
       <div className={styles.leftContent}>
@@ -216,7 +253,13 @@ function GuestInfo({ reservationData }) {
       </div>
       <div className={styles.controlPanel}>
         <h5>Update Guest</h5>
-        <button>Update guest info</button>
+        <button
+          onClick={() => {
+            setIndex(3), setIsOpen(true);
+          }}
+        >
+          Update guest info
+        </button>
       </div>
     </>
   );
@@ -273,10 +316,13 @@ ReservationDetails.propTypes = {
 ReservationInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  setIndex: PropTypes.func.isRequired,
 };
 
 GuestInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
+  setIndex: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 PaymentDetails.propTypes = {

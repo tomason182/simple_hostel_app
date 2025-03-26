@@ -11,6 +11,7 @@ export default function Modal({
   children,
   footer,
   closeOnOverlayClick = true,
+  display = "fixed",
 }) {
   useEffect(() => {
     const handleKeyDown = e => {
@@ -31,7 +32,11 @@ export default function Modal({
       onClick={closeOnOverlayClick ? onClose : null}
     >
       <div
-        className={styles.modalContainer}
+        className={
+          display === "fixed"
+            ? `${styles.modalContainer}`
+            : `${styles.modalContainerCenter}`
+        }
         style={{ width, height }}
         onClick={e => e.stopPropagation()}
       >
@@ -55,4 +60,5 @@ Modal.propTypes = {
   children: PropTypes.node.isRequired,
   footer: PropTypes.node,
   closeOnOverlayClick: PropTypes.bool,
+  display: PropTypes.string,
 };
