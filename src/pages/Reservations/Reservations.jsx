@@ -12,6 +12,7 @@ export default function Reservations() {
 
   // Modal states
   const [isOpen, setIsOpen] = useState(false);
+  const [showReservation, setShowReservation] = useState(false);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -67,7 +68,7 @@ export default function Reservations() {
     const checkOut = formateDateToLocale(r.check_out);
 
     return (
-      <li key={r.id} onClick={() => setIsOpen(true)}>
+      <li key={r.id} onClick={() => setShowReservation(true)}>
         <p className={styles.fullName}>{r.guest_info.full_name}</p>
         <p className={styles.dates}>{checkIn}</p>
         <p className={styles.dates}>{checkOut}</p>
@@ -75,6 +76,8 @@ export default function Reservations() {
       </li>
     );
   });
+
+  if (showReservation === true) return <ReservationDetails id={1} />;
 
   return (
     <div className={styles.content}>
@@ -97,9 +100,6 @@ export default function Reservations() {
       <ul className={styles.reservationsList}>
         {loading ? <Spinner /> : error ? <h3>{error}</h3> : list}
       </ul>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ReservationDetails id={1} />
-      </Modal>
     </div>
   );
 }

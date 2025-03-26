@@ -2,15 +2,19 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./ReservationDetails.module.css";
-import SecondaryTabs from "../../../components/Tabs/SecondaryTabs";
+import Modal from "../../../components/Modal/Modal";
 
 // Forms
 import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesForm";
 
 export default function ReservationDetails({ id }) {
+  const [activeTab, setActiveTab] = useState(0);
   const [reservationData, setReservationData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  /* Modal state */
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const mockedReservation = {
@@ -51,8 +55,7 @@ export default function ReservationDetails({ id }) {
       label: "Reservation Info",
       content: (
         <ReservationInfo
-          loading={loading}
-          error={error}
+          setIsOpen={setIsOpen}
           reservationData={reservationData}
         />
       ),
@@ -79,22 +82,40 @@ export default function ReservationDetails({ id }) {
     },
   ];
 
-  return (
-    <div className={styles.infoContainer}>
-      <h3>Reservation Details</h3>
-      <SecondaryTabs tabs={tabs} />
-    </div>
-  );
-}
-
-function ReservationInfo({ loading, error, reservationData }) {
-  const [index, setIndex] = useState(1);
-
   if (loading) return <Spinner />;
 
   if (error) return <div>Error fetching reservation data</div>;
 
-  const fullName = reservationData.first_name + " " + reservationData.last_name;
+  const fullName = reservationData?.first_name + reservationData?.last_name;
+  return (
+    <div className={styles.mainContainer}>
+      <h3>{fullName}</h3>
+      <div className={styles.header}>
+        {tabs.map((tab, index) => (
+          <button
+            key={index}
+            className={`${styles.headerButton} ${
+              index === activeTab ? styles.activeTabBtn : ""
+            }`}
+            onClick={() => setActiveTab(index)}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+      <div className={styles.content}>{tabs[activeTab].content}</div>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        header="Change reservations Dates"
+      >
+        <ChangeReservationsDatesForm setIsOpen={setIsOpen} />
+      </Modal>
+    </div>
+  );
+}
+
+function ReservationInfo({ reservationData, setIsOpen }) {
   const options = {
     weekday: "long",
     year: "numeric",
@@ -109,95 +130,90 @@ function ReservationInfo({ loading, error, reservationData }) {
     reservationData.check_out.split("-")
   ).toLocaleDateString("es", options);
 
-  if (index === 0) return <ChangeReservationsDatesForm setIndex={setIndex} />;
-
   return (
     <>
-      <h3>{fullName}</h3>
-      {/* General Reservation details */}
-      <table className={styles.infoTable}>
-        <tbody>
-          <tr>
-            <th>Arrival</th>
-            <td>{arrivalDate}</td>
-          </tr>
-          <tr>
-            <th>Departure</th>
-            <td>{departureDate}</td>
-          </tr>
-          <tr>
-            <th>Room Type</th>
-            <td>{reservationData.room_type_description}</td>
-          </tr>
-          <tr>
-            <th>Reservation Status</th>
-            <td>{reservationData.reservation_status}</td>
-          </tr>
-          <tr>
-            <th>Number of guest</th>
-            <td>{reservationData.number_of_guest}</td>
-          </tr>
-          <tr>
-            <th>Booking source</th>
-            <td>{reservationData.booking_source}</td>
-          </tr>
-
-          {reservationData.special_request !== "" && (
+      <div className={styles.leftContent}>
+        {/* General Reservation details */}
+        <table className={styles.infoTable}>
+          <tbody>
             <tr>
-              <th>Special request</th>
-              <td>{reservationData.special_request}</td>
+              <th>Arrival</th>
+              <td>{arrivalDate}</td>
             </tr>
-          )}
-        </tbody>
-      </table>
+            <tr>
+              <th>Departure</th>
+              <td>{departureDate}</td>
+            </tr>
+            <tr>
+              <th>Room Type</th>
+              <td>{reservationData.room_type_description}</td>
+            </tr>
+            <tr>
+              <th>Reservation Status</th>
+              <td>{reservationData.reservation_status}</td>
+            </tr>
+            <tr>
+              <th>Number of guest</th>
+              <td>{reservationData.number_of_guest}</td>
+            </tr>
+            <tr>
+              <th>Booking source</th>
+              <td>{reservationData.booking_source}</td>
+            </tr>
+
+            {reservationData.special_request !== "" && (
+              <tr>
+                <th>Special request</th>
+                <td>{reservationData.special_request}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+
       <div className={styles.controlPanel}>
         <h5>Update this reservation</h5>
         <button>Cancel Reservation</button>
         <button>Mark reservation as no-show</button>
-        <button onClick={() => setIndex(0)}>Change dates</button>
+        <button onClick={() => setIsOpen(true)}>Change dates</button>
       </div>
     </>
   );
 }
 
-function GuestInfo({ loading, error, reservationData }) {
-  if (loading) return <Spinner />;
-
-  if (error) return <div>Error fetching reservation data</div>;
-
-  const fullName = reservationData.first_name + " " + reservationData.last_name;
-
+function GuestInfo({ reservationData }) {
   return (
     <>
-      <h3>{fullName}</h3>
-      <table className={styles.infoTable}>
-        <tbody>
-          <tr>
-            <th>ID or Passport number</th>
-            <td>{reservationData.id_number}</td>
-          </tr>
-          <tr>
-            <th>Email</th>
-            <td>{reservationData.email}</td>
-          </tr>
-          <tr>
-            <th>Phone number</th>
-            <td>{reservationData.phone_number}</td>
-          </tr>
-          <tr>
-            <th>Country</th>
-            <td>{reservationData.country_code}</td>
-          </tr>
-          <tr>
-            <th>City</th>
-            <td>{reservationData.city}</td>
-          </tr>
-          <tr>
-            <th>Street</th>
-            <td>{reservationData.street}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div className={styles.leftContent}>
+        <table className={styles.infoTable}>
+          <tbody>
+            <tr>
+              <th>ID or Passport number</th>
+              <td>{reservationData.id_number}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{reservationData.email}</td>
+            </tr>
+            <tr>
+              <th>Phone number</th>
+              <td>{reservationData.phone_number}</td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td>{reservationData.country_code}</td>
+            </tr>
+            <tr>
+              <th>City</th>
+              <td>{reservationData.city}</td>
+            </tr>
+            <tr>
+              <th>Street</th>
+              <td>{reservationData.street}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div className={styles.controlPanel}>
         <h5>Update Guest</h5>
         <button>Update guest info</button>
@@ -206,40 +222,46 @@ function GuestInfo({ loading, error, reservationData }) {
   );
 }
 
-function PaymentDetails({ reservationData, loading, error }) {
-  if (loading) return <Spinner />;
-
-  if (error) return <div>Error fetching reservation data</div>;
+function PaymentDetails({ reservationData }) {
   return (
     <>
-      {/* Payment information */}
-      <h3>Payment Details</h3>
-      <table className={styles.paymentTable}>
-        <tbody>
-          <tr>
-            <th>Total price</th>
-            <td>$ {reservationData.total_price}</td>
-          </tr>
-          <tr>
-            <th>Payment status</th>
-            <td>{reservationData.payment_status}</td>
-          </tr>
-          <tr>
-            <th>Advance payment</th>
-            <td>$ {reservationData.advanced_payment}</td>
-          </tr>
-          <tr>
-            <th>Advance payment status</th>
-            <td>{reservationData.advanced_payment_status}</td>
-          </tr>
-          <tr className={styles.highlightRow}>
-            <th>Remaining balance</th>
-            <td>
-              $ {reservationData.total_price - reservationData.advanced_payment}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div className={styles.leftContent}>
+        {/* Payment information */}
+        <h3>Payment Details</h3>
+        <table className={styles.infoTable}>
+          <tbody>
+            <tr>
+              <th>Total price</th>
+              <td>$ {reservationData.total_price}</td>
+            </tr>
+            <tr>
+              <th>Payment status</th>
+              <td>{reservationData.payment_status}</td>
+            </tr>
+            <tr>
+              <th>Advance payment</th>
+              <td>$ {reservationData.advanced_payment}</td>
+            </tr>
+            <tr>
+              <th>Advance payment status</th>
+              <td>{reservationData.advanced_payment_status}</td>
+            </tr>
+            <tr className={styles.highlightRow}>
+              <th>Remaining balance</th>
+              <td>
+                ${" "}
+                {reservationData.total_price - reservationData.advanced_payment}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div className={styles.controlPanel}>
+        <h5>Update this reservation</h5>
+        <button>Cancel Reservation</button>
+        <button>Mark reservation as no-show</button>
+        <button>Change dates</button>
+      </div>
     </>
   );
 }
@@ -250,18 +272,13 @@ ReservationDetails.propTypes = {
 
 ReservationInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
+  setIsOpen: PropTypes.func.isRequired,
 };
 
 GuestInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
 };
 
 PaymentDetails.propTypes = {
   reservationData: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.string,
 };
