@@ -4,11 +4,13 @@ import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./ReservationDetails.module.css";
 import SecondaryTabs from "../../../components/Tabs/SecondaryTabs";
 
+// Forms
+import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesForm";
+
 export default function ReservationDetails({ id }) {
   const [reservationData, setReservationData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [toggle, setToggle] = useState("reservation");
 
   useEffect(() => {
     const mockedReservation = {
@@ -86,6 +88,8 @@ export default function ReservationDetails({ id }) {
 }
 
 function ReservationInfo({ loading, error, reservationData }) {
+  const [index, setIndex] = useState(1);
+
   if (loading) return <Spinner />;
 
   if (error) return <div>Error fetching reservation data</div>;
@@ -104,6 +108,8 @@ function ReservationInfo({ loading, error, reservationData }) {
   const departureDate = new Date(
     reservationData.check_out.split("-")
   ).toLocaleDateString("es", options);
+
+  if (index === 0) return <ChangeReservationsDatesForm setIndex={setIndex} />;
 
   return (
     <>
@@ -144,6 +150,12 @@ function ReservationInfo({ loading, error, reservationData }) {
           )}
         </tbody>
       </table>
+      <div className={styles.controlPanel}>
+        <h5>Update this reservation</h5>
+        <button>Cancel Reservation</button>
+        <button>Mark reservation as no-show</button>
+        <button onClick={() => setIndex(0)}>Change dates</button>
+      </div>
     </>
   );
 }
@@ -186,6 +198,10 @@ function GuestInfo({ loading, error, reservationData }) {
           </tr>
         </tbody>
       </table>
+      <div className={styles.controlPanel}>
+        <h5>Update Guest</h5>
+        <button>Update guest info</button>
+      </div>
     </>
   );
 }

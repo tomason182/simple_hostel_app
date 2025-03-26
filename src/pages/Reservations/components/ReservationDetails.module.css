@@ -62,3 +62,31 @@
   color: var(--button-primary);
   font-size: 1rem;
 }
+
+/* Control panel */
+.controlPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  /* border: 1px solid var(--gray-300); */
+}
+
+.controlPanel h5 {
+  font-family: "Inter", sans-serif;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.controlPanel button {
+  padding: 0.75rem 0;
+  background: none;
+  border: 1px solid var(--gray-500);
+  cursor: pointer;
+  color: var(--gray-800);
+}
+
+.controlPanel button:hover {
+  background: var(--gray-400);
+  color: #fff;
+}
