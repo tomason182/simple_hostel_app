@@ -1,159 +1,84 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./Reservations.module.css";
 import Modal from "../../components/Modal/Modal";
 import ReservationDetails from "./components/ReservationDetails";
+import Spinner from "../../components/Spinner/Spinner";
+import { formateDateToLocale } from "../../utils/dateFormatHelper";
 
 export default function Reservations() {
   const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Modal states
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const reservationsList = [
-      {
-        id: 1,
-        property_id: 1,
-        booking_source: "booking.com",
-        currency: "USD",
-        guest_info: {
-          full_name: "Larry Clark",
-        },
-        check_in: "2025-02-03",
-        check_out: "2025-02-07",
-        number_of_guest: 2,
-        total_price: 48,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [10, 11],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 2,
-        property_id: 1,
-        booking_source: "booking.com",
-        currency: "USD",
-        guest_info: {
-          full_name: "Sophia Martinez",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-09",
-        number_of_guest: 1,
-        total_price: 75,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [12],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 3,
-        property_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Michael Johnson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-07",
-        number_of_guest: 3,
-        total_price: 125,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [15, 16, 17],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 4,
-        property_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Emma Thompson",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-12",
-        number_of_guest: 2,
-        total_price: 86,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [19],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-      {
-        id: 5,
-        property_id: 1,
-        booking_source: "website",
-        currency: "USD",
-        guest_info: {
-          full_name: "Daniel Rivera",
-        },
-        check_in: "2025-02-05",
-        check_out: "2025-02-06",
-        number_of_guest: 1,
-        total_price: 12,
-        reservation_status: "confirmed",
-        payment_status: "partial",
-        assigned_beds: [20],
-        special_request: "",
-        created_by: "",
-        updated_by: "",
-        create_at: "",
-        updated_at: "",
-      },
-    ];
+  function handleSubmit(e) {
+    e.preventDefault();
 
-    setReservations(reservationsList);
-  }, []);
+    setLoading(true);
+    setError(null);
+    const from = e.target.from.value;
+    const until = e.target.until.value;
+
+    const fromFormatted = from.split("-").join("");
+    const untilFormatted = until.split("-").join("");
+
+    const url =
+      import.meta.env.VITE_URL_BASE +
+      "/reservations/find-by-range/" +
+      fromFormatted +
+      "-" +
+      untilFormatted;
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Server Error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === "error") {
+          setError(data.msg);
+          return;
+        }
+
+        if (Array.isArray(data.msg) && data.msg.length === 0) {
+          setError("No reservations found");
+          return;
+        }
+        setReservations(data.msg);
+      })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }
 
   const list = reservations.map(r => {
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    };
-    const price = Number.parseFloat(r.total_price).toFixed(2);
-    const checkIn = new Date(r.check_in.split("-")).toLocaleDateString(
-      undefined,
-      options
-    );
-    const checkOut = new Date(r.check_out.split("-")).toLocaleDateString(
-      undefined,
-      options
-    );
+    const checkIn = formateDateToLocale(r.check_in);
+    const checkOut = formateDateToLocale(r.check_out);
 
     return (
       <li key={r.id} onClick={() => setIsOpen(true)}>
         <p className={styles.fullName}>{r.guest_info.full_name}</p>
         <p className={styles.dates}>{checkIn}</p>
         <p className={styles.dates}>{checkOut}</p>
-        <p className={styles.price}>
-          <span>{r.currency}</span>&nbsp;
-          {price}
-        </p>
+        <p className={styles.price}>{r.reservation_status}</p>
       </li>
     );
   });
 
   return (
     <div className={styles.content}>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <label>
           From
           <input type="date" name="from" required aria-required />
@@ -169,7 +94,9 @@ export default function Reservations() {
         <button type="submit">Search</button>
       </form>
 
-      <ul className={styles.reservationsList}>{list}</ul>
+      <ul className={styles.reservationsList}>
+        {loading ? <Spinner /> : error ? <h3>{error}</h3> : list}
+      </ul>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <ReservationDetails id={1} />
       </Modal>

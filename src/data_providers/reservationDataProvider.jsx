@@ -124,7 +124,14 @@ export function useFetchReservationByDateRange(from, to) {
         }
         return response.json();
       })
-      .then(data => setReservations(data))
+      .then(data => {
+        if (data.status === "error") {
+          setError(data.msg);
+          return;
+        }
+
+        setReservations(data.msg);
+      })
       .catch(e => {
         console.error(e.message);
         setError(e.message);

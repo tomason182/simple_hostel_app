@@ -11,6 +11,7 @@ import CheckAvailabilityFrom from "../../forms/CheckAvailabilityForm";
 import RoomSelectionForm from "../../forms/RoomSelectionForm";
 import GuestInformationForm from "../../forms/GuestInformationForm";
 import ReservationDetails from "../../forms/ReservationDetails";
+import ReservationConfirmation from "../../forms/ReservationConfirmation";
 // Data providers
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
@@ -23,6 +24,8 @@ export default function Calendar() {
   const [startDate, setStartDate] = useState(today);
   // CREATE RESERVATION STATES
   // availability State
+  const [loadingOnSubmit, setLoadingOnSubmit] = useState(false);
+  const [errorOnSubmit, setErrorOnSubmit] = useState(null);
   const [availability, setAvailability] = useState([]);
   const [reservationFormData, setReservationFormData] = useState({
     firstName: "",
@@ -48,6 +51,8 @@ export default function Calendar() {
     () => add(fromDate, { days: lengthOfCalendar }),
     [fromDate]
   );
+
+  console.log(reservationFormData);
 
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
@@ -293,7 +298,7 @@ export default function Calendar() {
     <StepNavigation
       activeStep={currentIndex}
       steps={steps}
-      clickableSteps={false}
+      clickableSteps={true}
       onStepClick={onStepClick}
     />
   );
@@ -326,11 +331,19 @@ export default function Calendar() {
         data={reservationFormData}
         availability={availability}
         setIndex={setCurrentIndex}
-        setIsOpen={setIsOpen}
+        setLoading={setLoadingOnSubmit}
+        setError={setErrorOnSubmit}
         refreshReservationsData={refreshReservationsData}
       />
     ),
-    4: <h4>Confirmation message</h4>,
+    4: (
+      <ReservationConfirmation
+        setIsOpen={setIsOpen}
+        setIndex={setCurrentIndex}
+        loading={loadingOnSubmit}
+        error={errorOnSubmit}
+      />
+    ),
   };
 
   return (
