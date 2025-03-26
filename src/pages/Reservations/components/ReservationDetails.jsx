@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./ReservationDetails.module.css";
+import SecondaryTabs from "../../../components/Tabs/SecondaryTabs";
 
 export default function ReservationDetails({ id }) {
   const [reservationData, setReservationData] = useState(null);
@@ -43,48 +44,43 @@ export default function ReservationDetails({ id }) {
     setLoading(false);
   }, [setReservationData]);
 
+  const tabs = [
+    {
+      label: "Reservation Info",
+      content: (
+        <ReservationInfo
+          loading={loading}
+          error={error}
+          reservationData={reservationData}
+        />
+      ),
+    },
+    {
+      label: "Guest Info",
+      content: (
+        <GuestInfo
+          loading={loading}
+          error={error}
+          reservationData={reservationData}
+        />
+      ),
+    },
+    {
+      label: "Payment Details",
+      content: (
+        <PaymentDetails
+          loading={loading}
+          error={error}
+          reservationData={reservationData}
+        />
+      ),
+    },
+  ];
+
   return (
-    <div className={styles.mainContainer}>
-      <div className={styles.switchContainer}>
-        <div className={styles.switchTrack}>
-          <div
-            className={`${styles.switchIndicator} ${
-              toggle === "guest" ? styles.moveRight : ""
-            } `}
-          />
-          <button
-            className={`${styles.switchButton} ${
-              toggle === "reservation" ? styles.active : ""
-            }`}
-            onClick={() => setToggle("reservation")}
-          >
-            Reservation Info
-          </button>
-          <button
-            className={`${styles.switchButton} ${
-              toggle === "guest" ? styles.active : ""
-            }`}
-            onClick={() => setToggle("guest")}
-          >
-            Guest Info
-          </button>
-        </div>
-      </div>
-      <div className={styles.infoContainer}>
-        {toggle === "reservation" ? (
-          <ReservationInfo
-            loading={loading}
-            error={error}
-            reservationData={reservationData}
-          />
-        ) : (
-          <GuestInfo
-            loading={loading}
-            error={error}
-            reservationData={reservationData}
-          />
-        )}
-      </div>
+    <div className={styles.infoContainer}>
+      <h3>Reservation Details</h3>
+      <SecondaryTabs tabs={tabs} />
     </div>
   );
 }
@@ -148,34 +144,6 @@ function ReservationInfo({ loading, error, reservationData }) {
           )}
         </tbody>
       </table>
-      {/* Payment information */}
-      <h4>Payment Details</h4>
-      <table className={styles.paymentTable}>
-        <tbody>
-          <tr>
-            <th>Total price</th>
-            <td>$ {reservationData.total_price}</td>
-          </tr>
-          <tr>
-            <th>Payment status</th>
-            <td>{reservationData.payment_status}</td>
-          </tr>
-          <tr>
-            <th>Advance payment</th>
-            <td>$ {reservationData.advanced_payment}</td>
-          </tr>
-          <tr>
-            <th>Advance payment status</th>
-            <td>{reservationData.advanced_payment_status}</td>
-          </tr>
-          <tr className={styles.highlightRow}>
-            <th>Remaining balance</th>
-            <td>
-              $ {reservationData.total_price - reservationData.advanced_payment}
-            </td>
-          </tr>
-        </tbody>
-      </table>
     </>
   );
 }
@@ -189,7 +157,7 @@ function GuestInfo({ loading, error, reservationData }) {
 
   return (
     <>
-      <h1>{fullName}</h1>
+      <h3>{fullName}</h3>
       <table className={styles.infoTable}>
         <tbody>
           <tr>
@@ -222,6 +190,44 @@ function GuestInfo({ loading, error, reservationData }) {
   );
 }
 
+function PaymentDetails({ reservationData, loading, error }) {
+  if (loading) return <Spinner />;
+
+  if (error) return <div>Error fetching reservation data</div>;
+  return (
+    <>
+      {/* Payment information */}
+      <h3>Payment Details</h3>
+      <table className={styles.paymentTable}>
+        <tbody>
+          <tr>
+            <th>Total price</th>
+            <td>$ {reservationData.total_price}</td>
+          </tr>
+          <tr>
+            <th>Payment status</th>
+            <td>{reservationData.payment_status}</td>
+          </tr>
+          <tr>
+            <th>Advance payment</th>
+            <td>$ {reservationData.advanced_payment}</td>
+          </tr>
+          <tr>
+            <th>Advance payment status</th>
+            <td>{reservationData.advanced_payment_status}</td>
+          </tr>
+          <tr className={styles.highlightRow}>
+            <th>Remaining balance</th>
+            <td>
+              $ {reservationData.total_price - reservationData.advanced_payment}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </>
+  );
+}
+
 ReservationDetails.propTypes = {
   id: PropTypes.number.isRequired,
 };
@@ -229,11 +235,17 @@ ReservationDetails.propTypes = {
 ReservationInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string.isRequired,
+  error: PropTypes.string,
 };
 
 GuestInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
   loading: PropTypes.bool.isRequired,
-  error: PropTypes.string.isRequired,
+  error: PropTypes.string,
+};
+
+PaymentDetails.propTypes = {
+  reservationData: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
 };
