@@ -1,9 +1,9 @@
 import styles from "./defaultFormStyle.module.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import countryCodes from "../utils/country_code.json";
 
-export default function UpdateGuestInformation({ setIsOpen }) {
+export default function UpdateGuestInformation({ setIsOpen, guestData }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,6 +15,22 @@ export default function UpdateGuestInformation({ setIsOpen }) {
     postalCode: "",
     street: "",
   });
+
+  useEffect(() => {
+    setFormData({
+      firstName: guestData.first_name || "",
+      lastName: guestData.last_name || "",
+      email: guestData.contact_info.email || "",
+      phoneCode: guestData.contact_info.phone_code || "",
+      phoneNumber: guestData.contact_info.phone_number || "",
+      countryCode: guestData.address.country_code || "",
+      city: guestData.address.city || "",
+      postalCode: guestData.address.postal_code || "",
+      street: guestData.address.street || "",
+    });
+  }, [guestData]);
+
+  console.log(formData);
 
   {
     function handleChange() {
@@ -115,7 +131,7 @@ export default function UpdateGuestInformation({ setIsOpen }) {
                 onChange={handleChange}
               >
                 {countryCodes.map(c => (
-                  <option key={c.value} value={c.value}>
+                  <option key={c.value} value={c.value.toUpperCase()}>
                     {c.label}
                   </option>
                 ))}
@@ -175,4 +191,5 @@ export default function UpdateGuestInformation({ setIsOpen }) {
 
 UpdateGuestInformation.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
+  guestData: PropTypes.object.isRequired,
 };
