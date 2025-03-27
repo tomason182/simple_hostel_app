@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./ReservationDetails.module.css";
 import Modal from "../../../components/Modal/Modal";
@@ -24,16 +24,18 @@ export default function ReservationDetails({ id }) {
 
   const { roomTypes, isLoading } = useContext(RoomTypeContext);
 
-  const { reservation, loading, error } = useFetchReservationById(id);
+  const { reservation, loading, error, refreshReservationById } =
+    useFetchReservationById(id);
 
   if (loading || isLoading) return <Spinner />;
 
   if (error) return <div>Error fetching reservation data</div>;
 
-  const totalPrice = reservation.reservation.selected_rooms.reduce(
-    (acc, room) => acc + Number(room.total_amount),
-    0
-  );
+  console.log(reservation.guest);
+
+  const totalPrice = reservation.reservation.selected_rooms
+    .reduce((acc, room) => acc + Number(room.total_amount), 0)
+    .toFixed(2);
 
   const tabs = [
     {
@@ -65,6 +67,7 @@ export default function ReservationDetails({ id }) {
           error={error}
           reservationData={reservation.reservation}
           totalPrice={totalPrice}
+          roomTypes={roomTypes}
         />
       ),
     },
@@ -81,16 +84,35 @@ export default function ReservationDetails({ id }) {
     {
       header: "Cancel reservation",
       content: (
-        <CancelReservationForm name={fullName} setIsOpen={setIsOpen} id={id} />
+        <CancelReservationForm
+          name={fullName}
+          setIsOpen={setIsOpen}
+          id={id}
+          status="canceled"
+          refreshReservationById={refreshReservationById}
+        />
       ),
     },
     {
       header: "Mark reservation as no-show",
-      content: <h1>Mark reservation as no show?</h1>,
+      content: (
+        <CancelReservationForm
+          name={fullName}
+          setIsOpen={setIsOpen}
+          id={id}
+          status="no_show"
+          refreshReservationById={refreshReservationById}
+        />
+      ),
     },
     {
       header: "Update guest information",
-      content: <UpdateGuestInformation setIsOpen={setIsOpen} />,
+      content: (
+        <UpdateGuestInformation
+          setIsOpen={setIsOpen}
+          guestData={reservation.guest}
+        />
+      ),
     },
   ];
 
@@ -261,9 +283,44 @@ function GuestInfo({ guestData, setIndex, setIsOpen }) {
   );
 }
 
-function PaymentDetails({ reservationData, totalPrice }) {
-  const advancePaymentAmount = Number(reservationData.advance_payment_amount);
+function PaymentDetails({ reservationData, totalPrice, roomTypes }) {
+  const [paymentStatus, setPaymentStatus] = useState({
+    paymentStatus: "",
+    advancePaymentStatus: "",
+  });
+
+  useEffect(() => {
+    setPaymentStatus({
+      paymentStatus: reservationData.payment_status || "",
+      advancePaymentStatus: reservationData.advance_payment_status || "",
+    });
+  }, [reservationData]);
+
+  const advancePaymentAmount = Number(
+    reservationData.advance_payment_amount
+  ).toFixed(2);
   const remainingBalance = totalPrice - advancePaymentAmount;
+
+  function findRoomTypeDescription(id) {
+    const roomType = roomTypes.find(room => room.id === id);
+    return roomType.description;
+  }
+
+  function handlePaymentStatusChange(e) {
+    setPaymentStatus(prev => ({
+      ...prev,
+      paymentStatus: e.target.value,
+    }));
+    console.log(e.target.value);
+  }
+
+  function handleAdvancePaymentStatusChange(e) {
+    setPaymentStatus(prev => ({
+      ...prev,
+      advancePaymentStatus: e.target.value,
+    }));
+    console.log(e.target.value);
+  }
 
   return (
     <>
@@ -271,38 +328,59 @@ function PaymentDetails({ reservationData, totalPrice }) {
         {/* Payment information */}
         <h3>Payment Details</h3>
         <table className={styles.infoTable}>
+          <thead>
+            <tr>
+              <th>Price details</th>
+              <th>Amount</th>
+              <th>Payment status</th>
+            </tr>
+          </thead>
           <tbody>
+            {reservationData.selected_rooms.map(room => (
+              <tr key={room.room_type_id}>
+                <th>
+                  $ {room.number_of_rooms} *{" "}
+                  {findRoomTypeDescription(room.room_type_id)}
+                </th>
+                <td>$ {room.total_amount}</td>
+                <td></td>
+              </tr>
+            ))}
             <tr>
               <th>Total price</th>
               <td>$ {totalPrice}</td>
+              <td></td>
             </tr>
             <tr>
               <th>Advance payment</th>
+              <td>$ {advancePaymentAmount}</td>
               <td>
-                $ {advancePaymentAmount}{" "}
-                <span className={styles.status}>
-                  {reservationData.advance_payment_status}
-                </span>
+                <select
+                  value={paymentStatus.advancePaymentStatus}
+                  onChange={handleAdvancePaymentStatusChange}
+                >
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                </select>
               </td>
             </tr>
             <tr className={styles.highlightRow}>
               <th>Remaining balance</th>
+              <td>$ {remainingBalance.toFixed(2)}</td>
               <td>
-                $ {remainingBalance}{" "}
-                <span className={styles.status}>
-                  {reservationData.payment_status}
-                </span>
+                <select
+                  value={paymentStatus.paymentStatus}
+                  onChange={handlePaymentStatusChange}
+                >
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                </select>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div className={styles.controlPanel}>
-        <h5>Update this reservation</h5>
-        <button>Cancel Reservation</button>
-        <button>Mark reservation as no-show</button>
-        <button>Change dates</button>
-      </div>
+      <div className={styles.controlPanel}></div>
     </>
   );
 }
@@ -327,4 +405,5 @@ GuestInfo.propTypes = {
 PaymentDetails.propTypes = {
   reservationData: PropTypes.object.isRequired,
   totalPrice: PropTypes.number.isRequired,
+  roomTypes: PropTypes.array.isRequired,
 };
