@@ -158,7 +158,7 @@ export function useFetchReservationById(id) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
+  const fetchReservationById = useCallback(() => {
     const url =
       import.meta.env.VITE_URL_BASE + "/reservations/find-by-id/" + id;
     const options = {
@@ -188,9 +188,14 @@ export function useFetchReservationById(id) {
       .finally(() => setLoading(false));
   }, [id]);
 
+  useEffect(() => {
+    fetchReservationById();
+  }, [fetchReservationById]);
+
   return {
     reservation,
     loading,
     error,
+    refreshReservationById: fetchReservationById,
   };
 }
