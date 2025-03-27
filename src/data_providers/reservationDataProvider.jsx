@@ -92,7 +92,7 @@ export function useGetLatestReservations() {
   };
 }
 
-export function useFetchReservationByDateRange(from, to) {
+export function useFetchReservationByDateRange(from, to, type = "calendar") {
   const [reservations, setReservations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -107,7 +107,9 @@ export function useFetchReservationByDateRange(from, to) {
       "/reservations/find-by-range/" +
       fromDate +
       "-" +
-      toDate;
+      toDate +
+      "-" +
+      type;
     const options = {
       mode: "cors",
       method: "GET",

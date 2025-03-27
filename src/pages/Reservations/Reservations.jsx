@@ -30,7 +30,9 @@ export default function Reservations() {
       "/reservations/find-by-range/" +
       fromFormatted +
       "-" +
-      untilFormatted;
+      untilFormatted +
+      "-" +
+      "search";
     const options = {
       mode: "cors",
       method: "GET",
