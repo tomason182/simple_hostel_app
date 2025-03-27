@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./ReservationDetails.module.css";
 import Modal from "../../../components/Modal/Modal";
+import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
 
 // Helpers
 import { formateDateToLocale } from "../../../utils/dateFormatHelper";
@@ -20,11 +21,13 @@ export default function ReservationDetails({ id }) {
   /* Modal state */
   const [isOpen, setIsOpen] = useState(false);
 
+  const { roomTypes, isLoading } = useContext(RoomTypeContext);
+
   const { reservation, loading, error } = useFetchReservationById(id);
 
   console.log(reservation);
 
-  if (loading) return <Spinner />;
+  if (loading || isLoading) return <Spinner />;
 
   if (error) return <div>Error fetching reservation data</div>;
 
@@ -41,6 +44,7 @@ export default function ReservationDetails({ id }) {
           setIsOpen={setIsOpen}
           setIndex={setIndex}
           reservationData={reservation.reservation}
+          roomTypes={roomTypes}
         />
       ),
     },
@@ -87,6 +91,7 @@ export default function ReservationDetails({ id }) {
   ];
 
   const fullName = reservation.guest?.first_name + reservation.guest?.last_name;
+
   return (
     <div className={styles.mainContainer}>
       <h3>{fullName}</h3>
@@ -116,9 +121,14 @@ export default function ReservationDetails({ id }) {
   );
 }
 
-function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
+function ReservationInfo({ reservationData, roomTypes, setIsOpen, setIndex }) {
   const arrivalDate = formateDateToLocale(reservationData.check_in);
   const departureDate = formateDateToLocale(reservationData.check_out);
+
+  function findRoomTypeDescription(id) {
+    const roomType = roomTypes.find(room => room.id === id);
+    return roomType.description;
+  }
 
   return (
     <>
@@ -126,6 +136,14 @@ function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
         {/* General Reservation details */}
         <table className={styles.infoTable}>
           <tbody>
+            <tr>
+              <th>Status</th>
+              <td>
+                <span className={styles.status}>
+                  {reservationData.reservation_status}
+                </span>
+              </td>
+            </tr>
             <tr>
               <th>Arrival</th>
               <td>{arrivalDate}</td>
@@ -143,14 +161,11 @@ function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
               <tr key={room.room_type_id}>
                 <th>Room {index + 1}</th>
                 <td>
-                  {room.number_of_rooms} * {room.room_type_id}
+                  {room.number_of_rooms} *{" "}
+                  {findRoomTypeDescription(room.room_type_id)}
                 </td>
               </tr>
             ))}
-            <tr>
-              <th>Reservation Status</th>
-              <td>{reservationData.reservation_status}</td>
-            </tr>
             <tr>
               <th>Booking source</th>
               <td>{reservationData.booking_source}</td>
@@ -295,6 +310,7 @@ ReservationInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   setIndex: PropTypes.func.isRequired,
+  roomTypes: PropTypes.array.isRequired,
 };
 
 GuestInfo.propTypes = {
