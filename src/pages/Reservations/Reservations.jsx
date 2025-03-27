@@ -9,7 +9,10 @@ export default function Reservations() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const [showReservation, setShowReservation] = useState(false);
+  const [showReservation, setShowReservation] = useState({
+    status: false,
+    id: 0,
+  });
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -65,7 +68,10 @@ export default function Reservations() {
     const checkOut = formateDateToLocale(r.check_out);
 
     return (
-      <li key={r.id} onClick={() => setShowReservation(true)}>
+      <li
+        key={r.id}
+        onClick={() => setShowReservation({ status: true, id: r.id })}
+      >
         <p className={styles.fullName}>{r.guest_info.full_name}</p>
         <p className={styles.dates}>{checkIn}</p>
         <p className={styles.dates}>{checkOut}</p>
@@ -74,7 +80,8 @@ export default function Reservations() {
     );
   });
 
-  if (showReservation === true) return <ReservationDetails id={1} />;
+  if (showReservation.status === true)
+    return <ReservationDetails id={showReservation.id} />;
 
   return (
     <div className={styles.content}>

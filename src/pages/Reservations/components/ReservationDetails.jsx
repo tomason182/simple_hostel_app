@@ -1,8 +1,14 @@
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./ReservationDetails.module.css";
 import Modal from "../../../components/Modal/Modal";
+
+// Helpers
+import { formateDateToLocale } from "../../../utils/dateFormatHelper";
+
+// Data provider
+import { useFetchReservationById } from "../../../data_providers/reservationDataProvider";
 
 // Forms
 import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesForm";
@@ -11,42 +17,21 @@ import UpdateGuestInformation from "../../../forms/UpdateGuestInformation";
 export default function ReservationDetails({ id }) {
   const [activeTab, setActiveTab] = useState(0);
   const [index, setIndex] = useState(0);
-  const [reservationData, setReservationData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
   /* Modal state */
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    const mockedReservation = {
-      reservation_id: 1,
-      guest_id: 34,
-      booking_source: "website",
-      currency: "USD",
-      advanced_payment: 133,
-      advanced_payment_status: "paid",
-      reservation_status: "confirmed",
-      payment_status: "partial",
-      check_in: "2025-02-16",
-      check_out: "2025-02-19",
-      special_request: "late check in. After 9 PM",
-      reservation_created_at: "2025-02-10 14:30:00",
-      reservation_updated_at: "2025-02-11 09:15:00",
-      first_name: "Samanta",
-      last_name: "Clark",
-      id_number: "123456",
-      email: "guest@email.com",
-      phone_number: "",
-      street: "La Loma del Culo 123",
-      city: "The capital",
-      country_code: "AR",
-      room_type_description: "6 bed max dormitory",
-    };
+  const { reservation, loading, error } = useFetchReservationById(id);
 
-    setReservationData(mockedReservation);
-    setLoading(false);
-  }, [setReservationData]);
+  console.log(reservation);
+
+  if (loading) return <Spinner />;
+
+  if (error) return <div>Error fetching reservation data</div>;
+
+  const totalPrice = reservation.reservation.selected_rooms.reduce(
+    (acc, room) => acc + Number(room.total_amount),
+    0
+  );
 
   const tabs = [
     {
@@ -55,7 +40,7 @@ export default function ReservationDetails({ id }) {
         <ReservationInfo
           setIsOpen={setIsOpen}
           setIndex={setIndex}
-          reservationData={reservationData}
+          reservationData={reservation.reservation}
         />
       ),
     },
@@ -65,7 +50,7 @@ export default function ReservationDetails({ id }) {
         <GuestInfo
           setIsOpen={setIsOpen}
           setIndex={setIndex}
-          reservationData={reservationData}
+          guestData={reservation.guest}
         />
       ),
     },
@@ -75,7 +60,8 @@ export default function ReservationDetails({ id }) {
         <PaymentDetails
           loading={loading}
           error={error}
-          reservationData={reservationData}
+          reservationData={reservation.reservation}
+          totalPrice={totalPrice}
         />
       ),
     },
@@ -100,11 +86,7 @@ export default function ReservationDetails({ id }) {
     },
   ];
 
-  if (loading) return <Spinner />;
-
-  if (error) return <div>Error fetching reservation data</div>;
-
-  const fullName = reservationData?.first_name + reservationData?.last_name;
+  const fullName = reservation.guest?.first_name + reservation.guest?.last_name;
   return (
     <div className={styles.mainContainer}>
       <h3>{fullName}</h3>
@@ -135,19 +117,8 @@ export default function ReservationDetails({ id }) {
 }
 
 function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
-  const options = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  };
-  const arrivalDate = new Date(
-    reservationData.check_in.split("-")
-  ).toLocaleDateString("es", options);
-
-  const departureDate = new Date(
-    reservationData.check_out.split("-")
-  ).toLocaleDateString("es", options);
+  const arrivalDate = formateDateToLocale(reservationData.check_in);
+  const departureDate = formateDateToLocale(reservationData.check_out);
 
   return (
     <>
@@ -164,16 +135,21 @@ function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
               <td>{departureDate}</td>
             </tr>
             <tr>
-              <th>Room Type</th>
-              <td>{reservationData.room_type_description}</td>
+              <th colSpan={2} style={{ textAlign: "center" }}>
+                Selected rooms
+              </th>
             </tr>
+            {reservationData.selected_rooms.map((room, index) => (
+              <tr key={room.room_type_id}>
+                <th>Room {index + 1}</th>
+                <td>
+                  {room.number_of_rooms} * {room.room_type_id}
+                </td>
+              </tr>
+            ))}
             <tr>
               <th>Reservation Status</th>
               <td>{reservationData.reservation_status}</td>
-            </tr>
-            <tr>
-              <th>Number of guest</th>
-              <td>{reservationData.number_of_guest}</td>
             </tr>
             <tr>
               <th>Booking source</th>
@@ -218,7 +194,7 @@ function ReservationInfo({ reservationData, setIsOpen, setIndex }) {
   );
 }
 
-function GuestInfo({ reservationData, setIndex, setIsOpen }) {
+function GuestInfo({ guestData, setIndex, setIsOpen }) {
   return (
     <>
       <div className={styles.leftContent}>
@@ -226,27 +202,27 @@ function GuestInfo({ reservationData, setIndex, setIsOpen }) {
           <tbody>
             <tr>
               <th>ID or Passport number</th>
-              <td>{reservationData.id_number}</td>
+              <td>{guestData.id_number}</td>
             </tr>
             <tr>
               <th>Email</th>
-              <td>{reservationData.email}</td>
+              <td>{guestData.contact_info.email}</td>
             </tr>
             <tr>
               <th>Phone number</th>
-              <td>{reservationData.phone_number}</td>
+              <td>{guestData.contact_info.phone_number}</td>
             </tr>
             <tr>
               <th>Country</th>
-              <td>{reservationData.country_code}</td>
+              <td>{guestData.address.country_code}</td>
             </tr>
             <tr>
               <th>City</th>
-              <td>{reservationData.city}</td>
+              <td>{guestData.address.city}</td>
             </tr>
             <tr>
               <th>Street</th>
-              <td>{reservationData.street}</td>
+              <td>{guestData.address.street}</td>
             </tr>
           </tbody>
         </table>
@@ -265,7 +241,10 @@ function GuestInfo({ reservationData, setIndex, setIsOpen }) {
   );
 }
 
-function PaymentDetails({ reservationData }) {
+function PaymentDetails({ reservationData, totalPrice }) {
+  const advancePaymentAmount = Number(reservationData.advance_payment_amount);
+  const remainingBalance = totalPrice - advancePaymentAmount;
+
   return (
     <>
       <div className={styles.leftContent}>
@@ -275,25 +254,24 @@ function PaymentDetails({ reservationData }) {
           <tbody>
             <tr>
               <th>Total price</th>
-              <td>$ {reservationData.total_price}</td>
-            </tr>
-            <tr>
-              <th>Payment status</th>
-              <td>{reservationData.payment_status}</td>
+              <td>$ {totalPrice}</td>
             </tr>
             <tr>
               <th>Advance payment</th>
-              <td>$ {reservationData.advanced_payment}</td>
-            </tr>
-            <tr>
-              <th>Advance payment status</th>
-              <td>{reservationData.advanced_payment_status}</td>
+              <td>
+                $ {advancePaymentAmount}{" "}
+                <span className={styles.status}>
+                  {reservationData.advance_payment_status}
+                </span>
+              </td>
             </tr>
             <tr className={styles.highlightRow}>
               <th>Remaining balance</th>
               <td>
-                ${" "}
-                {reservationData.total_price - reservationData.advanced_payment}
+                $ {remainingBalance}{" "}
+                <span className={styles.status}>
+                  {reservationData.payment_status}
+                </span>
               </td>
             </tr>
           </tbody>
@@ -320,11 +298,12 @@ ReservationInfo.propTypes = {
 };
 
 GuestInfo.propTypes = {
-  reservationData: PropTypes.object.isRequired,
+  guestData: PropTypes.object.isRequired,
   setIndex: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
 };
 
 PaymentDetails.propTypes = {
   reservationData: PropTypes.object.isRequired,
+  totalPrice: PropTypes.number.isRequired,
 };

@@ -156,35 +156,35 @@ export function useFetchReservationById(id) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const url = import.meta.env.VITE_URL_BASE + "/reservations/find-by-id/" + id;
-  const options = {
-    mode: "cors",
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  };
+  useEffect(() => {
+    const url =
+      import.meta.env.VITE_URL_BASE + "/reservations/find-by-id/" + id;
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
 
-  setLoading(true);
-  setError(null);
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to fetch reservation. Server Error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status && data.status === "error") {
+          setError(data.msg || "Unknown error");
+        }
 
-  fetch(url, options)
-    .then(response => {
-      if (response.status >= 400) {
-        throw new Error("Unable to fetch reservation. Server Error");
-      }
-      return response.json();
-    })
-    .then(data => {
-      if (data.status && data.status === "error") {
-        setError(data.msg || "Unknown error");
-      }
-
-      setReservation(data);
-    })
-    .catch(e => setError(e.message))
-    .finally(() => setLoading(false));
+        setReservation(data);
+      })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }, [id]);
 
   return {
     reservation,

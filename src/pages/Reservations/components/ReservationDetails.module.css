@@ -111,6 +111,15 @@
   font-size: 1rem;
 }
 
+.status {
+  border-radius: 15px;
+  background-color: green;
+  font-size: 0.875rem;
+  color: #fff;
+  padding: 0.25rem 0.5rem;
+  margin-left: 1rem;
+}
+
 /* Control panel */
 .controlPanel {
   display: flex;
