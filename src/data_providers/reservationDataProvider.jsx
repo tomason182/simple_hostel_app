@@ -139,7 +139,7 @@ export function useFetchReservationByDateRange(from, to, type = "calendar") {
         setError(e.message);
       })
       .finally(() => setIsLoading(false));
-  }, [fromDate, toDate]);
+  }, [fromDate, toDate, type]);
 
   useEffect(() => {
     fetchReservations();

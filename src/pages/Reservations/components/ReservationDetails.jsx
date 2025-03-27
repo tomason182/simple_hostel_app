@@ -14,6 +14,7 @@ import { useFetchReservationById } from "../../../data_providers/reservationData
 // Forms
 import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesForm";
 import UpdateGuestInformation from "../../../forms/UpdateGuestInformation";
+import CancelReservationForm from "../../../forms/CancelReservationForm";
 
 export default function ReservationDetails({ id }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -24,8 +25,6 @@ export default function ReservationDetails({ id }) {
   const { roomTypes, isLoading } = useContext(RoomTypeContext);
 
   const { reservation, loading, error } = useFetchReservationById(id);
-
-  console.log(reservation);
 
   if (loading || isLoading) return <Spinner />;
 
@@ -71,6 +70,9 @@ export default function ReservationDetails({ id }) {
     },
   ];
 
+  const fullName =
+    reservation.guest?.first_name + " " + reservation.guest?.last_name;
+
   const forms = [
     {
       header: "Change reservation date",
@@ -78,7 +80,9 @@ export default function ReservationDetails({ id }) {
     },
     {
       header: "Cancel reservation",
-      content: <h1>Cancel reservation?</h1>,
+      content: (
+        <CancelReservationForm name={fullName} setIsOpen={setIsOpen} id={id} />
+      ),
     },
     {
       header: "Mark reservation as no-show",
@@ -89,8 +93,6 @@ export default function ReservationDetails({ id }) {
       content: <UpdateGuestInformation setIsOpen={setIsOpen} />,
     },
   ];
-
-  const fullName = reservation.guest?.first_name + reservation.guest?.last_name;
 
   return (
     <div className={styles.mainContainer}>
@@ -185,21 +187,24 @@ function ReservationInfo({ reservationData, roomTypes, setIsOpen, setIndex }) {
         <h5>Update this reservation</h5>
         <button
           onClick={() => {
-            setIndex(1), setIsOpen(true);
+            setIndex(1);
+            setIsOpen(true);
           }}
         >
           Cancel Reservation
         </button>
         <button
           onClick={() => {
-            setIndex(2), setIsOpen(true);
+            setIndex(2);
+            setIsOpen(true);
           }}
         >
           Mark reservation as no-show
         </button>
         <button
           onClick={() => {
-            setIndex(0), setIsOpen(true);
+            setIndex(0);
+            setIsOpen(true);
           }}
         >
           Change dates
