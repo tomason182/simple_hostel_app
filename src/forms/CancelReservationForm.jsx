@@ -2,7 +2,13 @@ import PropTypes from "prop-types";
 import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
 
-export default function CancelReservationForm({ name, setIsOpen, id }) {
+export default function CancelReservationForm({
+  name,
+  setIsOpen,
+  id,
+  status = "canceled",
+  refreshReservationById,
+}) {
   const [loading, setLoading] = useState(false);
 
   function handleOnClick(id) {
@@ -12,7 +18,7 @@ export default function CancelReservationForm({ name, setIsOpen, id }) {
       "/reservations/change-status/" +
       id +
       "-" +
-      "canceled";
+      status;
     const options = {
       mode: "cors",
       method: "PUT",
@@ -39,6 +45,7 @@ export default function CancelReservationForm({ name, setIsOpen, id }) {
       })
       .catch(e => console.error(e.message))
       .finally(() => {
+        refreshReservationById();
         setLoading(false);
         alert(message.msg);
         setIsOpen(false);
@@ -47,7 +54,8 @@ export default function CancelReservationForm({ name, setIsOpen, id }) {
   return (
     <>
       <p className={styles.subtitle} style={{ margin: "0" }}>
-        Mark {name} reservation as canceled?
+        Mark {name} reservation {status === "canceled" ? "canceled" : "no-show"}
+        ?
       </p>
       <div className={styles.buttonGroup}>
         <button
@@ -72,4 +80,6 @@ CancelReservationForm.propTypes = {
   name: PropTypes.string.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
+  status: PropTypes.string,
+  refreshReservationById: PropTypes.func.isRequired,
 };
