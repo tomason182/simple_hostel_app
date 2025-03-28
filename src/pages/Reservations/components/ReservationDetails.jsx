@@ -44,6 +44,7 @@ export default function ReservationDetails({ id }) {
           setIndex={setIndex}
           reservationData={reservation.reservation}
           roomTypes={roomTypes}
+          refreshData={refreshReservationById}
         />
       ),
     },
@@ -61,11 +62,10 @@ export default function ReservationDetails({ id }) {
       label: "Payment Details",
       content: (
         <PaymentDetails
-          loading={loading}
-          error={error}
           reservationData={reservation.reservation}
           totalPrice={totalPrice}
           roomTypes={roomTypes}
+          refreshData={refreshReservationById}
         />
       ),
     },
@@ -144,15 +144,56 @@ export default function ReservationDetails({ id }) {
   );
 }
 
-function ReservationInfo({ reservationData, roomTypes, setIsOpen, setIndex }) {
+function ReservationInfo({
+  reservationData,
+  roomTypes,
+  setIsOpen,
+  setIndex,
+  refreshData,
+}) {
+  const [reservationStatus, setReservationStatus] = useState("");
+  const [loading, setLoading] = useState(false);
   const arrivalDate = formateDateToLocale(reservationData.check_in);
   const departureDate = formateDateToLocale(reservationData.check_out);
+
+  useEffect(() => {
+    setReservationStatus(reservationData.reservation_status);
+  }, [reservationData]);
 
   function findRoomTypeDescription(id) {
     const roomType = roomTypes.find(room => room.id === id);
     return roomType.description;
   }
 
+  function handleChange(e) {
+    const url =
+      import.meta.env.VITE_URL_BASE +
+      "/reservations/change-status/" +
+      reservationData.id +
+      "-" +
+      e.target.value;
+
+    const options = {
+      mode: "cors",
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to update payment status. Server Error");
+        }
+
+        alert("Payment status updated successfully");
+        refreshData();
+      })
+      .catch(e => alert(e.message))
+      .finally(() => setLoading(false));
+  }
   return (
     <>
       <div className={styles.leftContent}>
@@ -211,6 +252,7 @@ function ReservationInfo({ reservationData, roomTypes, setIsOpen, setIndex }) {
             setIndex(1);
             setIsOpen(true);
           }}
+          disabled={loading}
         >
           Cancel Reservation
         </button>
@@ -219,6 +261,7 @@ function ReservationInfo({ reservationData, roomTypes, setIsOpen, setIndex }) {
             setIndex(2);
             setIsOpen(true);
           }}
+          disabled={loading}
         >
           Mark reservation as no-show
         </button>
@@ -227,9 +270,25 @@ function ReservationInfo({ reservationData, roomTypes, setIsOpen, setIndex }) {
             setIndex(0);
             setIsOpen(true);
           }}
+          disabled={loading}
         >
           Change dates
         </button>
+        <br />
+        <span style={{ fontSize: "12px", color: "#000", marginBottom: "10px" }}>
+          -- Change payment status --
+        </span>
+        <select
+          name="reservationStatus"
+          value={reservationStatus}
+          onChange={handleChange}
+          disabled={loading}
+        >
+          <option value="canceled">Canceled</option>
+          <option value="no_show">No-show</option>
+          <option value="provisional">Provisional</option>
+          <option value="confirmed">Confirmed</option>
+        </select>
       </div>
     </>
   );
@@ -282,17 +341,17 @@ function GuestInfo({ guestData, setIndex, setIsOpen }) {
   );
 }
 
-function PaymentDetails({ reservationData, totalPrice, roomTypes }) {
-  const [paymentStatus, setPaymentStatus] = useState({
-    paymentStatus: "",
-    advancePaymentStatus: "",
-  });
+function PaymentDetails({
+  reservationData,
+  totalPrice,
+  roomTypes,
+  refreshData,
+}) {
+  const [paymentStatus, setPaymentStatus] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setPaymentStatus({
-      paymentStatus: reservationData.payment_status || "",
-      advancePaymentStatus: reservationData.advance_payment_status || "",
-    });
+    setPaymentStatus(reservationData.payment_status || "");
   }, [reservationData]);
 
   const advancePaymentAmount = Number(
@@ -306,19 +365,58 @@ function PaymentDetails({ reservationData, totalPrice, roomTypes }) {
   }
 
   function handlePaymentStatusChange(e) {
-    setPaymentStatus(prev => ({
-      ...prev,
-      paymentStatus: e.target.value,
-    }));
-    console.log(e.target.value);
+    const url =
+      import.meta.env.VITE_URL_BASE +
+      "/reservations/change-payment-status/" +
+      reservationData.id +
+      "-" +
+      e.target.value;
+
+    const options = {
+      mode: "cors",
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to update payment status. Server Error");
+        }
+
+        alert("Payment status updated successfully");
+        refreshData();
+      })
+      .catch(e => alert(e.message))
+      .finally(() => setLoading(false));
   }
 
-  function handleAdvancePaymentStatusChange(e) {
-    setPaymentStatus(prev => ({
-      ...prev,
-      advancePaymentStatus: e.target.value,
-    }));
-    console.log(e.target.value);
+  let status = "";
+  let advancePayStatus = "";
+
+  switch (paymentStatus) {
+    case "pending":
+      status = "Pending";
+      advancePayStatus = "Pending";
+      break;
+    case "partial":
+      status = "Pending";
+      advancePayStatus = "Paid";
+      break;
+    case "paid":
+      status = "Paid";
+      advancePayStatus = "Paid";
+      break;
+    case "refunded":
+      status = "Canceled";
+      advancePayStatus = "Refunded";
+      break;
+    case "fully_refunded":
+      status = "Refunded";
+      advancePayStatus = "Refunded";
   }
 
   return (
@@ -338,7 +436,7 @@ function PaymentDetails({ reservationData, totalPrice, roomTypes }) {
             {reservationData.selected_rooms.map(room => (
               <tr key={room.room_type_id}>
                 <th>
-                  $ {room.number_of_rooms} *{" "}
+                  {room.number_of_rooms} *{" "}
                   {findRoomTypeDescription(room.room_type_id)}
                 </th>
                 <td>$ {room.total_amount}</td>
@@ -353,33 +451,44 @@ function PaymentDetails({ reservationData, totalPrice, roomTypes }) {
             <tr>
               <th>Advance payment</th>
               <td>$ {advancePaymentAmount}</td>
-              <td>
-                <select
-                  value={paymentStatus.advancePaymentStatus}
-                  onChange={handleAdvancePaymentStatusChange}
-                >
-                  <option value="paid">Paid</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </td>
+              <td>{advancePayStatus}</td>
             </tr>
             <tr className={styles.highlightRow}>
               <th>Remaining balance</th>
               <td>$ {remainingBalance.toFixed(2)}</td>
-              <td>
-                <select
-                  value={paymentStatus.paymentStatus}
-                  onChange={handlePaymentStatusChange}
-                >
-                  <option value="paid">Paid</option>
-                  <option value="pending">Pending</option>
-                </select>
-              </td>
+              <td>{status}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div className={styles.controlPanel}></div>
+      <div className={styles.controlPanel}>
+        <span style={{ fontSize: "14px", color: "#333", marginBottom: "10px" }}>
+          -- Change payment status --
+        </span>
+        <select
+          value={paymentStatus}
+          onChange={handlePaymentStatusChange}
+          disabled={loading}
+        >
+          <option value="pending">Pending</option>
+          <option value="partial">Partial</option>
+          <option value="paid">Paid</option>
+          <option value="refunded">Refunded</option>
+        </select>
+        <div className={styles.statusNotes}>
+          <p>Statuses</p>
+          <ul>
+            <li>Pending: Deposit and remaining balance unpaid</li>
+            <li>Partial: Deposit paid. Remaining balance Pending</li>
+            <li>Paid: Deposit and remaining balance paid</li>
+            <li>Refunded: Deposit refunded</li>
+            <li>
+              Fully Refunded: Total amount refunded (deposit + remaining
+              balance)
+            </li>
+          </ul>
+        </div>
+      </div>
     </>
   );
 }
@@ -393,6 +502,7 @@ ReservationInfo.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
   setIndex: PropTypes.func.isRequired,
   roomTypes: PropTypes.array.isRequired,
+  refreshData: PropTypes.func.isRequired,
 };
 
 GuestInfo.propTypes = {
@@ -405,4 +515,5 @@ PaymentDetails.propTypes = {
   reservationData: PropTypes.object.isRequired,
   totalPrice: PropTypes.number.isRequired,
   roomTypes: PropTypes.array.isRequired,
+  refreshData: PropTypes.func.isRequired,
 };

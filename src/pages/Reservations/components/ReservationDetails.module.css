@@ -147,3 +147,21 @@
   background: var(--gray-400);
   color: #fff;
 }
+
+/* Status notes */
+
+.statusNotes {
+  font-size: 14px;
+}
+
+.statusNotes p {
+  color: var(--gray-900);
+}
+
+.statusNotes ul {
+  color: var(--gray-600);
+  list-style: circle;
+  margin: 0;
+  padding: 1rem;
+  text-align: left;
+}
