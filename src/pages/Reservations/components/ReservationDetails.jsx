@@ -31,8 +31,6 @@ export default function ReservationDetails({ id }) {
 
   if (error) return <div>Error fetching reservation data</div>;
 
-  console.log(reservation.guest);
-
   const totalPrice = reservation.reservation.selected_rooms
     .reduce((acc, room) => acc + Number(room.total_amount), 0)
     .toFixed(2);
@@ -111,6 +109,7 @@ export default function ReservationDetails({ id }) {
         <UpdateGuestInformation
           setIsOpen={setIsOpen}
           guestData={reservation.guest}
+          refreshData={refreshReservationById}
         />
       ),
     },
