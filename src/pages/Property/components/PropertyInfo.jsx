@@ -95,11 +95,15 @@ export default function PropertyInfo({
           ) : (
             <ul className={styles.list}>
               <li>
-                <span>Email:</span> {contactInfoData.email}
+                <span>Email:</span>
+                <span>{contactInfoData.email}</span>
               </li>
               <li>
-                <span>Phone number:</span> {contactInfoData.country_code}
-                {contactInfoData.phone_number}
+                <span>Phone number:</span>{" "}
+                <span>
+                  {contactInfoData.country_code}
+                  {contactInfoData.phone_number}
+                </span>
               </li>
             </ul>
           )}
@@ -110,32 +114,36 @@ export default function PropertyInfo({
           ) : (
             <ul className={styles.list}>
               <li>
-                <span>Hostel ID:</span> {propertyData.id}
+                <span>Hostel ID:</span> <span>{propertyData.id}</span>
               </li>
               <li>
                 <span>Currency Preference:</span>
-                <ul>
+                <ul className={styles.innerList}>
                   <li>
-                    <span>Base currency:</span>{" "}
-                    {propertyData?.currencies.base_currency}
+                    <span>Base currency:</span>
+                    <span>{propertyData?.currencies.base_currency}</span>
                   </li>
                   <li>
-                    <span>Payment currency:</span>{" "}
-                    {propertyData?.currencies.payment_currency}
+                    <span>Payment currency:</span>
+                    <span>{propertyData?.currencies.payment_currency}</span>
                   </li>
                 </ul>
               </li>
               <li>
-                <span>Street:</span> {propertyData?.address.street}
+                <span>Street:</span>
+                <span>{propertyData?.address.street}</span>
               </li>
               <li>
-                <span>City:</span> {propertyData?.address.city}
+                <span>City:</span>
+                <span>{propertyData?.address.city}</span>
               </li>
               <li>
-                <span>Country:</span> {country.label}
+                <span>Country:</span>
+                <span>{country.label}</span>
               </li>
               <li>
-                <span>Postal code:</span> {propertyData?.address.postal_code}
+                <span>Postal code:</span>
+                <span>{propertyData?.address.postal_code}</span>
               </li>
             </ul>
           )}

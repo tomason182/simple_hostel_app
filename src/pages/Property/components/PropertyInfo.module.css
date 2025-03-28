@@ -12,23 +12,19 @@
 
 .list li {
   padding: 0.2rem 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.25rem;
+  flex-wrap: wrap;
 }
 
-.list li p {
-  margin: 0.5rem 0;
-  font-family: "Inter", sans-serif;
-  font-size: 0.875rem;
-  color: var(--gray-600);
-  text-align: right;
-}
-
-.list li span {
+.list li span:first-child {
   font-family: "Inter-Bold", sans-serif;
   font-weight: bold;
 }
 
-.list li span::after {
-  color: red;
+.innerList {
+  width: 100%;
 }
 
 /* Team members list */
