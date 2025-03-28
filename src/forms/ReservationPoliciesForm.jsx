@@ -9,21 +9,19 @@ export default function ReservationPoliciesForm({
 }) {
   const [formData, setFormData] = useState({
     min_advance_booking: reservationPoliciesData?.min_advance_booking || 1,
-    min_length_stay: reservationPoliciesData?.min_length_stay || 0,
+    min_length_stay: reservationPoliciesData?.min_length_stay || 1,
     max_length_stay: reservationPoliciesData?.max_length_stay || 0,
-    check_in_from: reservationPoliciesData?.check_in_from || "11:00",
-    check_in_to: reservationPoliciesData?.check_in_to || "14:00",
-    check_out_until: reservationPoliciesData?.check_out_until || "21:00",
+    check_in_from: reservationPoliciesData?.check_in_from || "14:00",
+    check_in_to: reservationPoliciesData?.check_in_to || "21:00",
+    check_out_until: reservationPoliciesData?.check_out_until || "11:00",
     payment_methods_accepted:
       reservationPoliciesData?.payment_methods_accepted || [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(formData);
-
   const availablePaymentMethods = [
-    { id: "credit_debit", label: "Credit or Debit Card" },
+    { id: "debit_credit", label: "Debit or Credit Card" },
     { id: "cash", label: "cash" },
     { id: "bank_transfer", label: "Bank Transfer" },
     { id: "bitcoin", label: "Bitcoin" },
@@ -85,7 +83,8 @@ export default function ReservationPoliciesForm({
         closeModal();
         alert("Reservation policies updated successfully");
       })
-      .catch(e => setError(e.message));
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
   }
 
   return (
