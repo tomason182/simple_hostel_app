@@ -34,7 +34,7 @@
   color: var(--gray-500);
 }
 
-.list li span {
+.list li span:first-child {
   font-family: "Inter-Bold", sans-serif;
   font-weight: bold;
   color: var(--gray-700);

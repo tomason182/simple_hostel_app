@@ -49,7 +49,7 @@ export default function Policies() {
   // Policies States
   const reservationPolicies = useMemo(
     () => ({
-      min_length_stay: policies.reservationPolicies?.min_length_stay || 0,
+      min_length_stay: policies.reservationPolicies?.min_length_stay || 1,
       max_length_stay: policies.reservationPolicies?.max_length_stay || 0,
       min_advance_booking:
         policies.reservationPolicies?.min_advance_booking || 0,
@@ -97,8 +97,6 @@ export default function Policies() {
     }),
     [policies]
   );
-
-  console.log(otherPolicies);
 
   const formSelector = useMemo(
     () => ({
@@ -219,30 +217,41 @@ export default function Policies() {
           ) : (
             <ul className={styles.list}>
               <li>
-                <span>Minimum length of stay:</span>{" "}
-                {reservationPolicies.min_length_stay} days
+                <span>Minimum length of stay:</span>
+                <span>{reservationPolicies.min_length_stay} days</span>
               </li>
               <li>
-                <span>Maximum length of stay:</span>{" "}
-                {reservationPolicies.max_length_stay} days
+                <span>Maximum length of stay:</span>
+                <span>
+                  {reservationPolicies.max_length_stay === 0
+                    ? "No limit"
+                    : `${reservationPolicies.max_length_stay} days`}
+                </span>
               </li>
               <li>
-                <span>Allow same day reservation:</span>{" "}
-                {reservationPolicies.min_advance_booking !== 0 ? "No" : "Yes"}
+                <span>Allow same day reservation:</span>
+                <span>
+                  {reservationPolicies.min_advance_booking !== 0 ? "No" : "Yes"}
+                </span>
               </li>
               <li>
-                <span>Minimum advance booking:</span>{" "}
-                {reservationPolicies.min_advance_booking === 0
-                  ? "---"
-                  : reservationPolicies.min_advance_booking}
+                <span>Minimum advance booking:</span>
+                <span>
+                  {reservationPolicies.min_advance_booking === 0
+                    ? "---"
+                    : reservationPolicies.min_advance_booking}
+                </span>
               </li>
               <li>
                 <span>Check-in:</span>
-                {reservationPolicies.check_in_from} -{" "}
-                {reservationPolicies.check_in_to}
+                <span>
+                  {reservationPolicies.check_in_from}-
+                  {reservationPolicies.check_in_to}
+                </span>
               </li>
               <li>
-                <span>check-out:</span> {reservationPolicies.check_out_until}
+                <span>check-out:</span>
+                <span>{reservationPolicies.check_out_until}</span>
               </li>
               <li>
                 <span>Payment methods accepted:</span>

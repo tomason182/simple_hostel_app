@@ -38,16 +38,16 @@
 }
 
 .actionButton {
+  padding: 5px 10px;
+  background-color: var(--button-primary);
+  color: #fff;
   border: none;
-  padding: 0.4rem 0.75rem;
-  color: blue;
-  font-family: "Inter-Bold";
-  background: none;
   cursor: pointer;
+  float: right;
 }
 
 .actionButton:hover {
-  background-color: lightblue;
+  background-color: var(--button-dark);
 }
 
 .actionButton svg {
