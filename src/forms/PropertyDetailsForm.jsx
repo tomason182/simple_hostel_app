@@ -22,10 +22,6 @@ export default function ProperTyDetailsForm({
   const [currencies, setCurrencies] = useState([]);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
   const [currenciesError, setCurrenciesError] = useState(null);
-  const [cities, setCities] = useState([]);
-  // Insert custom city to list if not exists
-  const isCityInList = cities.some(city => city.city === formData.city);
-  const [isCustomCity, setIsCustomCity] = useState(!isCityInList);
 
   useEffect(() => {
     setFormData({
@@ -37,50 +33,6 @@ export default function ProperTyDetailsForm({
       base_currency: propertyDetailsData.base_currency || "USD",
     });
   }, [propertyDetailsData]);
-
-  useEffect(() => {
-    async function getCitiesList() {
-      // Reset cities when new country is selected
-      setCities([
-        {
-          id: "",
-          city: "Select a city",
-        },
-      ]);
-
-      if (formData.alpha_2_code === "") return;
-
-      const alpha_2_code = formData.alpha_2_code;
-      const url =
-        import.meta.env.VITE_URL_BASE + "/data-provider/cities/" + alpha_2_code;
-      const options = {
-        mode: "cors",
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      };
-
-      try {
-        const response = await fetch(url, options);
-
-        if (!response.ok) {
-          throw new Error("Network Error");
-        }
-
-        const data = await response.json();
-
-        if (Array.isArray(data)) {
-          setCities([{ id: "", city: "Select a city" }, ...data]);
-        }
-      } catch (e) {
-        console.error("Error fetching cities data", e.message);
-      }
-    }
-
-    getCitiesList();
-  }, [formData.alpha_2_code]);
 
   useEffect(() => {
     function getCurrenciesList() {
@@ -120,18 +72,6 @@ export default function ProperTyDetailsForm({
       ...prev,
       [name]: value,
     }));
-  }
-
-  function handleCityChange(e) {
-    const selectedCity = e.target.value;
-
-    if (selectedCity === "other") {
-      setIsCustomCity(true);
-      setFormData(prev => ({ ...prev, city: "" }));
-    } else {
-      setIsCustomCity(false);
-      setFormData(prev => ({ ...prev, city: selectedCity }));
-    }
   }
 
   async function handleSubmit(e) {
@@ -213,31 +153,13 @@ export default function ProperTyDetailsForm({
           <div className={styles.formGroup}>
             <label>
               City
-              <select
-                name="city"
-                id="city"
-                value={formData.city}
-                onChange={handleCityChange}
-              >
-                {cities.map(city => (
-                  <option key={city.id} value={city.city}>
-                    {city.city}
-                  </option>
-                ))}
-                <option value="other">Other...</option>
-              </select>
-            </label>
-            {isCustomCity && (
               <input
                 type="text"
-                name="custom_city"
-                placeholder="Enter city name"
+                name="city"
                 value={formData.city}
-                onChange={e =>
-                  setFormData(prev => ({ ...prev, city: e.target.value }))
-                }
+                onChange={handleFormChange}
               />
-            )}
+            </label>
           </div>
         </div>
         <div className={styles.groupContainer}>
