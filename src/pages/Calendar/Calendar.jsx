@@ -52,8 +52,6 @@ export default function Calendar() {
     [fromDate]
   );
 
-  console.log(reservationFormData);
-
   // Modal States
   const [isOpen, setIsOpen] = useState(false);
 
@@ -298,7 +296,7 @@ export default function Calendar() {
     <StepNavigation
       activeStep={currentIndex}
       steps={steps}
-      clickableSteps={true}
+      clickableSteps={false}
       onStepClick={onStepClick}
     />
   );
@@ -393,7 +391,7 @@ export default function Calendar() {
               </button>
             </th>
           </tr>
-          <tr>{days}</tr>
+          <tr className={styles.fixedDays}>{days}</tr>
         </thead>
         <tbody>
           {error || errorReservations ? (

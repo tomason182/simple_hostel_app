@@ -17,3 +17,15 @@
 .info a {
   color: var(--gray-50);
 }
+
+.language {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.language select {
+  padding: 0.25rem 0.5rem;
+  margin: 0;
+}

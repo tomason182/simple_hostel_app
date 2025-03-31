@@ -2,11 +2,14 @@ import styles from "./Header.module.css";
 import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router";
 import { UserProfileContext } from "../../data_providers/UserProfileProvider";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   const { userProfile, isLoading, error } = useContext(UserProfileContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -86,7 +89,9 @@ export default function Header() {
           ) : (
             <>
               <p className={styles.propertyName}>{userProfile.property_name}</p>
-              <p className={styles.userName}>Hello, {userProfile.first_name}</p>
+              <p className={styles.userName}>
+                {t("hello")}, {userProfile.first_name}
+              </p>
             </>
           )}
         </div>
