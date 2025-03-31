@@ -2,5 +2,13 @@
   "hello": "Hello",
   "terms": "Terms and conditions",
   "privacy": "Privacy",
-  "language": "Language"
+  "language": "Language",
+  "home": "Home",
+  "calendar": "Calendar",
+  "rates_availability": "Rates & Availability",
+  "reservations": "Reservations",
+  "property": "Property",
+  "inbox": "Inbox",
+  "website": "Website",
+  "reports": "Reports"
 }

@@ -1,35 +1,38 @@
 import styles from "./NavBar.module.css";
 import { NavLink } from "react-router";
+import { useTranslation } from "react-i18next";
 
 export default function NavBar() {
+  const { t } = useTranslation();
+
   return (
     <nav className={styles.navBar}>
       <ul className={styles.navList}>
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/">{t("home")}</NavLink>
         </li>
         <li>
-          <NavLink to="/calendar">Calendar</NavLink>
+          <NavLink to="/calendar">{t("calendar")}</NavLink>
         </li>
         <li>
           <NavLink to="/rates-and-availability">
-            Rates &amp; Availability
+            {t("rates_availability")}
           </NavLink>
         </li>
         <li>
-          <NavLink to="/reservations">Reservations</NavLink>
+          <NavLink to="/reservations">{t("reservations")}</NavLink>
         </li>
         <li>
-          <NavLink to="/property">Property</NavLink>
+          <NavLink to="/property">{t("property")}</NavLink>
         </li>
         <li>
-          <NavLink to="/inbox">Inbox</NavLink>
+          <NavLink to="/inbox">{t("inbox")}</NavLink>
         </li>
         <li>
-          <NavLink to="/website">My Website</NavLink>
+          <NavLink to="/website">{t("website")}</NavLink>
         </li>
         <li>
-          <NavLink to="/reports">Reports</NavLink>
+          <NavLink to="/reports">{t("reports")}</NavLink>
         </li>
       </ul>
     </nav>
