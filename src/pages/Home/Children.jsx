@@ -11,6 +11,41 @@ import {
 
 export function ReservationsList({ data, error, loading, info }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [reservationData, setReservationData] = useState({});
+  const [reservationError, setReservationError] = useState(null);
+  const [reservationLoading, setReservationLoading] = useState(true);
+
+  function onReservationClick(id) {
+    setReservationLoading(true);
+    setReservationError(null);
+    const url =
+      import.meta.env.VITE_URL_BASE + "/reservations/find-by-id/" + id;
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to get reservation details. Server error");
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.status === "error") {
+          setReservationError(data.msg);
+          return false;
+        }
+        setReservationData(data);
+      })
+      .catch(e => setReservationError(e.message))
+      .finally(() => setReservationLoading(false));
+  }
 
   if (loading) {
     return <Spinner />;
@@ -50,7 +85,13 @@ export function ReservationsList({ data, error, loading, info }) {
       <li>{info.message}</li>
     ) : (
       filteredData.map(d => (
-        <li key={d.id} onClick={() => setIsOpen(true)}>
+        <li
+          key={d.id}
+          onClick={() => {
+            setIsOpen(true);
+            onReservationClick(d.id);
+          }}
+        >
           <p>
             {d.first_name} {d.last_name}
           </p>
@@ -81,28 +122,60 @@ export function ReservationsList({ data, error, loading, info }) {
   return (
     <>
       <ul className={styles.list}>{reservationsList}</ul>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <h1>This is a Modal</h1>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        display="center"
+        header={`${reservationData?.guest?.first_name} ${reservationData?.guest?.last_name}`}
+      >
+        <ReservationDetails
+          loading={reservationLoading}
+          error={reservationError}
+          data={reservationData}
+        />
       </Modal>
     </>
   );
 }
 
-export function LatestReservations() {
-  return <h1>Return the last 10 reservations</h1>;
-}
+export function ReservationDetails({ loading, error, data }) {
+  if (loading) return <Spinner />;
+  if (error) return <h3>Error fetching reservation data</h3>;
 
-export function ReservationDetails() {
+  /* const guest = data.guest; */
+  const reservation = data.reservation;
+  const checkIn = formateDateToLocale(reservation.check_in);
+  const checkOut = formateDateToLocale(reservation.check_out);
+
   return (
     <div className={styles.content}>
-      <div className={styles.details}>
-        <h3>Reservation Details</h3>
-      </div>
-      <div className={styles.controllers}>
-        <button>Mark as no-Show</button>
-        <button>Mark as Paid</button>
-        <button>Add advance payment</button>
-      </div>
+      <ul>
+        <li>
+          <span>Check-in:</span>
+          <span>{checkIn}</span>
+        </li>
+        <li>
+          <span>Check-out:</span>
+          <span>{checkOut}</span>
+        </li>
+        <li>
+          <span>Booking Source:</span>
+          <span>{reservation.booking_source}</span>
+        </li>
+        <li>
+          <span>Reservation Status:</span>
+          <span>{reservation.reservation_status}</span>
+        </li>
+        <li>
+          <span>Payment Status:</span>
+          <span>{reservation.payment_status}</span>
+        </li>
+        <li>
+          <span>Special Request:</span>
+          <span>{reservation.special_request}</span>
+        </li>
+      </ul>
+      <button>Edit</button>
     </div>
   );
 }
@@ -112,4 +185,10 @@ ReservationsList.propTypes = {
   error: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
   info: PropTypes.object.isRequired,
+};
+
+ReservationDetails.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
 };
