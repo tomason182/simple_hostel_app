@@ -9,7 +9,8 @@ export function dateFormatHelper(date) {
 }
 
 export function formateDateToLocale(date) {
-  const language = navigator.language || "en";
+  const language =
+    localStorage.getItem("i18nextLng") || navigator.language || "en";
   // remove the Z from date
   const formattedDate = new Date(date.slice(0, date.length - 1));
   return new Intl.DateTimeFormat(language, {

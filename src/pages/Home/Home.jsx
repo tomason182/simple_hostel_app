@@ -7,8 +7,11 @@ import {
 } from "../../data_providers/reservationDataProvider";
 import { ReservationsList } from "./Children";
 import styles from "./Home.module.css";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
+  const { t } = useTranslation();
+
   const { todayReservations, loadingTodayReservations, error } =
     useGetTodayReservations();
   const {
@@ -33,22 +36,22 @@ export default function Home() {
 
   const coming = {
     type: "coming",
-    message: "You have no arrivals today",
+    message: t("arrivals_msg"),
   };
 
   const leaving = {
     type: "leaving",
-    message: "You have no departures today",
+    message: t("departures_msg"),
   };
 
   const latest = {
     type: "latest",
-    message: "No reservations in the last 30 days",
+    message: t("latest_msg"),
   };
 
   return (
     <div className={styles.container}>
-      <Card title="Who's coming today" customStyle={customStyle}>
+      <Card title={t("arrivals_title")} customStyle={customStyle}>
         <ReservationsList
           data={todayReservations}
           error={error}
@@ -56,7 +59,7 @@ export default function Home() {
           info={coming}
         />
       </Card>
-      <Card title="Who's leaving today" customStyle={customStyle}>
+      <Card title={t("departures_title")} customStyle={customStyle}>
         <ReservationsList
           data={todayReservations}
           error={error}
@@ -64,7 +67,7 @@ export default function Home() {
           info={leaving}
         />
       </Card>
-      <Card title="Latest reservations" customStyle={customStyle}>
+      <Card title={t("latest_title")} customStyle={customStyle}>
         <ReservationsList
           data={latestReservations}
           error={errorLatestReservations}

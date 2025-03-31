@@ -10,5 +10,11 @@
   "property": "Propiedad",
   "inbox": "Buzón",
   "website": "Website",
-  "reports": "Reportes"
+  "reports": "Reportes",
+  "arrivals_title": "Quien llega hoy?",
+  "arrivals_msg": "No tienes llegadas hoy",
+  "departures_title": "Quien se va hoy?",
+  "departures_msg": "No tienes salidas hoy",
+  "latest_title": "Últimas reservas",
+  "latest_msg": "Sin reservas en los últimos 60 días"
 }
