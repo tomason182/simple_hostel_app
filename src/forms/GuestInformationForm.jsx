@@ -1,12 +1,15 @@
 import styles from "./defaultFormStyle.module.css";
 import countryCodes from "../utils/country_code.json";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function GuestInformationForm({
   setReservationFormData,
   formData,
   setIndex,
 }) {
+  const { t } = useTranslation();
+
   function handleChange(e) {
     const { name, value } = e.target;
     setReservationFormData(prev => ({
@@ -27,7 +30,7 @@ export default function GuestInformationForm({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            Booking Source <span className={styles.required}>*</span>
+            {t("booking_source")} <span className={styles.required}>*</span>
             <select
               name="bookingSource"
               id="bookingSource"
@@ -36,8 +39,8 @@ export default function GuestInformationForm({
               required
               aria-required
             >
-              <option value="">Select one...</option>
-              <option value="direct">Direct booking</option>
+              <option value="">{t("select_one")}</option>
+              <option value="direct">{t("direct_booking")}</option>
               <option value="booking.com">Booking.com</option>
               <option value="hostelWorld.com">HostelWorld.com</option>
               <option value="website">Website</option>
@@ -46,7 +49,7 @@ export default function GuestInformationForm({
         </div>
         <div className={styles.formGroup}>
           <label>
-            Payment status <span className={styles.required}>*</span>
+            {t("payment_status")} <span className={styles.required}>*</span>
             <select
               name="paymentStatus"
               id="paymentStatus"
@@ -55,12 +58,12 @@ export default function GuestInformationForm({
               required
               aria-required
             >
-              <option value="">Select one...</option>
-              <option value="pending">Pending</option>
-              <option value="canceled">Canceled</option>
-              <option value="refunded">Refunded</option>
-              <option value="paid">Paid</option>
-              <option value="partial">Partial</option>
+              <option value="">{t("select_one")}</option>
+              <option value="pending">{t("pending")}</option>
+              <option value="canceled">{t("canceled")}</option>
+              <option value="refunded">{t("refunded")}</option>
+              <option value="paid">{t("paid")}</option>
+              <option value="partial">{t("partial")}</option>
             </select>
           </label>
         </div>
@@ -75,20 +78,20 @@ export default function GuestInformationForm({
               required
               aria-required
             >
-              <option value="">Select one...</option>
-              <option value="confirmed">Confirmed</option>
-              <option value="provisional">Provisional</option>
-              <option value="canceled">Canceled</option>
+              <option value="">{t("select_one")}</option>
+              <option value="confirmed">{t("confirmed")}</option>
+              <option value="provisional">{t("provisional")}</option>
+              <option value="canceled">{t("canceled")}</option>
               <option value="no-show">No-show</option>
             </select>
           </label>
         </div>
       </div>
-      <h4 className={styles.subtitle}>Guest Information</h4>
+      <h4 className={styles.subtitle}>{t("guest_information")}</h4>
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            First name <span className={styles.required}>*</span>
+            {t("first_name")} <span className={styles.required}>*</span>
             <input
               type="text"
               name="firstName"
@@ -101,7 +104,7 @@ export default function GuestInformationForm({
         </div>
         <div className={styles.formGroup}>
           <label>
-            Last name <span className={styles.required}>*</span>
+            {t("last_name")} <span className={styles.required}>*</span>
             <input
               type="text"
               name="lastName"
@@ -139,7 +142,7 @@ export default function GuestInformationForm({
         >
           <div className={styles.formGroup} style={{ flex: "1" }}>
             <label>
-              Phone code
+              {t("phone_code")}
               <select
                 name="phoneCode"
                 id="phoneCode"
@@ -156,7 +159,7 @@ export default function GuestInformationForm({
           </div>
           <div className={styles.formGroup} style={{ flex: "2" }}>
             <label>
-              Phone number
+              {t("phone_number")}
               <input
                 type="text"
                 name="phoneNumber"
@@ -170,7 +173,7 @@ export default function GuestInformationForm({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            Country
+            {t("country")}
             <select
               name="countryCode"
               id="countryCode"
@@ -187,7 +190,7 @@ export default function GuestInformationForm({
         </div>
         <div className={styles.formGroup}>
           <label>
-            City
+            {t("city")}
             <input
               type="text"
               name="city"
@@ -200,7 +203,7 @@ export default function GuestInformationForm({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            Postal code
+            {t("postal_code")}
             <input
               type="text"
               name="postalCode"
@@ -212,7 +215,7 @@ export default function GuestInformationForm({
 
         <div className={styles.formGroup}>
           <label>
-            Street
+            {t("street")}
             <input
               type="text"
               name="street"
@@ -224,7 +227,7 @@ export default function GuestInformationForm({
       </div>
       <div className={styles.formGroup}>
         <label>
-          Special request
+          {t("special_request")}
           <textarea
             name="specialRequest"
             id="specialRequest"
@@ -239,10 +242,10 @@ export default function GuestInformationForm({
           type="button"
           onClick={() => setIndex(1)}
         >
-          Back
+          {t("back")}
         </button>
         <button className={styles.submitButton} type="submit">
-          Continue
+          {t("continue")}
         </button>
       </div>
     </form>
