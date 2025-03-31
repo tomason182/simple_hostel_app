@@ -21,5 +21,16 @@
   "search_availability": "Search availability",
   "check_in": "Check-in",
   "check_out": "Check-out",
-  "search": "Search"
+  "search": "Search",
+  "room_type": "Room Type",
+  "guests": "Guests",
+  "price_for": "Price for",
+  "night_one": "one night",
+  "night_other": "{{count}} nights",
+  "select_rooms": "Select Rooms",
+  "select_beds": "Select rooms",
+  "no_room_msg": "No rooms available for the selected days",
+  "back": "Back",
+  "continue": "Continue",
+  "cancel": "Cancel"
 }

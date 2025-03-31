@@ -21,5 +21,16 @@
   "search_availability": "Buscar disponibilidad",
   "check_in": "Ingreso",
   "check_out": "Egreso",
-  "search": "Buscar"
+  "search": "Buscar",
+  "room_type": "Tipo de cuarto",
+  "guests": "Huespedes",
+  "price_for": "Precio por",
+  "night_one": "una noche",
+  "night_other": "{{count}} noches",
+  "select_rooms": "Selecciona los cuartos",
+  "select_beds": "Selección de cuartos",
+  "no_room_msg": "No hay cuartos disponibles para las fechas seleccionadas",
+  "back": "Atras",
+  "continue": "Continuar",
+  "cancel": "Cancelar"
 }

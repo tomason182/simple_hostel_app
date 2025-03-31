@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function RoomSelectionForm({
   selectedRooms,
@@ -9,6 +10,8 @@ export default function RoomSelectionForm({
   setIndex,
 }) {
   const [isDisabled, setIsDisable] = useState(true);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     let hasBedAssigned = false;
@@ -21,15 +24,6 @@ export default function RoomSelectionForm({
 
     setIsDisable(!hasBedAssigned);
   }, [selectedRooms]);
-
-  function handleRoomValue(id) {
-    const room = selectedRooms.find(room => parseInt(room.room_type_id) === id);
-    if (room !== undefined) {
-      return room.number_of_rooms;
-    } else {
-      return "";
-    }
-  }
 
   function handleRoomSelection(e) {
     const { name, value, dataset } = e.target;
@@ -88,20 +82,22 @@ export default function RoomSelectionForm({
   return (
     <>
       <table className={styles.roomSelectTable}>
-        <caption>Select Rooms</caption>
+        <caption>{t("select_rooms")}</caption>
         <thead>
           <tr>
-            <th scope="col">Room type</th>
-            <th scope="col">Guests</th>
-            <th scope="col">Price for {availability.totalNights} nights</th>
-            <th scope="col">Select beds</th>
+            <th scope="col">{t("room_type")}</th>
+            <th scope="col">{t("guests")}</th>
+            <th scope="col">
+              {t("price_for")} {t("night", { count: availability.totalNights })}
+            </th>
+            <th scope="col">{t("select_beds")}</th>
           </tr>
         </thead>
         <tbody>
           {roomList.length === 0 ? (
             <tr style={{ height: "150px" }}>
               <th colSpan={4} style={{ textAlign: "center", fontSize: "16px" }}>
-                No rooms available for the selected days
+                {t("no_room_msg")}
               </th>
             </tr>
           ) : (
@@ -112,14 +108,14 @@ export default function RoomSelectionForm({
       <br />
       <div className={styles.buttonGroup}>
         <button className={styles.cancelButton} onClick={() => setIndex(0)}>
-          Back
+          {t("back")}
         </button>
         <button
           className={styles.submitButton}
           disabled={isDisabled}
           onClick={() => setIndex(2)}
         >
-          Continue
+          {t("continue")}
         </button>
       </div>
     </>
