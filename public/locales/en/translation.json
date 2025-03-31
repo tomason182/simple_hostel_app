@@ -56,5 +56,12 @@
   "partial": "Partial",
   "confirmed": "Confirmed",
   "provisional": "Provisional",
-  "guest_information": "Guest information"
+  "guest_information": "Guest information",
+  "reservation_details": "Reservation Details",
+  "total_nights": "Total nights",
+  "selected_rooms": "Selected rooms",
+  "price_details": "Price details",
+  "deposit": "Deposit",
+  "to_pay_on_arrival": "To pay on arrival",
+  "confirm_reservation": "Confirm reservation"
 }

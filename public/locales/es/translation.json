@@ -55,5 +55,12 @@
   "paid": "Pagado",
   "partial": "Pago parcial",
   "confirmed": "Confirmada",
-  "provisional": "Provisoria"
+  "provisional": "Provisoria",
+  "reservation_details": "Detalles de la reserva",
+  "total_nights": "Noches totales",
+  "selected_rooms": "Cuartos seleccionados",
+  "price_details": "Detalles del precio",
+  "deposit": "Depósito",
+  "to_pay_on_arrival": "A pagar en la llegada",
+  "confirm_reservation": "Confirmar reserva"
 }

@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./defaultFormStyle.module.css";
+import { useTranslation } from "react-i18next";
 
 export default function ReservationDetails({
   data,
@@ -9,6 +10,8 @@ export default function ReservationDetails({
   setError,
   refreshReservationsData,
 }) {
+  const { t } = useTranslation();
+
   function findDescription(id) {
     const room = availability.roomList.find(room => room.id === parseInt(id));
     return room.description || "";
@@ -96,10 +99,10 @@ export default function ReservationDetails({
   return (
     <>
       <table className={styles.reservationDetailsTable}>
-        <caption>Reservation Details</caption>
+        <caption>{t("reservation_details")}</caption>
         <tbody>
           <tr>
-            <th>Name</th>
+            <th>{t("first_name")}</th>
             <td>
               {data.firstName} {data.lastName}
             </td>
@@ -109,24 +112,24 @@ export default function ReservationDetails({
             <td>{data.email}</td>
           </tr>
           <tr>
-            <th>Check-in</th>
+            <th>{t("check_in")}</th>
             <td>{dateTimeFormat(data.checkIn)}</td>
           </tr>
           <tr>
-            <th>Check-out</th>
+            <th>{t("check_out")}</th>
             <td>{dateTimeFormat(data.checkOut)}</td>
           </tr>
           <tr>
-            <th>Total nights</th>
+            <th>{t("total_nights")}</th>
             <td>{availability.totalNights}</td>
           </tr>
           <tr>
-            <th>Booking source</th>
+            <th>{t("booking_source")}</th>
             <td>{data.bookingSource}</td>
           </tr>
           <tr>
             <th colSpan={2} style={{ textAlign: "center", height: "50px" }}>
-              Selected rooms
+              {t("selected_rooms")}
             </th>
           </tr>
           {data.selectedRooms.map(room => (
@@ -143,18 +146,20 @@ export default function ReservationDetails({
       </table>
       <br />
       <table className={styles.reservationDetailsTable}>
-        <caption>Price details</caption>
+        <caption>{t("price_details")}</caption>
         <tbody>
           {data.bookingSource === "direct" ? (
             <>
               <tr>
-                <th>Deposit ({depositPercentage * 100} %)</th>
+                <th>
+                  {t("deposit")} ({depositPercentage * 100} %)
+                </th>
                 <td>
                   {currency} {depositAmount}
                 </td>
               </tr>
               <tr>
-                <th>To pay on arrival</th>
+                <th>{t("to_pay_on_arrival")}</th>
                 <td>
                   {currency} {payOnArrival}
                 </td>
@@ -180,13 +185,13 @@ export default function ReservationDetails({
             setIndex(2);
           }}
         >
-          Back
+          {t("back")}
         </button>
         <button
           className={styles.submitButton}
           onClick={() => submitFormData()}
         >
-          Confirm Reservation
+          {t("confirm_reservation")}
         </button>
       </div>
     </>
