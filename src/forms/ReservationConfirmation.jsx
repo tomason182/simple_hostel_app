@@ -1,6 +1,7 @@
 import styles from "./defaultFormStyle.module.css";
 import Spinner from "../components/Spinner/Spinner";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function ReservationConfirmation({
   setIsOpen,
@@ -8,6 +9,8 @@ export default function ReservationConfirmation({
   error,
   loading,
 }) {
+  const { t } = useTranslation();
+
   if (loading) return <Spinner size={50} />;
 
   if (error)
@@ -30,10 +33,10 @@ export default function ReservationConfirmation({
           <line x1="9" y1="9" x2="15" y2="15"></line>
         </svg>
         <h4 className={styles.subtitle} style={{ textAlign: "center" }}>
-          An error occurred trying to create the reservation
+          {t("create_reservation_error")}
         </h4>
         <p className={styles.paragraph}>Error description</p>
-        <button className={styles.submitButton}>Close</button>
+        <button className={styles.submitButton}>{t("close")}</button>
       </div>
     );
 
@@ -55,12 +58,10 @@ export default function ReservationConfirmation({
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
       </svg>
       <h4 className={styles.subtitle} style={{ textAlign: "center" }}>
-        Reservation created successfully
+        {t("create_reservation_success")}
       </h4>
       <p className={styles.paragraph}>Reservation ID:</p>
-      <p className={styles.paragraph}>
-        An email was sent to email, with the reservation confirmation
-      </p>
+      <p className={styles.paragraph}>{t("create_reservation_msg")}</p>
       <button
         className={styles.submitButton}
         onClick={() => {
@@ -68,7 +69,7 @@ export default function ReservationConfirmation({
           setIndex(0);
         }}
       >
-        Close
+        {t("close")}
       </button>
     </div>
   );
