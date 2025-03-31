@@ -30,7 +30,7 @@ export default function ReservationDetails({
 
   function dateTimeFormat(date) {
     const [year, month, day] = date.split("-");
-    const formattedDate = new Date(year, month, day);
+    const formattedDate = new Date(year, month - 1, day);
     const lang = navigator.language || "en";
 
     const options = {
