@@ -19,27 +19,31 @@ export default function Reservations() {
 
     setLoading(true);
     setError(null);
-    const from = e.target.from.value;
-    const until = e.target.until.value;
 
-    const fromFormatted = from.split("-").join("");
-    const untilFormatted = until.split("-").join("");
+    const body = {};
+
+    if (e.target.from.value) {
+      body.from = e.target.from.value;
+    }
+
+    if (e.target.until.value) {
+      body.until = e.target.until.value;
+    }
+
+    if (e.target.name.value) {
+      body.name = e.target.name.value;
+    }
 
     const url =
-      import.meta.env.VITE_URL_BASE +
-      "/reservations/find-by-range/" +
-      fromFormatted +
-      "-" +
-      untilFormatted +
-      "-" +
-      "search";
+      import.meta.env.VITE_URL_BASE + "/reservations/find-by-dates-and-name/";
     const options = {
       mode: "cors",
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
+      body: JSON.stringify(body),
     };
 
     fetch(url, options)
@@ -71,10 +75,14 @@ export default function Reservations() {
 
     return (
       <li
-        key={r.id}
-        onClick={() => setShowReservation({ status: true, id: r.id })}
+        key={r.reservation_id}
+        onClick={() =>
+          setShowReservation({ status: true, id: r.reservation_id })
+        }
       >
-        <p className={styles.fullName}>{r.guest_info.full_name}</p>
+        <p className={styles.fullName}>
+          {r.first_name} {r.last_name}
+        </p>
         <p className={styles.dates}>{checkIn}</p>
         <p className={styles.dates}>{checkOut}</p>
         <p className={styles.price}>{r.reservation_status}</p>
@@ -90,15 +98,15 @@ export default function Reservations() {
       <form className={styles.form} onSubmit={handleSubmit}>
         <label>
           From
-          <input type="date" name="from" required aria-required />
+          <input type="date" name="from" aria-required />
         </label>
         <label>
           Until
-          <input type="date" name="until" required aria-required />
+          <input type="date" name="until" aria-required />
         </label>
         <label>
-          Search
-          <input type="text" name="search" />
+          Guest name
+          <input type="text" name="name" />
         </label>
         <button type="submit">Search</button>
       </form>
