@@ -18,6 +18,8 @@ import { useFetchReservationByDateRange } from "../../data_providers/reservation
 // Utils and helper functions
 import { dateFormatHelper } from "../../utils/dateFormatHelper";
 
+import { useTranslation } from "react-i18next";
+
 export default function Calendar() {
   const today = new Date();
   const lengthOfCalendar = 14;
@@ -66,7 +68,11 @@ export default function Calendar() {
     refreshReservationsData,
   } = useFetchReservationByDateRange(fromDate, toDate);
 
-  setDefaultOptions({ locale: es });
+  const { t } = useTranslation();
+
+  const lng = localStorage.getItem("i18nextLng") || navigator.language || "en";
+
+  setDefaultOptions({ locale: lng === "es" ? es : enUS });
 
   const year = format(startDate, "yyyy");
   const MMM = format(startDate, "MMMM");
@@ -96,6 +102,7 @@ export default function Calendar() {
   // Render headers
   const days = daysArray.map(day => {
     const isToday = format(today, "yyyyMMdd") === format(day, "yyyyMMdd");
+    setDefaultOptions({ locale: lng === "es" ? es : enUS });
     return (
       <th
         scope="col"
@@ -350,7 +357,7 @@ export default function Calendar() {
         <thead>
           <tr>
             <th colSpan={3} rowSpan={3}>
-              <Button title="Create" onClick={() => setIsOpen(true)} />
+              <Button title={t("create")} onClick={() => setIsOpen(true)} />
             </th>
           </tr>
           <tr>

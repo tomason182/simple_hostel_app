@@ -16,5 +16,6 @@
   "departures_title": "Who is leaving today?",
   "departures_msg": "You have no departures today",
   "latest_title": "Latests reservations",
-  "latest_msg": "No reservations for the last 60 days"
+  "latest_msg": "No reservations for the last 60 days",
+  "create": "Create"
 }
