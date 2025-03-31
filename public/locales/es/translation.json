@@ -17,5 +17,9 @@
   "departures_msg": "No tienes salidas hoy",
   "latest_title": "Últimas reservas",
   "latest_msg": "Sin reservas en los últimos 60 días",
-  "create": "Crear"
+  "create": "Crear",
+  "search_availability": "Buscar disponibilidad",
+  "check_in": "Ingreso",
+  "check_out": "Egreso",
+  "search": "Buscar"
 }

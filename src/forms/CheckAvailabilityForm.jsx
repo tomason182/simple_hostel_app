@@ -1,6 +1,7 @@
 import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function CheckAvailabilityFrom({
   setReservationFormData,
@@ -9,6 +10,8 @@ export default function CheckAvailabilityFrom({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { t } = useTranslation();
 
   function updateFormData(checkIn, checkOut) {
     setReservationFormData({
@@ -99,7 +102,7 @@ export default function CheckAvailabilityFrom({
 
   return (
     <>
-      <h4 style={customStyle.title}>Search for availability</h4>
+      <h4 style={customStyle.title}>{t("search_availability")}</h4>
       <form
         className={styles.form}
         style={customStyle.form}
@@ -107,13 +110,13 @@ export default function CheckAvailabilityFrom({
       >
         <div className={styles.formGroup}>
           <label>
-            Check-in:
+            {t("check_in")}:
             <input type="date" name="check_in" required aria-required />
           </label>
         </div>
         <div className={styles.formGroup}>
           <label>
-            Check-out:
+            {t("check_out")}:
             <input type="date" name="check_out" required aria-required />
           </label>
         </div>
@@ -123,7 +126,7 @@ export default function CheckAvailabilityFrom({
             disabled={loading}
             style={{ width: "180px" }}
           >
-            {loading ? "Loading..." : "Search Availability"}
+            {loading ? "Loading..." : t("search")}
           </button>
         </div>
         {error && <p className={styles.error}>{error}</p>}

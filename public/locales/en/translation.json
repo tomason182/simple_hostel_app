@@ -17,5 +17,9 @@
   "departures_msg": "You have no departures today",
   "latest_title": "Latests reservations",
   "latest_msg": "No reservations for the last 60 days",
-  "create": "Create"
+  "create": "Create",
+  "search_availability": "Search availability",
+  "check_in": "Check-in",
+  "check_out": "Check-out",
+  "search": "Search"
 }
