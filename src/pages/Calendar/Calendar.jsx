@@ -347,6 +347,7 @@ export default function Calendar() {
         setIndex={setCurrentIndex}
         loading={loadingOnSubmit}
         error={errorOnSubmit}
+        data={reservationFormData}
       />
     ),
   };

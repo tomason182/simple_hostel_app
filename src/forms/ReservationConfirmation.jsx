@@ -8,6 +8,7 @@ export default function ReservationConfirmation({
   setIndex,
   error,
   loading,
+  data,
 }) {
   const { t } = useTranslation();
 
@@ -35,8 +36,16 @@ export default function ReservationConfirmation({
         <h4 className={styles.subtitle} style={{ textAlign: "center" }}>
           {t("create_reservation_error")}
         </h4>
-        <p className={styles.paragraph}>Error description</p>
-        <button className={styles.submitButton}>{t("close")}</button>
+        <p className={styles.paragraph}>Error: {error}</p>
+        <button
+          className={styles.submitButton}
+          onClick={() => {
+            setIsOpen(false);
+            setIndex(0);
+          }}
+        >
+          {t("close")}
+        </button>
       </div>
     );
 
@@ -61,7 +70,9 @@ export default function ReservationConfirmation({
         {t("create_reservation_success")}
       </h4>
       <p className={styles.paragraph}>Reservation ID:</p>
-      <p className={styles.paragraph}>{t("create_reservation_msg")}</p>
+      <p className={styles.paragraph}>
+        {t("create_reservation_msg", { value: data.email })}
+      </p>
       <button
         className={styles.submitButton}
         onClick={() => {
@@ -80,4 +91,5 @@ ReservationConfirmation.propTypes = {
   error: PropTypes.string,
   loading: PropTypes.bool.isRequired,
   setIndex: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired,
 };
