@@ -16,6 +16,8 @@ import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesFo
 import UpdateGuestInformation from "../../../forms/UpdateGuestInformation";
 import CancelReservationForm from "../../../forms/CancelReservationForm";
 
+import { useTranslation } from "react-i18next";
+
 export default function ReservationDetails({ id }) {
   const [activeTab, setActiveTab] = useState(0);
   const [index, setIndex] = useState(0);
@@ -27,9 +29,16 @@ export default function ReservationDetails({ id }) {
   const { reservation, loading, error, refreshReservationById } =
     useFetchReservationById(id);
 
+  const { t } = useTranslation();
+
   if (loading || isLoading) return <Spinner />;
 
-  if (error) return <div>Error fetching reservation data</div>;
+  if (error)
+    return (
+      <div>
+        <p>{t("unexpected_error_message")}</p>
+      </div>
+    );
 
   const totalPrice = reservation.reservation.selected_rooms
     .reduce((acc, room) => acc + Number(room.total_amount), 0)
@@ -37,7 +46,7 @@ export default function ReservationDetails({ id }) {
 
   const tabs = [
     {
-      label: "Reservation Info",
+      label: t("reservation_info"),
       content: (
         <ReservationInfo
           setIsOpen={setIsOpen}
@@ -49,7 +58,7 @@ export default function ReservationDetails({ id }) {
       ),
     },
     {
-      label: "Guest Info",
+      label: t("guest_info"),
       content: (
         <GuestInfo
           setIsOpen={setIsOpen}
@@ -59,7 +68,7 @@ export default function ReservationDetails({ id }) {
       ),
     },
     {
-      label: "Payment Details",
+      label: t("payment_details"),
       content: (
         <PaymentDetails
           reservationData={reservation.reservation}
@@ -76,11 +85,11 @@ export default function ReservationDetails({ id }) {
 
   const forms = [
     {
-      header: "Change reservation date",
+      header: t("change_reservation_dates"),
       content: <ChangeReservationsDatesForm setIsOpen={setIsOpen} />,
     },
     {
-      header: "Cancel reservation",
+      header: t("cancel_reservation"),
       content: (
         <CancelReservationForm
           name={fullName}
@@ -92,7 +101,7 @@ export default function ReservationDetails({ id }) {
       ),
     },
     {
-      header: "Mark reservation as no-show",
+      header: t("mark_reservation_no_show"),
       content: (
         <CancelReservationForm
           name={fullName}
@@ -104,7 +113,7 @@ export default function ReservationDetails({ id }) {
       ),
     },
     {
-      header: "Update guest information",
+      header: t("update_guest_info"),
       content: (
         <UpdateGuestInformation
           setIsOpen={setIsOpen}
@@ -156,6 +165,8 @@ function ReservationInfo({
   const arrivalDate = formateDateToLocale(reservationData.check_in);
   const departureDate = formateDateToLocale(reservationData.check_out);
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     setReservationStatus(reservationData.reservation_status);
   }, [reservationData]);
@@ -201,7 +212,7 @@ function ReservationInfo({
         <table className={styles.infoTable}>
           <tbody>
             <tr>
-              <th>Status</th>
+              <th>{t("status")}</th>
               <td>
                 <span className={styles.status}>
                   {reservationData.reservation_status}
@@ -209,21 +220,23 @@ function ReservationInfo({
               </td>
             </tr>
             <tr>
-              <th>Arrival</th>
+              <th>{t("arrival")}</th>
               <td>{arrivalDate}</td>
             </tr>
             <tr>
-              <th>Departure</th>
+              <th>{t("departure")}</th>
               <td>{departureDate}</td>
             </tr>
             <tr>
               <th colSpan={2} style={{ textAlign: "center" }}>
-                Selected rooms
+                {t("selected_rooms")}
               </th>
             </tr>
             {reservationData.selected_rooms.map((room, index) => (
               <tr key={room.room_type_id}>
-                <th>Room {index + 1}</th>
+                <th>
+                  {t("room")} {index + 1}
+                </th>
                 <td>
                   {room.number_of_rooms} *{" "}
                   {findRoomTypeDescription(room.room_type_id)}
@@ -231,13 +244,13 @@ function ReservationInfo({
               </tr>
             ))}
             <tr>
-              <th>Booking source</th>
+              <th>{t("booking_source")}</th>
               <td>{reservationData.booking_source}</td>
             </tr>
 
             {reservationData.special_request !== "" && (
               <tr>
-                <th>Special request</th>
+                <th>{t("special_request")}</th>
                 <td>{reservationData.special_request}</td>
               </tr>
             )}
@@ -246,7 +259,7 @@ function ReservationInfo({
       </div>
 
       <div className={styles.controlPanel}>
-        <h5>Update this reservation</h5>
+        <h5>{t("update_this_reservation")}</h5>
         <button
           onClick={() => {
             setIndex(1);
@@ -254,7 +267,7 @@ function ReservationInfo({
           }}
           disabled={loading}
         >
-          Cancel Reservation
+          {t("cancel_reservation")}
         </button>
         <button
           onClick={() => {
@@ -263,7 +276,7 @@ function ReservationInfo({
           }}
           disabled={loading}
         >
-          Mark reservation as no-show
+          {t("mark_reservation_no_show")}
         </button>
         <button
           onClick={() => {
@@ -272,11 +285,11 @@ function ReservationInfo({
           }}
           disabled={loading}
         >
-          Change dates
+          {t("change_reservation_dates")}
         </button>
         <br />
         <span style={{ fontSize: "12px", color: "#000", marginBottom: "10px" }}>
-          -- Change payment status --
+          -- {t("change_reservation_status")} --
         </span>
         <select
           name="reservationStatus"
@@ -284,10 +297,10 @@ function ReservationInfo({
           onChange={handleChange}
           disabled={loading}
         >
-          <option value="canceled">Canceled</option>
+          <option value="canceled">{t("canceled")}</option>
           <option value="no_show">No-show</option>
-          <option value="provisional">Provisional</option>
-          <option value="confirmed">Confirmed</option>
+          <option value="provisional">{t("provisional")}</option>
+          <option value="confirmed">{t("confirmed")}</option>
         </select>
       </div>
     </>
@@ -295,13 +308,14 @@ function ReservationInfo({
 }
 
 function GuestInfo({ guestData, setIndex, setIsOpen }) {
+  const { t } = useTranslation();
   return (
     <>
       <div className={styles.leftContent}>
         <table className={styles.infoTable}>
           <tbody>
             <tr>
-              <th>ID or Passport number</th>
+              <th>{t("id_passport_number")}</th>
               <td>{guestData.id_number}</td>
             </tr>
             <tr>
@@ -309,32 +323,32 @@ function GuestInfo({ guestData, setIndex, setIsOpen }) {
               <td>{guestData.contact_info.email}</td>
             </tr>
             <tr>
-              <th>Phone number</th>
+              <th>{t("phone_number")}</th>
               <td>{guestData.contact_info.phone_number}</td>
             </tr>
             <tr>
-              <th>Country</th>
+              <th>{t("country")}</th>
               <td>{guestData.address.country_code}</td>
             </tr>
             <tr>
-              <th>City</th>
+              <th>{t("city")}</th>
               <td>{guestData.address.city}</td>
             </tr>
             <tr>
-              <th>Street</th>
+              <th>{t("street")}</th>
               <td>{guestData.address.street}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div className={styles.controlPanel}>
-        <h5>Update Guest</h5>
+        <h5>{t("update_guest")}</h5>
         <button
           onClick={() => {
             setIndex(3), setIsOpen(true);
           }}
         >
-          Update guest info
+          {t("update_guest_info")}
         </button>
       </div>
     </>
@@ -349,6 +363,8 @@ function PaymentDetails({
 }) {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setPaymentStatus(reservationData.payment_status || "");
@@ -399,37 +415,37 @@ function PaymentDetails({
 
   switch (paymentStatus) {
     case "pending":
-      status = "Pending";
-      advancePayStatus = "Pending";
+      status = t("pending");
+      advancePayStatus = t("pending");
       break;
     case "partial":
-      status = "Pending";
-      advancePayStatus = "Paid";
+      status = t("pending");
+      advancePayStatus = t("paid");
       break;
     case "paid":
-      status = "Paid";
-      advancePayStatus = "Paid";
+      status = t("pending");
+      advancePayStatus = t("paid");
       break;
     case "refunded":
-      status = "Canceled";
-      advancePayStatus = "Refunded";
+      status = t("canceled");
+      advancePayStatus = t("refunded");
       break;
     case "fully_refunded":
-      status = "Refunded";
-      advancePayStatus = "Refunded";
+      status = t("refunded");
+      advancePayStatus = t("refunded");
   }
 
   return (
     <>
       <div className={styles.leftContent}>
         {/* Payment information */}
-        <h3>Payment Details</h3>
+        <h3>{t("payment_details")}</h3>
         <table className={styles.infoTable}>
           <thead>
             <tr>
-              <th>Price details</th>
-              <th>Amount</th>
-              <th>Payment status</th>
+              <th>{t("price_details")}</th>
+              <th>{t("amount")}</th>
+              <th>{t("payment_status")}</th>
             </tr>
           </thead>
           <tbody>
@@ -444,17 +460,17 @@ function PaymentDetails({
               </tr>
             ))}
             <tr>
-              <th>Total price</th>
+              <th>{t("total_price")}</th>
               <td>$ {totalPrice}</td>
               <td></td>
             </tr>
             <tr>
-              <th>Advance payment</th>
+              <th>{t("advance_payment")}</th>
               <td>$ {advancePaymentAmount}</td>
               <td>{advancePayStatus}</td>
             </tr>
             <tr className={styles.highlightRow}>
-              <th>Remaining balance</th>
+              <th>{t("remaining_balance")}</th>
               <td>$ {remainingBalance.toFixed(2)}</td>
               <td>{status}</td>
             </tr>
@@ -463,28 +479,35 @@ function PaymentDetails({
       </div>
       <div className={styles.controlPanel}>
         <span style={{ fontSize: "14px", color: "#333", marginBottom: "10px" }}>
-          -- Change payment status --
+          -- {t("change_payment_status")} --
         </span>
         <select
           value={paymentStatus}
           onChange={handlePaymentStatusChange}
           disabled={loading}
         >
-          <option value="pending">Pending</option>
-          <option value="partial">Partial</option>
-          <option value="paid">Paid</option>
-          <option value="refunded">Refunded</option>
+          <option value="pending">{t("pending")}</option>
+          <option value="partial">{t("partial")}</option>
+          <option value="paid">{t("paid")}</option>
+          <option value="refunded">{t("refunded")}</option>
         </select>
         <div className={styles.statusNotes}>
-          <p>Statuses</p>
+          <p>{t("status_description")}</p>
           <ul>
-            <li>Pending: Deposit and remaining balance unpaid</li>
-            <li>Partial: Deposit paid. Remaining balance Pending</li>
-            <li>Paid: Deposit and remaining balance paid</li>
-            <li>Refunded: Deposit refunded</li>
             <li>
-              Fully Refunded: Total amount refunded (deposit + remaining
-              balance)
+              <span>{t("pending")}:</span> {t("pending_description")}
+            </li>
+            <li>
+              <span>{t("partial")}:</span> {t("partial_description")}
+            </li>
+            <li>
+              <span>{t("paid")}:</span> {t("paid_description")}
+            </li>
+            <li>
+              <span>{t("refunded")}:</span> {t("refunded_description")}
+            </li>
+            <li>
+              <span>{t("full_refund")}:</span> {t("full_refund_description")}
             </li>
           </ul>
         </div>
