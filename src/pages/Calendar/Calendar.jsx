@@ -30,6 +30,7 @@ export default function Calendar() {
   const [errorOnSubmit, setErrorOnSubmit] = useState(null);
   const [availability, setAvailability] = useState([]);
   const [reservationFormData, setReservationFormData] = useState({
+    id: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -334,6 +335,7 @@ export default function Calendar() {
     3: (
       <ReservationDetails
         data={reservationFormData}
+        setData={setReservationFormData}
         availability={availability}
         setIndex={setCurrentIndex}
         setLoading={setLoadingOnSubmit}

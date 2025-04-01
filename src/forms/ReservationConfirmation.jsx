@@ -69,10 +69,15 @@ export default function ReservationConfirmation({
       <h4 className={styles.subtitle} style={{ textAlign: "center" }}>
         {t("create_reservation_success")}
       </h4>
-      <p className={styles.paragraph}>Reservation ID:</p>
-      <p className={styles.paragraph}>
-        {t("create_reservation_msg", { value: data.email })}
-      </p>
+      <p className={styles.paragraph}>Reservation ID: {data.id}</p>
+      {data.bookingSource === "direct" ? (
+        <p className={styles.paragraph}>
+          {t("create_reservation_msg", { value: data.email })}
+        </p>
+      ) : (
+        <p></p>
+      )}
+
       <button
         className={styles.submitButton}
         onClick={() => {

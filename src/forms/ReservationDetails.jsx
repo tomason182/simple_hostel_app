@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 
 export default function ReservationDetails({
   data,
+  setData,
   availability,
   setIndex,
   setLoading,
@@ -87,6 +88,11 @@ export default function ReservationDetails({
       .then(data => {
         if (data.status === "error") {
           setError(data.msg);
+        } else {
+          setData(prev => ({
+            ...prev,
+            id: data.msg.id,
+          }));
         }
       })
       .catch(e => setError(e.message))
@@ -200,6 +206,7 @@ export default function ReservationDetails({
 
 ReservationDetails.propTypes = {
   data: PropTypes.object.isRequired,
+  setData: PropTypes.func.isRequired,
   availability: PropTypes.array.isRequired,
   setIndex: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
