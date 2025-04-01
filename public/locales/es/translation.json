@@ -103,5 +103,8 @@
   "partial_description": "Depósito pagado. Saldo restante sin pagar.",
   "paid_description": "Depósito y saldo restante pagado",
   "refunded_description": "Depósito reembolsado",
-  "full_refund_description": "Importe total reembolsado (depósito + saldo restante)"
+  "full_refund_description": "Importe total reembolsado (depósito + saldo restante)",
+  "cancellation_message": "Cancelar la reserva de {{name}}?",
+  "mark_no_show_message": "Marcar la reserva de {{name}} como no-show?",
+  "yes": "Si"
 }

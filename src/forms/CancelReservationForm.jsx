@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function CancelReservationForm({
   name,
@@ -10,6 +11,8 @@ export default function CancelReservationForm({
   refreshReservationById,
 }) {
   const [loading, setLoading] = useState(false);
+
+  const { t } = useTranslation();
 
   function handleOnClick(id) {
     setLoading(true);
@@ -54,8 +57,9 @@ export default function CancelReservationForm({
   return (
     <>
       <p className={styles.subtitle} style={{ margin: "0" }}>
-        Mark {name} reservation {status === "canceled" ? "canceled" : "no-show"}
-        ?
+        {status === "canceled"
+          ? t("cancellation_message", { name: name })
+          : t("mark_no_show_message", { name: name })}
       </p>
       <div className={styles.buttonGroup}>
         <button
@@ -69,7 +73,7 @@ export default function CancelReservationForm({
           disabled={loading}
           onClick={() => handleOnClick(id)}
         >
-          {loading ? "Loading" : "Yes"}
+          {loading ? "Loading..." : t("yes")}
         </button>
       </div>
     </>

@@ -104,5 +104,8 @@
   "partial_description": "Deposit paid. Remaining balance unpaid",
   "paid_description": "Deposit and remaining balance paid",
   "refunded_description": "Deposit refunded",
-  "full_refund_description": "Total amount refunded (deposit + remaining balance)"
+  "full_refund_description": "Total amount refunded (deposit + remaining balance)",
+  "cancellation_message": "Cancel {{name}}'s reservation?",
+  "mark_no_show_message": "Mark {{name}}'s reservation as no-show?",
+  "yes": "Yes"
 }
