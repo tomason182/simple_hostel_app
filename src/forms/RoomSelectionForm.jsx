@@ -11,6 +11,8 @@ export default function RoomSelectionForm({
 }) {
   const [isDisabled, setIsDisable] = useState(true);
 
+  console.log(selectedRooms);
+
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -29,7 +31,9 @@ export default function RoomSelectionForm({
     const { name, value, dataset } = e.target;
     setReservationFormData(prev => {
       let selectedRooms = [...prev.selectedRooms];
-      const findRoom = selectedRooms.find(room => room.room_type_id === name);
+      const findRoom = selectedRooms.find(
+        room => room.room_type_id === parseInt(name)
+      );
 
       if (findRoom) {
         selectedRooms = prev.selectedRooms.filter(
