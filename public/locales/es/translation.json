@@ -72,5 +72,9 @@
   "bookings": "Reservas",
   "standard_rate": "Tarifa Estándar",
   "unexpected_error_message": "Se ha producido un error inesperado. Actualice la página.",
-  "no_room_message": "No se han creado tipos de cuartos. Antes de empezar, cree los tipos de cuartos para su propiedad."
+  "no_room_message": "No se han creado tipos de cuartos. Antes de empezar, cree los tipos de cuartos para su propiedad.",
+  "from": "Desde",
+  "until": "Hasta",
+  "guest_name": "Nombre del huesped",
+  "no_reservation_found": "No se encontró ninguna reserva"
 }

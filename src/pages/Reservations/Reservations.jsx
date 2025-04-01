@@ -3,11 +3,14 @@ import styles from "./Reservations.module.css";
 import ReservationDetails from "./components/ReservationDetails";
 import Spinner from "../../components/Spinner/Spinner";
 import { formateDateToLocale } from "../../utils/dateFormatHelper";
+import { useTranslation } from "react-i18next";
 
 export default function Reservations() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { t } = useTranslation();
 
   const [showReservation, setShowReservation] = useState({
     status: false,
@@ -49,7 +52,7 @@ export default function Reservations() {
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Server Error");
+          throw new Error(t("unexpected_error_message"));
         }
         return response.json();
       })
@@ -60,7 +63,7 @@ export default function Reservations() {
         }
 
         if (Array.isArray(data.msg) && data.msg.length === 0) {
-          setError("No reservations found");
+          setError(t("no_reservation_found"));
           return;
         }
         setReservations(data.msg);
@@ -72,6 +75,26 @@ export default function Reservations() {
   const list = reservations.map(r => {
     const checkIn = formateDateToLocale(r.check_in);
     const checkOut = formateDateToLocale(r.check_out);
+
+    let status = "";
+    let color = "";
+    switch (r.reservation_status) {
+      case "provisional":
+        status = t("provisional");
+        color = "blue";
+        break;
+      case "confirmed":
+        status = t("confirmed");
+        color = "green";
+        break;
+      case "canceled":
+        status = t("canceled");
+        color = "red";
+        break;
+      case "no_show":
+        status = "No-show";
+        color = "gray";
+    }
 
     return (
       <li
@@ -85,7 +108,9 @@ export default function Reservations() {
         </p>
         <p className={styles.dates}>{checkIn}</p>
         <p className={styles.dates}>{checkOut}</p>
-        <p className={styles.price}>{r.reservation_status}</p>
+        <p className={styles.price} style={{ color: color }}>
+          {status}
+        </p>
       </li>
     );
   });
@@ -97,18 +122,18 @@ export default function Reservations() {
     <div className={styles.content}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label>
-          From
+          {t("from")}
           <input type="date" name="from" aria-required />
         </label>
         <label>
-          Until
+          {t("until")}
           <input type="date" name="until" aria-required />
         </label>
         <label>
-          Guest name
+          {t("guest_name")}
           <input type="text" name="name" />
         </label>
-        <button type="submit">Search</button>
+        <button type="submit">{t("search")}</button>
       </form>
 
       <ul className={styles.reservationsList}>

@@ -73,5 +73,9 @@
   "bookings": "Bookings",
   "standard_rate": "Standard rate",
   "unexpected_error_message": "An unexpected error has occurred. Please refresh the page.",
-  "no_room_message": "No room types have been created. Before you begin, create room types for your property."
+  "no_room_message": "No room types have been created. Before you begin, create room types for your property.",
+  "from": "From",
+  "until": "Until",
+  "guest_name": "Guest name",
+  "no_reservation_found": "No reservation found"
 }
