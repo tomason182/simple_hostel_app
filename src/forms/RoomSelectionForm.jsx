@@ -41,13 +41,16 @@ export default function RoomSelectionForm({
         );
       }
 
-      const selectedRoom = {
-        room_type_id: parseInt(name),
-        number_of_rooms: parseInt(value),
-        total_amount: dataset.price * value,
-      };
+      if (parseInt(value) !== 0) {
+        const selectedRoom = {
+          room_type_id: parseInt(name),
+          number_of_rooms: parseInt(value),
+          total_amount: dataset.price * value,
+        };
 
-      selectedRooms.push(selectedRoom);
+        selectedRooms.push(selectedRoom);
+      }
+
       return {
         ...prev,
         selectedRooms: selectedRooms,
