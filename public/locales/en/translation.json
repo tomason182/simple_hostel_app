@@ -67,5 +67,11 @@
   "create_reservation_success": "Reservation created successfully",
   "create_reservation_error": "An error occurred trying to create the reservation",
   "create_reservation_msg": "An email was sent to {{value}} with the reservation details",
-  "close": "Close"
+  "close": "Close",
+  "room_status": "Room status",
+  "rooms_to_sell": "Rooms to sell",
+  "bookings": "Bookings",
+  "standard_rate": "Standard rate",
+  "unexpected_error_message": "An unexpected error has occurred. Please refresh the page.",
+  "no_room_message": "No room types have been created. Before you begin, create room types for your property."
 }

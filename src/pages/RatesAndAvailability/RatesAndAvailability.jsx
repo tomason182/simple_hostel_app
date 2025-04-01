@@ -12,6 +12,7 @@ import { useFetchReservationByDateRange } from "../../data_providers/reservation
 import { useFetchRatesAndAvailabilityByDateRange } from "../../../ratesAndAvailabilityDataProvider";
 // Utils
 import { dateFormatHelper } from "../../utils/dateFormatHelper";
+import { useTranslation } from "react-i18next";
 
 export default function RatesAndAvailability() {
   const today = new Date();
@@ -40,11 +41,13 @@ export default function RatesAndAvailability() {
     refreshRatesAndAvailability,
   } = useFetchRatesAndAvailabilityByDateRange(fromDate, toDate);
 
-  /* dates-fns language */
-  setDefaultOptions({ locale: es });
+  const { t } = useTranslation();
 
+  /* dates-fns language */
+  const lng = localStorage.getItem("i18nextLng") || navigator.language || "en";
+  setDefaultOptions({ locale: lng === "es" ? es : enUS });
   const year = format(startDate, "yyyy");
-  const MMM = format(startDate, "MMM");
+  const MMM = format(startDate, "MMMM");
 
   const handleNextBtn = () => setStartDate(add(startDate, { days: 14 }));
   const handlePrevBtn = () => setStartDate(sub(startDate, { days: 14 }));
@@ -176,10 +179,10 @@ export default function RatesAndAvailability() {
         const roomDataByDay = daysArray.map(day => roomInfo(day, room));
 
         return [
-          "Room status",
-          "Rooms to sell",
-          "Bookings",
-          "Standard Rate",
+          t("room_status"),
+          t("rooms_to_sell"),
+          t("bookings"),
+          t("standard_rate"),
         ].map((label, index) => (
           <tr key={index}>
             <th colSpan={3} className={styles.label}>
@@ -276,9 +279,7 @@ export default function RatesAndAvailability() {
         <tbody>
           {error || errorRatesAndAvailability || errorReservations ? (
             <tr height={250}>
-              <td colSpan={17}>
-                An Unexpected error occurred. Please refresh the page.
-              </td>
+              <td colSpan={17}>{t("unexpected_error_message")}</td>
             </tr>
           ) : isLoading &&
             loadingReservations &&
@@ -291,8 +292,7 @@ export default function RatesAndAvailability() {
           ) : roomList.length === 0 ? (
             <tr height={250}>
               <td colSpan={17} className={styles.noRoomTypesMessage}>
-                There are no room types created. Before you begin, please create
-                your property room types
+                {t("no_room_message")}
               </td>
             </tr>
           ) : (

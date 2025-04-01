@@ -66,5 +66,11 @@
   "create_reservation_success": "La reserva fue creada exitosamente",
   "create_reservation_error": "Un error inesperado occurrio al tratar de crear la reserva. Por favor intentelo nuevamente",
   "create_reservation_msg": "Un email fue enviado a {{value}} con los detalles de la reserva",
-  "close": "Cerrar"
+  "close": "Cerrar",
+  "room_status": "Estado del cuarto",
+  "rooms_to_sell": "Cuartos en venta",
+  "bookings": "Reservas",
+  "standard_rate": "Tarifa Estándar",
+  "unexpected_error_message": "Se ha producido un error inesperado. Actualice la página.",
+  "no_room_message": "No se han creado tipos de cuartos. Antes de empezar, cree los tipos de cuartos para su propiedad."
 }
