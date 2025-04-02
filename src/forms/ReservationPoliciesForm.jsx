@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function ReservationPoliciesForm({
   closeModal,
@@ -20,10 +21,12 @@ export default function ReservationPoliciesForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const { t } = useTranslation();
+
   const availablePaymentMethods = [
-    { id: "debit_credit", label: "Debit or Credit Card" },
-    { id: "cash", label: "cash" },
-    { id: "bank_transfer", label: "Bank Transfer" },
+    { id: "debit_credit", label: t("debit_credit") },
+    { id: "cash", label: t("cash") },
+    { id: "bank_transfer", label: t("bank_transfer") },
     { id: "bitcoin", label: "Bitcoin" },
   ];
 
@@ -91,7 +94,7 @@ export default function ReservationPoliciesForm({
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
-          Minimum length of stay (in nights):
+          {t("min_length_of_stay")} ({t("in_nights")}):
           <input
             className={styles.inputSmall}
             type="number"
@@ -105,7 +108,7 @@ export default function ReservationPoliciesForm({
       </div>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
-          Maximum length of stay (in nights):
+          {t("max_length_of_stay")} ({t("in_nights")}):
           <input
             className={styles.inputSmall}
             type="number"
@@ -119,7 +122,7 @@ export default function ReservationPoliciesForm({
       </div>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
-          Minimum Advance Booking (in days):
+          {t("min_advance_booking")} ({t("in_days")}):
           <input
             className={styles.inputSmall}
             type="number"
@@ -132,10 +135,10 @@ export default function ReservationPoliciesForm({
         </label>
       </div>
       <fieldset>
-        <legend>Check-in time window</legend>
+        <legend>{t("check_in")}</legend>
         <div className={styles.formGroup}>
           <label className={styles.labelFlex}>
-            From:
+            {t("from")}:
             <input
               className={styles.inputMedium}
               type="time"
@@ -147,7 +150,7 @@ export default function ReservationPoliciesForm({
           </label>
           <br />
           <label className={styles.labelFlex}>
-            To:
+            {t("until")}:
             <input
               className={styles.inputMedium}
               type="time"
@@ -160,10 +163,10 @@ export default function ReservationPoliciesForm({
         </div>
       </fieldset>
       <fieldset>
-        <legend>Check-out time</legend>
+        <legend>{t("check_out")}</legend>
         <div className={styles.formGroup}>
           <label className={styles.labelFlex}>
-            Until:
+            {t("until")}:
             <input
               className={styles.inputMedium}
               type="time"
@@ -177,7 +180,7 @@ export default function ReservationPoliciesForm({
       </fieldset>
 
       <fieldset>
-        <legend>Payment methods accepted</legend>
+        <legend>{t("payment_methods")}</legend>
         <div className={styles.groupContainer}>
           {availablePaymentMethods.map(method => (
             <div key={method.id}>
@@ -199,10 +202,10 @@ export default function ReservationPoliciesForm({
       </fieldset>
       <div className={styles.buttonGroup}>
         <button className={styles.cancelButton} onClick={closeModal}>
-          Cancel
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          Submit
+          {t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}

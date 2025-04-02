@@ -186,7 +186,9 @@
   "smoking_areas": "Sector para fumadores",
   "external_guest_allowed": "Se permite invitados externos?",
   "pets_allowed": "Se permiten mascotas?",
-  "debit_credit": "Tarjeta de crédito o débito",
+  "debit_credit": "Tarj. crédito o débito",
   "cash": "Efectivo",
-  "bank_transfer": "Transferencia bancaria"
+  "bank_transfer": "Transf. bancaria",
+  "in_nights": "en noches",
+  "in_days": "en días"
 }

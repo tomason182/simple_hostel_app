@@ -189,5 +189,7 @@
   "pets_allowed": "Are pets allowed?",
   "debit_credit": "Debit or credit card",
   "cash": "Cash",
-  "bank_transfer": "Bank transfer"
+  "bank_transfer": "Bank transfer",
+  "in_nights": "in nights",
+  "in_days": "in days"
 }
