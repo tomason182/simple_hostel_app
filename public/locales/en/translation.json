@@ -108,5 +108,11 @@
   "cancellation_message": "Cancel {{name}}'s reservation?",
   "mark_no_show_message": "Mark {{name}}'s reservation as no-show?",
   "yes": "Yes",
-  "other": "Other"
+  "other": "Other",
+  "property_info": "Property Info",
+  "users": "Users",
+  "room_types": "Room Types",
+  "photos": "Photos",
+  "policies": "Policies",
+  "room_amenities": "Room amenities"
 }

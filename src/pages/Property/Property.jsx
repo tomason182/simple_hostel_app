@@ -6,6 +6,8 @@ import RoomsPhotos from "./components/RoomsPhotos";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
 
+import { useTranslation } from "react-i18next";
+
 // Fetch property data
 import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
 
@@ -13,11 +15,11 @@ export default function Property() {
   const { propertyData, isLoading, error, refreshPropertyData } =
     usePropertyDataProvider();
 
-  console.log(propertyData);
+  const { t } = useTranslation();
 
   const tabs = [
     {
-      label: "Property Info",
+      label: t("property_info"),
       content: (
         <PropertyInfo
           propertyData={propertyData}
@@ -28,19 +30,19 @@ export default function Property() {
       ),
     },
     {
-      label: "Users",
+      label: t("users"),
       content: <Users />,
     },
     {
-      label: "Room Types",
+      label: t("room_types"),
       content: <RoomTypes />,
     },
     {
-      label: "Photos",
+      label: t("photos"),
       content: <RoomsPhotos />,
     },
     {
-      label: "Policies",
+      label: t("policies"),
       content: (
         <Policies
           policies={propertyData.policies}
@@ -50,7 +52,7 @@ export default function Property() {
       ),
     },
     {
-      label: "Room amenities",
+      label: t("room_amenities"),
       content: <Amenities />,
     },
   ];
