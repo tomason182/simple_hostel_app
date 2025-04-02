@@ -233,6 +233,33 @@ textarea {
   background-color: var(--gray-400);
 }
 
+.editButton,
+.deleteButton {
+  background: none;
+  border-radius: 5px;
+  padding: 4px 10px;
+}
+
+.editButton {
+  border: 1px solid var(--button-primary);
+  color: var(--button-primary);
+}
+
+.editButton:hover {
+  border-color: var(--button-dark);
+  color: var(--button-dark);
+}
+
+.deleteButton {
+  border: 1px solid var(--red);
+  color: var(--red);
+}
+
+.deleteButton:hover {
+  border-color: red;
+  color: red;
+}
+
 /* List */
 .list {
   text-align: left;

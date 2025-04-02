@@ -1,6 +1,7 @@
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function CancellationPoliciesForm({
   cancellationPolicies,
@@ -17,9 +18,7 @@ export default function CancellationPoliciesForm({
     amount_refund: 0,
   });
 
-  useEffect(() => {
-    console.log("Policies on forms", cancellationPolicies);
-  }, [cancellationPolicies]);
+  const { t } = useTranslation();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -29,8 +28,6 @@ export default function CancellationPoliciesForm({
       [name]: value,
     }));
   }
-
-  console.log("cancellation in forms", cancellationPolicies);
 
   function handleDelete(id) {
     const url =
@@ -137,18 +134,21 @@ export default function CancellationPoliciesForm({
     <div>
       <ul className={styles.list}>
         {cancellationPolicies[0] === null ? (
-          <li>No policies</li>
+          <li>{t("no_policies")}</li>
         ) : (
           cancellationPolicies.map(policy => (
             <li key={policy.id}>
-              {policy.amount_refund * 100}% of the deposit must be refunded if
-              guest cancel {policy.days_before_arrival} days before arrival
+              {t("deposit_refunded", {
+                amount: policy.amount_refund * 100,
+                count: policy.days_before_arrival,
+              })}
               <div>
                 <button
                   onClick={() => handleDelete(policy.id)}
                   disabled={loading}
+                  className={styles.deleteButton}
                 >
-                  Delete
+                  {t("delete")}
                 </button>
                 <button
                   disabled={loading}
@@ -160,8 +160,9 @@ export default function CancellationPoliciesForm({
                     });
                     setFormOpen(true);
                   }}
+                  className={styles.editButton}
                 >
-                  Edit
+                  {t("edit")}
                 </button>
               </div>
             </li>
@@ -173,7 +174,7 @@ export default function CancellationPoliciesForm({
           <ul className={styles.list}>
             <li>
               <label className={styles.labelFlex}>
-                Days before arrival:
+                {t("days_before_arrival")}:
                 <input
                   type="number"
                   name="days_before_arrival"
@@ -184,7 +185,7 @@ export default function CancellationPoliciesForm({
               </label>
               <br />
               <label className={styles.labelFlex}>
-                Amount refunded:
+                {t("amount_to_refunded")}:
                 <select
                   name="amount_refund"
                   id="amount_refund"
@@ -200,14 +201,14 @@ export default function CancellationPoliciesForm({
                   className={styles.cancelButton}
                   onClick={() => setFormOpen(false)}
                 >
-                  Cancel
+                  {t("cancel")}
                 </button>
                 <button
                   className={styles.submitButton}
                   disabled={loading}
                   onClick={() => handleFormSubmit()}
                 >
-                  SAVE
+                  {t("save")}
                 </button>
               </div>
             </li>
@@ -221,7 +222,7 @@ export default function CancellationPoliciesForm({
           className={styles.submitButton}
           onClick={() => setFormOpen(true)}
         >
-          ADD
+          {t("add")}
         </button>
       )}
       {error && <p className={styles.error}>{error}</p>}

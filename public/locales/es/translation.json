@@ -192,5 +192,10 @@
   "in_nights": "en noches",
   "in_days": "en días",
   "pay_in_advance_message": "¿Es necesario pagar por adelantado para hacer una reserva?",
-  "deposit_amount": "¿Monto del depósito, en porcentaje?"
+  "deposit_amount": "¿Monto del depósito, en porcentaje?",
+  "no_policies": "No se ha creado ninguna política de cancelación.",
+  "delete": "Borrar",
+  "days_before_arrival": "Días antes de la llegada",
+  "amount_to_refunded": "Monto a reembolsar",
+  "add": "Agregar"
 }
