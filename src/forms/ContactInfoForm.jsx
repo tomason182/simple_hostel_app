@@ -2,6 +2,7 @@ import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import countryCode from "../utils/country_code.json";
+import { useTranslation } from "react-i18next";
 
 export default function ContactInfoForm({
   contactInfoData,
@@ -15,6 +16,8 @@ export default function ContactInfoForm({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { t } = useTranslation();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -79,7 +82,7 @@ export default function ContactInfoForm({
       </div>
       <div className={styles.groupContainer}>
         <div className={styles.formGroup} style={{ flex: "1" }}>
-          <label>Code</label>
+          <label>{t("phone_code")}</label>
           <select
             name="countryCode"
             id="countryCode"
@@ -91,7 +94,7 @@ export default function ContactInfoForm({
         </div>
         <div className={styles.formGroup} style={{ flex: "2" }}>
           <label>
-            Phone number
+            {t("phone_number")}
             <input
               type="text"
               name="phoneNumber"
@@ -109,10 +112,10 @@ export default function ContactInfoForm({
           type="button"
           onClick={() => setIsOpen(false)}
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          {loading ? "Loading..." : "Submit"}
+          {loading ? "Loading..." : t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}

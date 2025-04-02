@@ -128,5 +128,6 @@
   "current_plan": "Plan actual",
   "next_billing_date": "Fecha proxima factura",
   "last_payment_status": "Estado último pago",
-  "payment_method": "Metodo de pago"
+  "payment_method": "Metodo de pago",
+  "save": "Guardar"
 }
