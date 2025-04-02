@@ -113,5 +113,20 @@
   "room_types": "Tipos de cuarto",
   "photos": "Fotos",
   "policies": "Políticas",
-  "room_amenities": "Comodidades"
+  "room_amenities": "Comodidades",
+  "edit": "Editar",
+  "edit_contact_info": "Editar informacion de contacto",
+  "edit_property_info": "Editar infrmacion de la propiedad",
+  "contact_details": "Datos de contacto",
+  "property_details": "Datos de la propiedad",
+  "currency_preference": "Preferencia de monedas",
+  "base_currency": "Moneda base",
+  "payment_currency": "Moneda de pago",
+  "website_status": "Estado sitio web",
+  "book_engine_status": "Estado Motor de reservas",
+  "otas_connected": "OTA's conectadas",
+  "current_plan": "Plan actual",
+  "next_billing_date": "Fecha proxima factura",
+  "last_payment_status": "Estado último pago",
+  "payment_method": "Metodo de pago"
 }

@@ -10,6 +10,7 @@ import ProperTyDetailsForm from "../../../forms/PropertyDetailsForm";
 
 // Countries
 import countries from "../../../utils/country_code.json";
+import { useTranslation } from "react-i18next";
 
 export default function PropertyInfo({
   propertyData,
@@ -19,6 +20,8 @@ export default function PropertyInfo({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
+
+  const { t } = useTranslation();
 
   const contactInfoData = {
     email: propertyData.contact_info?.email || "",
@@ -43,7 +46,7 @@ export default function PropertyInfo({
 
   const contactDetailsActions = [
     {
-      label: "Edit",
+      label: t("edit"),
       onClick: () => {
         setIndex(0);
         setIsOpen(true);
@@ -53,7 +56,7 @@ export default function PropertyInfo({
 
   const propertyDetailsActions = [
     {
-      label: "Edit",
+      label: t("edit"),
       onClick: () => {
         setIndex(1), setIsOpen(true);
       },
@@ -62,7 +65,7 @@ export default function PropertyInfo({
 
   const forms = [
     {
-      header: "Edit Contact Info",
+      header: t("edit_contact_info"),
       children: (
         <ContactInfoForm
           contactInfoData={contactInfoData}
@@ -72,7 +75,7 @@ export default function PropertyInfo({
       ),
     },
     {
-      header: "Edit Property Info",
+      header: t("edit_property_info"),
       children: (
         <ProperTyDetailsForm
           setIsOpen={setIsOpen}
@@ -83,13 +86,18 @@ export default function PropertyInfo({
     },
   ];
 
-  if (propertyError) return <div>Unexpected error occurred</div>;
+  if (propertyError)
+    return (
+      <div>
+        <p>{t("unexpected_error_message")}</p>
+      </div>
+    );
 
   return (
     <>
       <h1>{propertyData.property_name}</h1>
       <div className={styles.gridContainer}>
-        <Card title="Contact Details" actions={contactDetailsActions}>
+        <Card title={t("contact_details")} actions={contactDetailsActions}>
           {loadingPropertyData ? (
             <Spinner />
           ) : (
@@ -99,7 +107,7 @@ export default function PropertyInfo({
                 <span>{contactInfoData.email}</span>
               </li>
               <li>
-                <span>Phone number:</span>{" "}
+                <span>{t("phone_number")}:</span>
                 <span>
                   {contactInfoData.country_code}
                   {contactInfoData.phone_number}
@@ -108,7 +116,7 @@ export default function PropertyInfo({
             </ul>
           )}
         </Card>
-        <Card title="Property Details" actions={propertyDetailsActions}>
+        <Card title={t("property_details")} actions={propertyDetailsActions}>
           {loadingPropertyData ? (
             <Spinner />
           ) : (
@@ -117,32 +125,32 @@ export default function PropertyInfo({
                 <span>Hostel ID:</span> <span>{propertyData.id}</span>
               </li>
               <li>
-                <span>Currency Preference:</span>
+                <span>{t("currency_preference")}:</span>
                 <ul className={styles.innerList}>
                   <li>
-                    <span>Base currency:</span>
+                    <span>{t("base_currency")}:</span>
                     <span>{propertyData?.currencies.base_currency}</span>
                   </li>
                   <li>
-                    <span>Payment currency:</span>
+                    <span>{t("payment_currency")}:</span>
                     <span>{propertyData?.currencies.payment_currency}</span>
                   </li>
                 </ul>
               </li>
               <li>
-                <span>Street:</span>
+                <span>{t("street")}:</span>
                 <span>{propertyData?.address.street}</span>
               </li>
               <li>
-                <span>City:</span>
+                <span>{t("city")}:</span>
                 <span>{propertyData?.address.city}</span>
               </li>
               <li>
-                <span>Country:</span>
+                <span>{t("country")}:</span>
                 <span>{country.label}</span>
               </li>
               <li>
-                <span>Postal code:</span>
+                <span>{t("postal_code")}:</span>
                 <span>{propertyData?.address.postal_code}</span>
               </li>
             </ul>
@@ -151,29 +159,29 @@ export default function PropertyInfo({
         <Card title="Integration Status">
           <ul className={styles.list}>
             <li>
-              <span>Website status:</span>
+              <span>{t("website_connected")}:</span>
             </li>
             <li>
-              <span>Book engine status:</span>
+              <span>{t("book_engine_status")}:</span>
             </li>
             <li>
-              <span>OTAs connected:</span>
+              <span>{t("otas_connected")}:</span>
             </li>
           </ul>
         </Card>
         <Card title="Billing Information">
           <ul className={styles.list}>
             <li>
-              <span>Current plan:</span>
+              <span>{t("current_plan")}:</span>
             </li>
             <li>
-              <span>Next billing date:</span>
+              <span>{t("next_billing_date")}:</span>
             </li>
             <li>
-              <span>Last payment status:</span>
+              <span>{t("last_payment_status")}:</span>
             </li>
             <li>
-              <span>Payment method:</span>
+              <span>{t("payment_method")}:</span>
             </li>
           </ul>
         </Card>

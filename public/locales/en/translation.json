@@ -114,5 +114,20 @@
   "room_types": "Room Types",
   "photos": "Photos",
   "policies": "Policies",
-  "room_amenities": "Room amenities"
+  "room_amenities": "Room amenities",
+  "edit": "Edit",
+  "edit_contact_info": "Edit contact info",
+  "edit_property_info": "Edit property info",
+  "contact_details": "Contact details",
+  "property_details": "Property details",
+  "currency_preference": "Currency preference",
+  "base_currency": "Base currency",
+  "payment_currency": "Payment currency",
+  "website_status": "Website status",
+  "book_engine_status": "Book engine status",
+  "otas_connected": "OTA's connected",
+  "current_plan": "Current plan",
+  "next_billing_date": "Next billing date",
+  "last_payment_status": "Last payment status",
+  "payment_method": "Payment method"
 }
