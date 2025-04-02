@@ -107,5 +107,6 @@
   "full_refund_description": "Total amount refunded (deposit + remaining balance)",
   "cancellation_message": "Cancel {{name}}'s reservation?",
   "mark_no_show_message": "Mark {{name}}'s reservation as no-show?",
-  "yes": "Yes"
+  "yes": "Yes",
+  "other": "Other"
 }

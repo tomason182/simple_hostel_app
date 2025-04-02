@@ -43,7 +43,7 @@ export default function GuestInformationForm({
               <option value="direct">{t("direct_booking")}</option>
               <option value="booking.com">Booking.com</option>
               <option value="hostelWorld.com">HostelWorld.com</option>
-              <option value="website">Website</option>
+              <option value="other">{t("other")}</option>
             </select>
           </label>
         </div>
@@ -60,7 +60,6 @@ export default function GuestInformationForm({
             >
               <option value="">{t("select_one")}</option>
               <option value="pending">{t("pending")}</option>
-              <option value="canceled">{t("canceled")}</option>
               <option value="refunded">{t("refunded")}</option>
               <option value="paid">{t("paid")}</option>
               <option value="partial">{t("partial")}</option>
