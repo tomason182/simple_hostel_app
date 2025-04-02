@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function UserForm({ user, setIsOpen, refreshUsersData }) {
   const [userData, setUserData] = useState({
@@ -13,7 +14,7 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(userData);
+  const { t } = useTranslation();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -57,14 +58,11 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
       .finally(() => setLoading(false));
   }
   return (
-    <>
-      <h4 className={styles.title}>
-        {userData.id > 0 ? "Edit User" : "Create User"}
-      </h4>
-      <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            First name
+            {t("first_name")}
             <input
               type="text"
               name="first_name"
@@ -77,7 +75,7 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
         </div>
         <div className={styles.formGroup}>
           <label>
-            Last name
+            {t("last_name")}
             <input
               type="text"
               name="last_name"
@@ -88,6 +86,8 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
             />
           </label>
         </div>
+      </div>
+      <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
             Email
@@ -112,23 +112,31 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
               value={userData.role}
               onChange={handleChange}
             >
-              <option value="">Select a role...</option>
-              <option value="manager">Manager</option>
-              <option value="employee">Employee</option>
+              <option value="">{t("select_one")}</option>
+              <option value="manager">{t("manager")}</option>
+              <option value="employee">{t("employee")}</option>
             </select>
           </label>
         </div>
+      </div>
 
-        <button className={styles.submitButton} disabled={loading}>
-          {loading ? "Loading..." : "Submit"}
+      <div className={styles.buttonGroup}>
+        <button
+          className={styles.cancelButton}
+          onClick={() => setIsOpen(false)}
+        >
+          {t("cancel")}
         </button>
-        {error && (
-          <div>
-            <p className={styles.error}>{error}</p>
-          </div>
-        )}
-      </form>
-    </>
+        <button className={styles.submitButton} disabled={loading}>
+          {loading ? "Loading..." : t("save")}
+        </button>
+      </div>
+      {error && (
+        <div>
+          <p className={styles.error}>{error}</p>
+        </div>
+      )}
+    </form>
   );
 }
 

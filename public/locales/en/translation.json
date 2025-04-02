@@ -133,5 +133,9 @@
   "save": "Save",
   "address": "Address",
   "currency": "Currency",
-  "currencies": "Currencies"
+  "currencies": "Currencies",
+  "manager": "Manager",
+  "employee": "Employee",
+  "create_user": "Create User",
+  "edit_user": "Edit User"
 }

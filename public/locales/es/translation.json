@@ -132,5 +132,9 @@
   "save": "Guardar",
   "address": "Dirección",
   "currency": "Moneda",
-  "currencies": "Monedas"
+  "currencies": "Monedas",
+  "manager": "Gerente",
+  "employee": "Empleado",
+  "create_user": "Crear Usuario",
+  "edit_user": "Editar Usuario"
 }
