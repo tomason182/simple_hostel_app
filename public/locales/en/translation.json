@@ -191,5 +191,7 @@
   "cash": "Cash",
   "bank_transfer": "Bank transfer",
   "in_nights": "in nights",
-  "in_days": "in days"
+  "in_days": "in days",
+  "pay_in_advance_message": "Is it necessary to pay in advance to make a reservation?",
+  "deposit_amount": "Deposit amount, in percentage?"
 }

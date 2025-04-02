@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function AdvancePaymentPolicyForm({
   advancePaymentData,
@@ -13,8 +14,7 @@ export default function AdvancePaymentPolicyForm({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  console.log(formData);
+  const { t } = useTranslation();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -76,7 +76,7 @@ export default function AdvancePaymentPolicyForm({
     <form className={styles.form} onSubmit={handleFormSubmit}>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
-          Do you required advance payment for a reservation?
+          {t("pay_in_advance_message")}
           <select
             name="advance_payment_required"
             id="advance_payment_required"
@@ -85,13 +85,13 @@ export default function AdvancePaymentPolicyForm({
             value={formData.advance_payment_required}
           >
             <option value={false}>No</option>
-            <option value={true}>Yes</option>
+            <option value={true}>{t("yes")}</option>
           </select>
         </label>
       </div>
       <div className={styles.formGroup}>
         <label className={styles.labelFlex}>
-          Amount in percent of the deposit?
+          {t("deposit_amount")}
           <select
             name="deposit_amount"
             id="deposit_amount"
@@ -104,11 +104,15 @@ export default function AdvancePaymentPolicyForm({
         </label>
       </div>
       <div className={styles.buttonGroup}>
-        <button className={styles.cancelButton} type="button">
-          Cancel
+        <button
+          className={styles.cancelButton}
+          type="button"
+          onClick={() => closeModal()}
+        >
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          Submit
+          {t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}

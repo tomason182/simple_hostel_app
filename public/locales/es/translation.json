@@ -190,5 +190,7 @@
   "cash": "Efectivo",
   "bank_transfer": "Transf. bancaria",
   "in_nights": "en noches",
-  "in_days": "en días"
+  "in_days": "en días",
+  "pay_in_advance_message": "¿Es necesario pagar por adelantado para hacer una reserva?",
+  "deposit_amount": "¿Monto del depósito, en porcentaje?"
 }
