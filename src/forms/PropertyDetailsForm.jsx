@@ -4,6 +4,8 @@ import countries from "../utils/country_code.json";
 import PropTypes from "prop-types";
 import Spinner from "../components/Spinner/Spinner";
 
+import { useTranslation } from "react-i18next";
+
 export default function ProperTyDetailsForm({
   setIsOpen,
   propertyDetailsData,
@@ -22,6 +24,8 @@ export default function ProperTyDetailsForm({
   const [currencies, setCurrencies] = useState([]);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
   const [currenciesError, setCurrenciesError] = useState(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFormData({
@@ -133,11 +137,11 @@ export default function ProperTyDetailsForm({
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <fieldset>
-        <legend>Address</legend>
+        <legend>{t("address")}</legend>
         <div className={styles.groupContainer}>
           <div className={styles.formGroup}>
             <label>
-              Country
+              {t("country")}
               <select
                 name="alpha_2_code"
                 id="alpha_2_code"
@@ -152,7 +156,7 @@ export default function ProperTyDetailsForm({
           </div>
           <div className={styles.formGroup}>
             <label>
-              City
+              {t("city")}
               <input
                 type="text"
                 name="city"
@@ -165,7 +169,7 @@ export default function ProperTyDetailsForm({
         <div className={styles.groupContainer}>
           <div className={styles.formGroup}>
             <label>
-              Street
+              {t("street")}
               <input
                 type="text"
                 name="street"
@@ -177,7 +181,7 @@ export default function ProperTyDetailsForm({
           </div>
           <div className={styles.formGroup}>
             <label>
-              Postal code
+              {t("postal_code")}
               <input
                 type="text"
                 name="postal_code"
@@ -190,11 +194,11 @@ export default function ProperTyDetailsForm({
         </div>
       </fieldset>
       <fieldset>
-        <legend>Currencies</legend>
+        <legend>{t("currencies")}</legend>
         <div className={styles.groupContainer}>
           <div className={styles.formGroup}>
             <label>
-              Base currency
+              {t("base_currency")}
               <select
                 name="base_currency"
                 id="base_currency"
@@ -207,7 +211,7 @@ export default function ProperTyDetailsForm({
           </div>
           <div className={styles.formGroup}>
             <label>
-              Payment currency
+              {t("payment_currency")}
               <select
                 name="payment_currency"
                 id="payment_currency"
@@ -226,10 +230,10 @@ export default function ProperTyDetailsForm({
           type="button"
           onClick={() => setIsOpen(false)}
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          {loading ? "Loading..." : "Submit"}
+          {loading ? "Loading..." : t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}

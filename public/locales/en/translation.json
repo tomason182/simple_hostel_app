@@ -130,5 +130,8 @@
   "next_billing_date": "Next billing date",
   "last_payment_status": "Last payment status",
   "payment_method": "Payment method",
-  "save": "Save"
+  "save": "Save",
+  "address": "Address",
+  "currency": "Currency",
+  "currencies": "Currencies"
 }

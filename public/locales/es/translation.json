@@ -115,8 +115,8 @@
   "policies": "Políticas",
   "room_amenities": "Comodidades",
   "edit": "Editar",
-  "edit_contact_info": "Editar informacion de contacto",
-  "edit_property_info": "Editar infrmacion de la propiedad",
+  "edit_contact_info": "Editar información de contacto",
+  "edit_property_info": "Editar información de la propiedad",
   "contact_details": "Datos de contacto",
   "property_details": "Datos de la propiedad",
   "currency_preference": "Preferencia de monedas",
@@ -129,5 +129,8 @@
   "next_billing_date": "Fecha proxima factura",
   "last_payment_status": "Estado último pago",
   "payment_method": "Metodo de pago",
-  "save": "Guardar"
+  "save": "Guardar",
+  "address": "Dirección",
+  "currency": "Moneda",
+  "currencies": "Monedas"
 }
