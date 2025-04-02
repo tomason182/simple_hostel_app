@@ -204,5 +204,8 @@
   "all": "Todos",
   "private_rooms": "Cuartos privados",
   "dormitories": "Cuartos compartidos",
-  "free_stay_age": "Edad de estadia gratuita (dejar 0 para no)"
+  "free_stay_age": "Edad de estadia gratuita (dejar 0 para no)",
+  "external_guest_policy": "Política de invidatos",
+  "pet_policy": "Política de mascotas",
+  "areas_and_services": "Areas y servicios"
 }

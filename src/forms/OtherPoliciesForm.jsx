@@ -1,6 +1,7 @@
 import styles from "./defaultFormStyle.module.css";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function OtherPoliciesForm({
   otherPoliciesData,
@@ -15,10 +16,10 @@ export default function OtherPoliciesForm({
     pets_allowed: "",
   });
 
-  console.log(formData);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFormData({
@@ -79,10 +80,10 @@ export default function OtherPoliciesForm({
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <fieldset>
-        <legend>House roles</legend>
+        <legend>{t("quite_hours")}</legend>
         <div className={styles.formGroup}>
           <label>
-            From
+            {t("from")}
             <input
               type="time"
               name="quiet_hours_from"
@@ -94,7 +95,7 @@ export default function OtherPoliciesForm({
         </div>
         <div className={styles.formGroup}>
           <label>
-            To
+            {t("until")}
             <input
               type="time"
               name="quiet_hours_to"
@@ -106,54 +107,54 @@ export default function OtherPoliciesForm({
         </div>
       </fieldset>
       <fieldset>
-        <legend>External guest policies</legend>
+        <legend>{t("external_guest_policy")}</legend>
         <div className={styles.formGroup}>
           <label>
-            Are external guest allowed?
+            {t("external_guest_allowed")}
             <select
               name="external_guest_allowed"
               value={formData.external_guest_allowed}
               onChange={handleFormChange}
               required
             >
-              <option value="">Select an option...</option>
+              <option value="">{t("select_one")}</option>
               <option value="false">No</option>
-              <option value="true">Yes</option>
+              <option value="true">{t("yes")}</option>
             </select>
           </label>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Pets Policies</legend>
+        <legend>{t("pet_policy")}</legend>
         <div className={styles.formGroup}>
           <label>
-            Do you accept pets in your property?
+            {t("pets_allowed")}
             <select
               name="pets_allowed"
               onChange={handleFormChange}
               value={formData.pets_allowed}
               required
             >
-              <option value="">Select an option...</option>
+              <option value="">{t("select_one")}</option>
               <option value="false">No</option>
-              <option value="true">Yes</option>
+              <option value="true">{t("yes")}</option>
             </select>
           </label>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Areas and services</legend>
+        <legend>{t("areas_and_services")}</legend>
         <div className={styles.formGroup}>
           <label>
-            Is there smoking area in your property?
+            {t("smoking_areas")}?
             <select
               name="smoking_areas"
               onChange={handleFormChange}
               value={formData.smoking_areas}
               required
             >
-              <option value="">Select an option...</option>
-              <option value="true">Yes</option>
+              <option value="">{t("select_one")}</option>
+              <option value="true">{t("yes")}</option>
               <option value="false">No</option>
             </select>
           </label>
@@ -165,14 +166,14 @@ export default function OtherPoliciesForm({
           type="button"
           onClick={closeModal}
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button
           className={styles.submitButton}
           type="submit"
           disabled={loading}
         >
-          Submit
+          {t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}
