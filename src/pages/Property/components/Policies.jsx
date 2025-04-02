@@ -11,12 +11,16 @@ import OtherPoliciesForm from "../../../forms/OtherPoliciesForm";
 import ChildrenPoliciesForm from "../../../forms/ChildrenPoliciesForm";
 import Spinner from "../../../components/Spinner/Spinner";
 
+import { useTranslation } from "react-i18next";
+
 export default function Policies() {
   const [policies, setPolicies] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState(null);
+
+  const { t } = useTranslation();
 
   const fetchPropertyPolicies = useCallback(() => {
     const url = import.meta.env.VITE_URL_BASE + "/properties/policies";
@@ -101,7 +105,7 @@ export default function Policies() {
   const formSelector = useMemo(
     () => ({
       1: {
-        header: <h3 className={styles.header}>Reservation Policies</h3>,
+        header: <h3 className={styles.header}>{t("reservation_policies")}</h3>,
         form: (
           <ReservationPoliciesForm
             reservationPoliciesData={reservationPolicies}
@@ -111,7 +115,9 @@ export default function Policies() {
         ),
       },
       2: {
-        header: <h3 className={styles.header}>Advance Payment Policies</h3>,
+        header: (
+          <h3 className={styles.header}>{t("advance_payment_policies")}</h3>
+        ),
         form: (
           <AdvancePaymentPolicyForm
             advancePaymentData={advancePaymentPolicies}
@@ -121,7 +127,7 @@ export default function Policies() {
         ),
       },
       3: {
-        header: <h3 className={styles.header}>Cancellation Policies</h3>,
+        header: <h3 className={styles.header}>{t("cancellation_policies")}</h3>,
         form: (
           <CancellationPoliciesForm
             cancellationPolicies={cancellationPolicies}
@@ -131,7 +137,7 @@ export default function Policies() {
         ),
       },
       4: {
-        header: <h3 className={styles.header}>Children Policies</h3>,
+        header: <h3 className={styles.header}>{t("children_policies")}</h3>,
         form: (
           <ChildrenPoliciesForm
             childrenPoliciesData={childrenPolicies}
@@ -141,7 +147,7 @@ export default function Policies() {
         ),
       },
       5: {
-        header: <h3 className={styles.header}>Other Property Policies</h3>,
+        header: <h3 className={styles.header}>{t("other_policies")}</h3>,
         form: (
           <OtherPoliciesForm
             otherPoliciesData={otherPolicies}
@@ -158,6 +164,7 @@ export default function Policies() {
       childrenPolicies,
       otherPolicies,
       fetchPropertyPolicies,
+      t,
     ]
   );
 
@@ -167,7 +174,7 @@ export default function Policies() {
 
   const actionReservation = [
     {
-      label: "Edit",
+      label: t("edit"),
       onClick: () => {
         handleFormSelection(1);
         setIsOpen(true);
@@ -177,7 +184,7 @@ export default function Policies() {
 
   const actionChildren = [
     {
-      label: "Edit",
+      label: t("edit"),
       onClick: () => {
         handleFormSelection(4);
         setIsOpen(true);
@@ -187,7 +194,7 @@ export default function Policies() {
 
   const actionOthers = [
     {
-      label: "Edit",
+      label: t("edit"),
       onClick: () => {
         handleFormSelection(5);
         setIsOpen(true);
@@ -203,81 +210,90 @@ export default function Policies() {
 
   if (loading) return <Spinner />;
 
-  if (error) return <h1>Error Page</h1>;
+  if (error) return <h1>{t("unexpected_error_message")}</h1>;
 
   return (
     <>
       <div className={styles.policiesContainer}>
-        <Card title="Reservation Policies" actions={actionReservation}>
+        <Card title={t("reservation_policies")} actions={actionReservation}>
           {reservationPolicies.min_length_stay === 0 ? (
-            <p>
-              No reservation polices are created. Click on &quot;Edit&quot; to
-              add your policies.
-            </p>
+            <p>{t("no_reservation_policy_message")}</p>
           ) : (
             <ul className={styles.list}>
               <li>
-                <span>Minimum length of stay:</span>
-                <span>{reservationPolicies.min_length_stay} days</span>
-              </li>
-              <li>
-                <span>Maximum length of stay:</span>
+                <span>{t("min_length_of_stay")}:</span>
                 <span>
-                  {reservationPolicies.max_length_stay === 0
-                    ? "No limit"
-                    : `${reservationPolicies.max_length_stay} days`}
+                  {t("night", { count: reservationPolicies.min_length_stay })}
                 </span>
               </li>
               <li>
-                <span>Allow same day reservation:</span>
+                <span>{t("max_length_of_stay")}:</span>
                 <span>
-                  {reservationPolicies.min_advance_booking !== 0 ? "No" : "Yes"}
+                  {t("night", { count: reservationPolicies.max_length_stay })}
                 </span>
               </li>
               <li>
-                <span>Minimum advance booking:</span>
+                <span>{t("allow_same_day_reservation")}:</span>
                 <span>
-                  {reservationPolicies.min_advance_booking === 0
-                    ? "---"
-                    : reservationPolicies.min_advance_booking}
+                  {reservationPolicies.min_advance_booking !== 0
+                    ? "No"
+                    : t("yes")}
                 </span>
               </li>
               <li>
-                <span>Check-in:</span>
+                <span>{t("min_advance_booking")}:</span>
+                <span>
+                  {t("day", { count: reservationPolicies.min_advance_booking })}
+                </span>
+              </li>
+              <li>
+                <span>{t("check_in")}:</span>
                 <span>
                   {reservationPolicies.check_in_from}-
                   {reservationPolicies.check_in_to}
                 </span>
               </li>
               <li>
-                <span>check-out:</span>
+                <span>{t("check_out")}:</span>
                 <span>{reservationPolicies.check_out_until}</span>
               </li>
               <li>
-                <span>Payment methods accepted:</span>
+                <span>{t("payment_methods")}:</span>
                 <ul>
-                  {reservationPolicies.payment_methods_accepted.map(method => (
-                    <li key={method}>{method}</li>
-                  ))}
+                  {reservationPolicies.payment_methods_accepted.map(method => {
+                    let paymentMethod = "";
+                    switch (method) {
+                      case "debit_credit":
+                        paymentMethod = t("debit_credit");
+                        break;
+                      case "cash":
+                        paymentMethod = t("cash");
+                        break;
+                      case "bank_transfer":
+                        paymentMethod = t("bank_transfer");
+                        break;
+                      case "bitcoin":
+                        paymentMethod = "bitcoin";
+                    }
+                    return <li key={method}>{paymentMethod}</li>;
+                  })}
                 </ul>
               </li>
             </ul>
           )}
         </Card>
         <Card
-          title="Advance Payment & Cancellation Policies"
+          title={t("advance_payment_and_cancellation_policies")}
           customStyle={customStyle}
         >
-          <h4>Advance Payment</h4>
+          <h4>{t("advance_payment")}</h4>
           <ul className={styles.list}>
             <li>
               {advancePaymentPolicies.required === false
-                ? "You are not requiring and advance payment for reservations"
-                : advancePaymentPolicies.required === true
-                ? `You required ${
-                    advancePaymentPolicies.deposit_amount * 100
-                  } % of deposit when guest make a reservation`
-                : "You DO NOT required an advance payment for guest reservations"}
+                ? t("advance_payment_no_required_message")
+                : t("advance_payment_required_message", {
+                    count: advancePaymentPolicies.deposit_amount * 100,
+                  })}
             </li>
           </ul>
           <button
@@ -287,20 +303,22 @@ export default function Policies() {
               setIsOpen(true);
             }}
           >
-            ADD
+            {t("edit")}
           </button>
           <br />
-          <h4>Cancellations</h4>
+          <h4>{t("cancellations")}</h4>
           <ul className={styles.list}>
             {cancellationPolicies[0] === null ? (
-              <li>No cancellation policies added</li>
-            ) : advancePaymentPolicies.required === 0 ? (
-              "Cancellation policies will no be display when advance payment is not required"
+              <li>{t("no_cancellation_message")}</li>
+            ) : advancePaymentPolicies.required === false ? (
+              t("cancellation_policies_not_display")
             ) : (
               cancellationPolicies.map(policy => (
                 <li key={policy.id}>
-                  {policy.amount_refund * 100}% of deposit refunded if cancel{" "}
-                  {policy.days_before_arrival} days before arrival
+                  {t("deposit_refunded", {
+                    amount: policy.amount_refund * 100,
+                    count: policy.days_before_arrival,
+                  })}
                 </li>
               ))
             )}
@@ -312,32 +330,30 @@ export default function Policies() {
               setIsOpen(true);
             }}
           >
-            ADD
+            {t("edit")}
           </button>
         </Card>
 
         <Card
-          title="Children policies"
+          title={t("children_policies")}
           actions={actionChildren}
           customStyle={customStyle}
         >
           <ul className={styles.list}>
             {childrenPolicies.children_allowed === 0 ||
             childrenPolicies.children_allowed === false ? (
-              <li>Children are not allowed in your property</li>
+              <li>{t("children_not_allowed")}</li>
             ) : (
               <>
                 <li>
-                  {childrenPolicies.min_age === 0
-                    ? "Children of all age are allowed in your property"
-                    : `Children of ${childrenPolicies?.min_age} years old or greater are allow in your property`}
+                  {t("children_allowed", { count: childrenPolicies.min_age })}
                 </li>
                 <li>
                   {childrenPolicies.allowed_room_types === "only_private"
-                    ? "children are allowed in private rooms only"
+                    ? t("children_private_room_only")
                     : childrenPolicies.allowed_room_types === "only_dorm"
-                    ? "Children are allowed only in dormitories"
-                    : "Children are allowed in any kind of room"}
+                    ? t("children_dorm_room_only")
+                    : t("children_any_room")}
                 </li>
                 <li>
                   {childrenPolicies.free_stay_age > 0 &&
@@ -352,20 +368,34 @@ export default function Policies() {
           actions={actionOthers}
           customStyle={customStyle}
         >
-          <h4>House rules</h4>
+          <h4>{t("house_rules")}</h4>
           <ul className={styles.list}>
-            <li>Quiet hours:</li>
-            <ul className={styles.list}>
-              <li>From: {otherPolicies.quiet_hours_from || "--"}</li>
-              <li>To: {otherPolicies.quiet_hours_to || "--"}</li>
-            </ul>
-            <li>Smoking areas: {otherPolicies.smoking_areas ? "Yes" : "No"}</li>
             <li>
-              Are external guest allowed?:{" "}
-              {otherPolicies.external_guest_allowed ? "Yes" : "No"}
+              <span>{t("quit_hours")}:</span>
+            </li>
+            <ul className={styles.list} style={{ marginLeft: "2rem" }}>
+              <li>
+                <span>{t("from")}:</span>
+                <span>{otherPolicies.quiet_hours_from || "--"}</span>
+              </li>
+              <li>
+                <span>{t("until")}:</span>
+                <span>{otherPolicies.quiet_hours_to || "--"}</span>
+              </li>
+            </ul>
+            <li>
+              <span>{t("smoking_areas")}:</span>
+              <span>{otherPolicies.smoking_areas ? t("yes") : "No"}</span>
             </li>
             <li>
-              Are pets allowed?: {otherPolicies.pets_allowed ? "Yes" : "No"}
+              <span>{t("external_guest_allowed")}:</span>
+              <span>
+                {otherPolicies.external_guest_allowed ? t("yes") : "No"}
+              </span>
+            </li>
+            <li>
+              <span>{t("pets_allowed")}:</span>
+              <span>{otherPolicies.pets_allowed ? t("yes") : "No"}</span>
             </li>
           </ul>
         </Card>
