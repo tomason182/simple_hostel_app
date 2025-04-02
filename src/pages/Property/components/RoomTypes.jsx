@@ -6,6 +6,8 @@ import Spinner from "../../../components/Spinner/Spinner";
 import Modal from "../../../components/Modal/Modal";
 import RoomTypeForm from "../../../forms/RoomTypeForm";
 
+import { useTranslation } from "react-i18next";
+
 export default function RoomTypes() {
   const { roomTypes, isLoading, error, refreshRoomTypeData } =
     useContext(RoomTypeContext);
@@ -19,6 +21,8 @@ export default function RoomTypes() {
   });
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const { t } = useTranslation();
 
   function handleRoomToEdit(roomId) {
     const roomType = roomTypes.find(room => room.id === roomId);
@@ -77,77 +81,97 @@ export default function RoomTypes() {
 
   if (isLoading) return <Spinner />;
 
-  if (error) return <p>Server Error. Please, try again</p>;
+  if (error) return <p>{t("unexpected_error_message")}</p>;
   return (
     <>
-      <Button title="Create room type" onClick={() => setIsOpen(true)} />
+      <Button title={t("create")} onClick={() => setIsOpen(true)} />
       <div style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
         {roomTypes.length === 0 ? (
-          <p>No room types found. Please create a room type</p>
+          <p>{t("no_room_type_message")}</p>
         ) : (
-          roomTypes.map(room => (
-            <div key={room.id} className={styles.roomContainer}>
-              <h4>{room.description}</h4>
-              <dl className={styles.list}>
-                <dt>Type</dt>
-                <dd>{room.type}</dd>
-                <dt>Gender</dt>
-                <dd>{room.gender}</dd>
-                <dt>Max occupancy</dt>
-                <dd>{room.max_occupancy}</dd>
-                <dt>Inventory</dt>
-                <dd>{room.inventory}</dd>
-              </dl>
-              <div className={styles.buttonContainer}>
-                <button
-                  className={styles.deleteBtn}
-                  onClick={() => {
-                    deleteRoomType(room.id);
-                    refreshRoomTypeData();
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#000000"
-                    strokeWidth="1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+          roomTypes.map(room => {
+            let type = "";
+            let gender = "";
+            switch (room.type) {
+              case "dorm":
+                type = t("dorm");
+                break;
+              case "private":
+                type = t("private");
+            }
+
+            switch (room.gender) {
+              case "mixed":
+                gender = t("mixed");
+                break;
+              case "female":
+                gender = t("female");
+            }
+
+            return (
+              <div key={room.id} className={styles.roomContainer}>
+                <h4>{room.description}</h4>
+                <dl className={styles.list}>
+                  <dt>{t("type")}</dt>
+                  <dd>{type}</dd>
+                  <dt>{t("gender")}</dt>
+                  <dd>{gender}</dd>
+                  <dt>{t("max_occupancy")}</dt>
+                  <dd>{room.max_occupancy}</dd>
+                  <dt>{t("inventory")}</dt>
+                  <dd>{room.inventory}</dd>
+                </dl>
+                <div className={styles.buttonContainer}>
+                  <button
+                    className={styles.deleteBtn}
+                    onClick={() => {
+                      deleteRoomType(room.id);
+                      refreshRoomTypeData();
+                    }}
                   >
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                  </svg>
-                </button>
-                <button
-                  className={styles.editBtn}
-                  onClick={() => {
-                    setIsOpen(true);
-                    handleRoomToEdit(room.id);
-                  }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="#000000"
-                    strokeWidth="1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#000000"
+                      strokeWidth="1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      <line x1="10" y1="11" x2="10" y2="17"></line>
+                      <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                  </button>
+                  <button
+                    className={styles.editBtn}
+                    onClick={() => {
+                      setIsOpen(true);
+                      handleRoomToEdit(room.id);
+                    }}
                   >
-                    <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
-                    <line x1="3" y1="22" x2="21" y2="22"></line>
-                  </svg>
-                </button>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#000000"
+                      strokeWidth="1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                      <line x1="3" y1="22" x2="21" y2="22"></line>
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         )}
       </div>
 
@@ -157,6 +181,9 @@ export default function RoomTypes() {
           setIsOpen(false);
           resetState();
         }}
+        header={
+          roomToEdit.id === 0 ? t("create_new_room_type") : t("edit_room_type")
+        }
       >
         <RoomTypeForm
           roomData={roomToEdit}

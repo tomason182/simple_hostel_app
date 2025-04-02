@@ -136,5 +136,20 @@
   "manager": "Gerente",
   "employee": "Empleado",
   "create_user": "Crear Usuario",
-  "edit_user": "Editar Usuario"
+  "edit_user": "Editar Usuario",
+  "no_room_types_message": "No se encontraron tipos de habitaciones creadas. Cree un tipo de habitación para empezar.",
+  "type": "Tipo",
+  "gender": "Genero",
+  "max_occupancy": "Ocupación máxima",
+  "inventory": "Inventario",
+  "create_new_room_type": "Crear un nuevo tipo de cuarto",
+  "edit_room_type": "Editar tipo de cuarto",
+  "room_description": "Description del cuarto",
+  "room_description_example": "Cama en habitacion compartida (6 max)",
+  "room_selection_type": "Seleccón del tipo de cuarto",
+  "private": "Privado",
+  "dorm": "Dormitorio",
+  "mixed": "Mixto",
+  "female": "Femenino",
+  "room_capacity": "Capacidad del cuarto"
 }

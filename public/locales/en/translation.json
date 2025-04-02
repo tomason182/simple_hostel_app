@@ -137,5 +137,20 @@
   "manager": "Manager",
   "employee": "Employee",
   "create_user": "Create User",
-  "edit_user": "Edit User"
+  "edit_user": "Edit User",
+  "no_room_types_message": "No created room types were found. Create a room type to get started.",
+  "type": "Type",
+  "gender": "Gender",
+  "max_occupancy": "Max. occupancy",
+  "inventory": "Inventory",
+  "create_new_room_type": "Create a new room type",
+  "edit_room_type": "Edit room type information",
+  "room_description": "Room description",
+  "room_description_example": "Bed in 6max mixed dormitory",
+  "room_selection_type": "Room type selection",
+  "private": "Private",
+  "dorm": "Dormitory",
+  "mixed": "Mixed",
+  "female": "Female",
+  "room_capacity": "Room capacity"
 }

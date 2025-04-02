@@ -1,6 +1,7 @@
 import styles from "./defaultFormStyle.module.css";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 export default function RoomTypeForm({
   roomData,
@@ -18,6 +19,8 @@ export default function RoomTypeForm({
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFormData({ ...roomData });
@@ -73,13 +76,13 @@ export default function RoomTypeForm({
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label>
-          Room description
+          {t("room_description")}
           <input
             type="text"
             name="description"
             minLength={1}
             maxLength={255}
-            placeholder="e.g. Bed in 6max mixed dormitory"
+            placeholder={t("room_description_example")}
             required
             aria-required
             value={formData.description}
@@ -88,11 +91,11 @@ export default function RoomTypeForm({
         </label>
       </div>
       <fieldset>
-        <legend>Room type selection: Dormitory or Private</legend>
+        <legend>{t("room_type_selection")}</legend>
         <div className={styles.groupContainer}>
           <div className={styles.radioContainer}>
             <label>
-              Private
+              {t("private")}
               <input
                 type="radio"
                 name="type"
@@ -104,7 +107,7 @@ export default function RoomTypeForm({
           </div>
           <div className={styles.radioContainer}>
             <label>
-              Dormitory
+              {t("dorm")}
               <input
                 type="radio"
                 name="type"
@@ -117,11 +120,11 @@ export default function RoomTypeForm({
         </div>
       </fieldset>
       <fieldset>
-        <legend>Gender</legend>
+        <legend>{t("gender")}</legend>
         <div className={styles.groupContainer}>
           <div className={styles.radioContainer}>
             <label>
-              Mixed
+              {t("mixed")}
               <input
                 type="radio"
                 name="gender"
@@ -133,7 +136,7 @@ export default function RoomTypeForm({
           </div>
           <div className={styles.radioContainer}>
             <label>
-              Female
+              {t("female")}
               <input
                 type="radio"
                 name="gender"
@@ -146,11 +149,11 @@ export default function RoomTypeForm({
         </div>
       </fieldset>
       <fieldset>
-        <legend>Room Capacity</legend>
+        <legend>{t("room_capacity")}</legend>
         <div className={styles.groupContainer}>
           <div className={styles.formGroup}>
             <label>
-              Max. occupancy
+              {t("max_occupancy")}
               <input
                 type="number"
                 name="max_occupancy"
@@ -164,7 +167,7 @@ export default function RoomTypeForm({
           </div>
           <div className={styles.formGroup}>
             <label>
-              Inventory
+              {t("inventory")}
               <input
                 type="number"
                 name="inventory"
@@ -187,10 +190,10 @@ export default function RoomTypeForm({
             resetState();
           }}
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          {loading ? "Loading..." : "Submit"}
+          {loading ? "Loading..." : t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}
