@@ -198,5 +198,12 @@
   "delete": "Delete",
   "days_before_arrival": "Days before arrival",
   "amount_to_refunded": "amount to be refunded",
-  "add": "Add"
+  "add": "Add",
+  "are_children_allowed": "Are children allowed on your property?",
+  "minimum_age_allowed": "Minimum age allowed for children",
+  "room_types_allowed_for_children": "Types of rooms allowed for children",
+  "all": "All",
+  "private_rooms": "Private rooms",
+  "dormitories": "Dormitories",
+  "free_stay_age": "Free stay age (leave 0 for no)"
 }

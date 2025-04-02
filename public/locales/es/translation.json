@@ -197,5 +197,12 @@
   "delete": "Borrar",
   "days_before_arrival": "Días antes de la llegada",
   "amount_to_refunded": "Monto a reembolsar",
-  "add": "Agregar"
+  "add": "Agregar",
+  "are_children_allowed": "¿Se permiten niños en su propiedad?",
+  "minimum_age_allowed": "Edad mínima permitida para niños",
+  "room_types_allowed_for_children": "Tipos de habitaciones permitidas para niños",
+  "all": "Todos",
+  "private_rooms": "Cuartos privados",
+  "dormitories": "Cuartos compartidos",
+  "free_stay_age": "Edad de estadia gratuita (dejar 0 para no)"
 }
