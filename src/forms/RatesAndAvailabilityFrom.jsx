@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
+import { useTranslation } from "react-i18next";
 
 export default function RatesAndAvailabilityFrom({
   roomTypes,
@@ -18,6 +19,8 @@ export default function RatesAndAvailabilityFrom({
     roomsToSell: 0,
     standardRate: 0,
   });
+
+  const { t } = useTranslation();
 
   const today = new Date();
   const formattedToday = format(today, "yyyy-MM-dd");
@@ -88,9 +91,9 @@ export default function RatesAndAvailabilityFrom({
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label>
-          Room type
+          {t("room_type")}
           <select name="roomTypeId" onChange={onChange}>
-            <option value="">Select a Room Type</option>
+            <option value="">{t("select_one")}</option>
             {roomTypes.map(room => (
               <option key={room.id} value={room.id}>
                 {room.description}
@@ -103,7 +106,7 @@ export default function RatesAndAvailabilityFrom({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            From
+            {t("from")}
             <input
               name="from"
               type="date"
@@ -115,7 +118,7 @@ export default function RatesAndAvailabilityFrom({
         </div>
         <div className={styles.formGroup}>
           <label>
-            Up to and including
+            {t("up_to_and_including")}
             <input
               name="upTo"
               type="date"
@@ -128,7 +131,7 @@ export default function RatesAndAvailabilityFrom({
       </div>
       <div className={styles.formGroup}>
         <label>
-          Rooms to sell
+          {t("room_to_sell")}
           <select name="roomsToSell" type="number" required onChange={onChange}>
             {Array.from({ length: numberOfRooms }, (_, i) => (
               <option key={i}>{i + 1}</option>
@@ -138,7 +141,7 @@ export default function RatesAndAvailabilityFrom({
       </div>
       <div className={styles.formGroup}>
         <label>
-          Standard Rate
+          {t("standard_rate")}
           <input
             name="standardRate"
             type="number"
@@ -152,10 +155,10 @@ export default function RatesAndAvailabilityFrom({
           className={styles.cancelButton}
           onClick={() => setIsOpen(false)}
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          {loading ? "Loading..." : "Save"}
+          {loading ? "Loading..." : t("save")}
         </button>
       </div>
       <div className={styles.error}>{error && error}</div>
