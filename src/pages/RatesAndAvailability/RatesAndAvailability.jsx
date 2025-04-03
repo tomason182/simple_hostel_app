@@ -9,9 +9,9 @@ import RatesAndAvailabilityFrom from "../../forms/RatesAndAvailabilityFrom";
 // Data providers
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 import { useFetchReservationByDateRange } from "../../data_providers/reservationDataProvider";
-import { useFetchRatesAndAvailabilityByDateRange } from "../../../ratesAndAvailabilityDataProvider";
+import { useFetchRatesAndAvailabilityByDateRange } from "../../data_providers/ratesAndAvailabilityDataProvider";
 // Utils
-import { dateFormatHelper } from "../../utils/dateFormatHelper";
+import { dateFormatHelper } from "../../utils/dateFormatHelper.js";
 import { useTranslation } from "react-i18next";
 
 export default function RatesAndAvailability() {

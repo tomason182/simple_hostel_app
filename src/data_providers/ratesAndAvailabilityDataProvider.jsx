@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { dateFormatHelper } from "./src/utils/dateFormatHelper";
+import { dateFormatHelper } from "../utils/dateFormatHelper";
 
 export function useFetchRatesAndAvailabilityByDateRange(from, to) {
   const [ratesAndAvailability, setRatesAnAvailability] = useState([]);
