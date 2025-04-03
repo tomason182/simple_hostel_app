@@ -207,5 +207,7 @@
   "free_stay_age": "Edad de estadia gratuita (dejar 0 para no)",
   "external_guest_policy": "Política de invidatos",
   "pet_policy": "Política de mascotas",
-  "areas_and_services": "Areas y servicios"
+  "areas_and_services": "Areas y servicios",
+  "permanently_remove_account_message": "Elimine permanentemente su cuenta y todos los datos asociados. Estas acciones son irreversibles.",
+  "delete_account": "Eliminar cuenta"
 }

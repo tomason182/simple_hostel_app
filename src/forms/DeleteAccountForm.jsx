@@ -1,12 +1,13 @@
 import styles from "./defaultFormStyle.module.css";
+import { useTranslation } from "react-i18next";
 
 export default function DeleteAccountForm() {
   const loading = false;
+  const { t } = useTranslation();
   return (
     <>
       <p className={styles.subtitle}>
-        Permanently remove your account and all associated data. These actions
-        can not be undone
+        {t("permanently_remove_account_message")}
       </p>
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <button
@@ -14,7 +15,7 @@ export default function DeleteAccountForm() {
           disabled={loading}
           onClick={() => alert("account deleted")}
         >
-          Delete account
+          {t("delete_account")}
         </button>
       </div>
     </>

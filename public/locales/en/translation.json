@@ -208,5 +208,7 @@
   "free_stay_age": "Free stay age (leave 0 for no)",
   "external_guest_policy": "External guest policy",
   "pet_policy": "Pets policy",
-  "areas_and_services": "Areas y services"
+  "areas_and_services": "Areas y services",
+  "permanently_remove_account_message": "Permanently delete your account and all associated data. These actions cannot be undone.",
+  "delete_account": "Delete account"
 }
