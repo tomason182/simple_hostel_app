@@ -371,7 +371,7 @@ export default function Policies() {
           <h4>{t("house_rules")}</h4>
           <ul className={styles.list}>
             <li>
-              <span>{t("quit_hours")}:</span>
+              <span>{t("quite_hours")}:</span>
             </li>
             <ul className={styles.list} style={{ marginLeft: "2rem" }}>
               <li>
@@ -388,13 +388,13 @@ export default function Policies() {
               <span>{otherPolicies.smoking_areas ? t("yes") : "No"}</span>
             </li>
             <li>
-              <span>{t("external_guest_allowed")}:</span>
+              <span>{t("external_guest_allowed")}</span>
               <span>
                 {otherPolicies.external_guest_allowed ? t("yes") : "No"}
               </span>
             </li>
             <li>
-              <span>{t("pets_allowed")}:</span>
+              <span>{t("pets_allowed")}</span>
               <span>{otherPolicies.pets_allowed ? t("yes") : "No"}</span>
             </li>
           </ul>
