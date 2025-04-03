@@ -161,13 +161,13 @@ export default function ReservationDetails({
                   {t("deposit")} ({depositPercentage * 100} %)
                 </th>
                 <td>
-                  {currency} {depositAmount}
+                  {currency} {depositAmount.toFixed(2)}
                 </td>
               </tr>
               <tr>
                 <th>{t("to_pay_on_arrival")}</th>
                 <td>
-                  {currency} {payOnArrival}
+                  {currency} {payOnArrival.toFixed(2)}
                 </td>
               </tr>
             </>
@@ -178,7 +178,7 @@ export default function ReservationDetails({
           <tr>
             <th>Total</th>
             <td>
-              {currency} {totalPriceCalculation}
+              {currency} {totalPriceCalculation.toFixed(2)}
             </td>
           </tr>
         </tbody>
