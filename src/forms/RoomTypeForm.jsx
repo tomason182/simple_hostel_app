@@ -38,16 +38,32 @@ export default function RoomTypeForm({
   function handleSubmit(e) {
     e.preventDefault();
 
-    const url = import.meta.env.VITE_URL_BASE + "/room-types/create";
-    const options = {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(formData),
-    };
+    let url = "";
+    let options = {};
+
+    if (formData.id === 0) {
+      url = import.meta.env.VITE_URL_BASE + "/room-types/create";
+      options = {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      };
+    } else {
+      url = import.meta.env.VITE_URL_BASE + "/room-types/update/" + formData.id;
+      options = {
+        mode: "cors",
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      };
+    }
 
     setLoading(true);
 
@@ -60,12 +76,12 @@ export default function RoomTypeForm({
         return response.json();
       })
       .then(data => {
-        if (data.status === "success") {
+        if (data.status === "error") {
+          setError(data.msg);
+        } else {
           alert(data.msg);
           refreshRoomTypeData();
           setIsOpen(false);
-        } else {
-          setError(data.msg);
         }
       })
       .catch(e => setError(e.message))
@@ -81,7 +97,7 @@ export default function RoomTypeForm({
             type="text"
             name="description"
             minLength={1}
-            maxLength={255}
+            maxLength={100}
             placeholder={t("room_description_example")}
             required
             aria-required
@@ -102,6 +118,7 @@ export default function RoomTypeForm({
                 value="private"
                 onChange={handleChange}
                 checked={formData.type === "private"}
+                disabled={formData.id !== 0}
               />
             </label>
           </div>
@@ -114,6 +131,7 @@ export default function RoomTypeForm({
                 value="dorm"
                 onChange={handleChange}
                 checked={formData.type === "dorm"}
+                disabled={formData.id !== 0}
               />
             </label>
           </div>
@@ -162,6 +180,7 @@ export default function RoomTypeForm({
                 required
                 aria-required
                 min={1}
+                disabled={formData.id !== 0}
               />
             </label>
           </div>
@@ -176,6 +195,7 @@ export default function RoomTypeForm({
                 required
                 aria-required
                 min={1}
+                disabled={formData.id !== 0}
               />
             </label>
           </div>

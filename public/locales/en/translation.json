@@ -216,5 +216,6 @@
   "confirm_password": "Confirm password",
   "password_requirement": "The password must contain at least 14 characters: 4 lowercase letters, 2 uppercase letters, 2 numbers and 2 symbols.",
   "up_to_and_including": "Up to and including",
-  "room_to_sell": "Rooms to sell"
+  "room_to_sell": "Rooms to sell",
+  "room_type_selection": "Room type selection"
 }

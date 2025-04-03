@@ -93,11 +93,16 @@
   position: absolute;
   right: 0;
   transition: 0.2s all linear;
+  cursor: pointer;
 }
 
 .radioContainer input[type="radio"]:checked {
   border: 6px solid var(--gray-700);
   padding: 0;
+}
+
+.radioContainer input[type="radio"]:disabled {
+  cursor: not-allowed;
 }
 
 /* labels */
