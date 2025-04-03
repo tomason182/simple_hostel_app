@@ -72,6 +72,11 @@
   padding: 0.25rem 0.35rem;
 }
 
+.beds {
+  color: var(--gray-500);
+  font-size: 0.875rem;
+}
+
 /* Reservations & Guest styles */
 .guestName {
   font-family: "Inter";
