@@ -1,5 +1,6 @@
 import styles from "./defaultFormStyle.module.css";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function PasswordEditForm() {
   const [formData, setFormData] = useState({
@@ -11,6 +12,8 @@ export default function PasswordEditForm() {
   const [error, setError] = useState(null);
 
   const [invalidPass, setInvalidPass] = useState("");
+
+  const { t } = useTranslation();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -77,7 +80,7 @@ export default function PasswordEditForm() {
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.formGroup}>
         <label>
-          Current password
+          {t("current_password")}
           <input
             type="password"
             name="currentPassword"
@@ -89,7 +92,7 @@ export default function PasswordEditForm() {
       </div>
       <div className={styles.formGroup}>
         <label>
-          New password
+          {t("new_password")}
           <input
             type="password"
             name="newPassword"
@@ -101,7 +104,7 @@ export default function PasswordEditForm() {
       </div>
       <div className={styles.formGroup}>
         <label>
-          Confirm password
+          {t("confirm_password")}
           <input
             type="password"
             name="repeatNewPassword"
@@ -118,7 +121,7 @@ export default function PasswordEditForm() {
           className={styles.submitButton}
           disabled={loading}
         >
-          Save
+          {t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}
@@ -145,8 +148,7 @@ export default function PasswordEditForm() {
           <line x1="12" y1="16" x2="12" y2="12"></line>
           <line x1="12" y1="8" x2="12.01" y2="8"></line>
         </svg>
-        Password should Password should contain at least 14 characters, 4
-        lowercase, 2 uppercase, 2 numbers and 2 symbols
+        {t("password_requirement")}
       </span>
     </form>
   );

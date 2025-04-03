@@ -210,5 +210,9 @@
   "pet_policy": "Pets policy",
   "areas_and_services": "Areas y services",
   "permanently_remove_account_message": "Permanently delete your account and all associated data. These actions cannot be undone.",
-  "delete_account": "Delete account"
+  "delete_account": "Delete account",
+  "current_password": "Current password",
+  "new_password": "New password",
+  "confirm_password": "Confirm password",
+  "password_requirement": "The password must contain at least 14 characters: 4 lowercase letters, 2 uppercase letters, 2 numbers and 2 symbols."
 }

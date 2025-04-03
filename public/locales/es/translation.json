@@ -209,5 +209,9 @@
   "pet_policy": "Política de mascotas",
   "areas_and_services": "Areas y servicios",
   "permanently_remove_account_message": "Elimine permanentemente su cuenta y todos los datos asociados. Estas acciones son irreversibles.",
-  "delete_account": "Eliminar cuenta"
+  "delete_account": "Eliminar cuenta",
+  "current_password": "Contraseña actual",
+  "new_password": "Contraseña nueva",
+  "confirm_password": "Confirmar contraseña",
+  "password_requirement": "La contraseña debe contener al menos 14 caracteres: 4 letras minúsculas, 2 letras mayúsculas, 2 números y 2 símbolos."
 }
