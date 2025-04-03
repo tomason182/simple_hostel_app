@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import countryCodes from "../utils/country_code.json";
 
+import { useTranslation } from "react-i18next";
+
 export default function UpdateGuestInformation({
   setIsOpen,
   guestData,
@@ -22,7 +24,7 @@ export default function UpdateGuestInformation({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  console.log(formData);
+  const { t } = useTranslation();
 
   useEffect(() => {
     setFormData({
@@ -123,7 +125,7 @@ export default function UpdateGuestInformation({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            First name <span className={styles.required}>*</span>
+            {t("first_name")} <span className={styles.required}>*</span>
             <input
               type="text"
               name="firstName"
@@ -136,7 +138,7 @@ export default function UpdateGuestInformation({
         </div>
         <div className={styles.formGroup}>
           <label>
-            Last name <span className={styles.required}>*</span>
+            {t("last_name")} <span className={styles.required}>*</span>
             <input
               type="text"
               name="lastName"
@@ -150,7 +152,7 @@ export default function UpdateGuestInformation({
       </div>
       <div className={styles.formGroup}>
         <label>
-          ID or Passport number
+          {t("id_passport_number")}
           <input
             type="text"
             name="idNumber"
@@ -175,7 +177,7 @@ export default function UpdateGuestInformation({
         </div>
         <div className={styles.formGroup}>
           <label>
-            Phone number
+            {t("phone_number")}
             <input
               type="text"
               name="phoneNumber"
@@ -188,7 +190,7 @@ export default function UpdateGuestInformation({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            Country
+            {t("country")}
             <select
               name="countryCode"
               id="countryCode"
@@ -205,7 +207,7 @@ export default function UpdateGuestInformation({
         </div>
         <div className={styles.formGroup}>
           <label>
-            City
+            {t("city")}
             <input
               type="text"
               name="city"
@@ -218,7 +220,7 @@ export default function UpdateGuestInformation({
       <div className={styles.groupContainer}>
         <div className={styles.formGroup}>
           <label>
-            Postal code
+            {t("postal_code")}
             <input
               type="text"
               name="postalCode"
@@ -230,7 +232,7 @@ export default function UpdateGuestInformation({
 
         <div className={styles.formGroup}>
           <label>
-            Street
+            {t("street")}
             <input
               type="text"
               name="street"
@@ -245,10 +247,10 @@ export default function UpdateGuestInformation({
           className={styles.cancelButton}
           onClick={() => setIsOpen(false)}
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button className={styles.submitButton} disabled={loading}>
-          {loading ? "Loading..." : "Submit"}
+          {loading ? "Loading..." : t("save")}
         </button>
       </div>
       {error && <p className={styles.error}>{error}</p>}
