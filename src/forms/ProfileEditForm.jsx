@@ -2,6 +2,7 @@ import styles from "./defaultFormStyle.module.css";
 import { UserProfileContext } from "../data_providers/UserProfileProvider";
 import { useContext, useEffect, useState } from "react";
 import Spinner from "../components/Spinner/Spinner";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileEditForm() {
   const { userProfile, loading, error, refreshUserProfile } =
@@ -15,6 +16,8 @@ export default function ProfileEditForm() {
   });
 
   const [loadingForm, setLoadingForm] = useState(false);
+
+  const { t } = useTranslation();
 
   useEffect(() => {
     function handleFormInitialValues() {
@@ -74,13 +77,13 @@ export default function ProfileEditForm() {
 
   if (loading) return <Spinner />;
 
-  if (error) return <p>Error fetching user profile</p>;
+  if (error) return <p>{t("unexpected_error_message")}</p>;
 
   return (
     <form className={styles.form} onSubmit={handleFormSubmit}>
       <div className={styles.formGroup}>
         <label>
-          First Name
+          {t("first_name")}
           <input
             type="text"
             name="first_name"
@@ -91,7 +94,7 @@ export default function ProfileEditForm() {
       </div>
       <div className={styles.formGroup}>
         <label>
-          Last Name
+          {t("last_name")}
           <input
             type="text"
             name="last_name"
@@ -130,7 +133,7 @@ export default function ProfileEditForm() {
           type="submit"
           disabled={loadingForm}
         >
-          Save
+          {t("save")}
         </button>
       </div>
     </form>
