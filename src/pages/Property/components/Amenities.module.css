@@ -1,15 +1,31 @@
 .amenitiesForm fieldset {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
   padding: 1rem;
+  max-width: 800px;
   border: 1px solid var(--gray-300);
   font-family: "Inter-Bold", sans-serif;
   font-weight: bold;
-  margin: 1rem 0;
+  margin: 1rem auto;
 }
 
 .amenitiesForm fieldset label {
   font-size: 0.75rem;
   font-family: "Inter", sans-serif;
+}
+
+.amenitiesForm button {
+  padding: 0.65rem 1.5rem;
+  background-color: var(--button-primary);
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.amenitiesForm button:disabled {
+  background-color: var(--gray-600);
+  opacity: 0.6;
+  cursor: not-allowed;
 }

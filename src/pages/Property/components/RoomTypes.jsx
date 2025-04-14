@@ -1,6 +1,7 @@
 import styles from "./RoomTypes.module.css";
-import { useContext, useState } from "react";
-import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
+import { useState } from "react";
+import PropTypes from "prop-types";
+
 import Button from "../../../components/Button/Button";
 import Spinner from "../../../components/Spinner/Spinner";
 import Modal from "../../../components/Modal/Modal";
@@ -8,9 +9,12 @@ import RoomTypeForm from "../../../forms/RoomTypeForm";
 
 import { useTranslation } from "react-i18next";
 
-export default function RoomTypes() {
-  const { roomTypes, isLoading, error, refreshRoomTypeData } =
-    useContext(RoomTypeContext);
+export default function RoomTypes({
+  roomTypes,
+  isLoading,
+  error,
+  refreshRoomTypeData,
+}) {
   const [roomToEdit, setRoomToEdit] = useState({
     id: 0,
     description: "",
@@ -195,3 +199,10 @@ export default function RoomTypes() {
     </>
   );
 }
+
+RoomTypes.propTypes = {
+  roomTypes: PropTypes.array.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string,
+  refreshRoomTypeData: PropTypes.func.isRequired,
+};

@@ -5,15 +5,20 @@ import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
+import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
 
 // Fetch property data
 import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
+import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 
 export default function Property() {
   const { propertyData, isLoading, error, refreshPropertyData } =
     usePropertyDataProvider();
+
+  const { roomTypes, loadingRoomTypes, errorRoomTypes, refreshRoomTypeData } =
+    useContext(RoomTypeContext);
 
   const { t } = useTranslation();
 
@@ -35,7 +40,14 @@ export default function Property() {
     },
     {
       label: t("room_types"),
-      content: <RoomTypes />,
+      content: (
+        <RoomTypes
+          roomTypes={roomTypes}
+          isLoading={loadingRoomTypes}
+          error={errorRoomTypes}
+          refreshRoomTypeData={refreshRoomTypeData}
+        />
+      ),
     },
     {
       label: t("photos"),
@@ -53,7 +65,14 @@ export default function Property() {
     },
     {
       label: t("room_amenities"),
-      content: <Amenities />,
+      content: (
+        <Amenities
+          roomTypes={roomTypes}
+          loadingRoomTypes={loadingRoomTypes}
+          errorRoomTypes={errorRoomTypes}
+          refreshRoomTypeData={refreshRoomTypeData}
+        />
+      ),
     },
   ];
 

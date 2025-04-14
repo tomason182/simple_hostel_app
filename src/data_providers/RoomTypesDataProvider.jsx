@@ -47,8 +47,8 @@ export default function RoomTypeDataProvider({ children }) {
     <RoomTypeContext.Provider
       value={{
         roomTypes,
-        isLoading,
-        error,
+        loadingRoomTypes: isLoading,
+        errorRoomTypes: error,
         refreshRoomTypeData: fetchRoomTypesData,
       }}
     >
