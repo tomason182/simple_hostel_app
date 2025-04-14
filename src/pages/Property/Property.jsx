@@ -5,6 +5,7 @@ import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
+import Facilities from "./components/Facilities";
 import { useContext } from "react";
 
 import { useTranslation } from "react-i18next";
@@ -73,6 +74,10 @@ export default function Property() {
           refreshRoomTypeData={refreshRoomTypeData}
         />
       ),
+    },
+    {
+      label: t("facilities_services"),
+      content: <Facilities />,
     },
   ];
 
