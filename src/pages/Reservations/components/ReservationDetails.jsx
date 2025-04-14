@@ -190,7 +190,7 @@ function ReservationInfo({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     fetch(url, options)
@@ -394,7 +394,7 @@ function PaymentDetails({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     fetch(url, options)

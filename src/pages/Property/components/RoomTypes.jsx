@@ -58,7 +58,7 @@ export default function RoomTypes() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     fetch(url, options)

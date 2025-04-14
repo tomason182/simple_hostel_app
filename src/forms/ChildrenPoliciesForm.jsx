@@ -39,7 +39,7 @@ export default function ChildrenPoliciesForm({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
       body: JSON.stringify(formData),
     };
     setError(null);

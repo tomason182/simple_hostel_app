@@ -59,7 +59,7 @@ export default function Users() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     fetch(url, options)

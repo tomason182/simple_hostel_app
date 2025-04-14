@@ -30,7 +30,7 @@ export default function Header() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     fetch(url, options).then(response => {

@@ -36,7 +36,7 @@ export default function PasswordEditForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
       body: JSON.stringify(formData),
     };
 

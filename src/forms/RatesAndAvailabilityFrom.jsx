@@ -63,7 +63,7 @@ export default function RatesAndAvailabilityFrom({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
       body: JSON.stringify(formBody),
     };
 

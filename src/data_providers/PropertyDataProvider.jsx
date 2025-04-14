@@ -14,7 +14,7 @@ export default function usePropertyDataProvider() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
     };
 
     fetch(url, options)

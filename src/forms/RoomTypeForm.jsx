@@ -49,7 +49,7 @@ export default function RoomTypeForm({
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "same-origin",
+        credentials: "include",
         body: JSON.stringify(formData),
       };
     } else {
@@ -60,7 +60,7 @@ export default function RoomTypeForm({
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "same-origin",
+        credentials: "include",
         body: JSON.stringify(formData),
       };
     }

@@ -42,7 +42,7 @@ export default function AdvancePaymentPolicyForm({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "same-origin",
+      credentials: "include",
       body: JSON.stringify(body),
     };
 
