@@ -17,7 +17,7 @@ export function useGetTodayReservations() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)
@@ -61,7 +61,7 @@ export function useGetLatestReservations() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)
@@ -116,7 +116,7 @@ export function useFetchReservationByDateRange(from, to, type = "calendar") {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)
@@ -167,7 +167,7 @@ export function useFetchReservationById(id) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)

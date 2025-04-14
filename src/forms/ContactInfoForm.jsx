@@ -39,7 +39,7 @@ export default function ContactInfoForm({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
       body: JSON.stringify(formData),
     };
 

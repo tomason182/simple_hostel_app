@@ -28,7 +28,7 @@ export default function CancelReservationForm({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     let message = "";

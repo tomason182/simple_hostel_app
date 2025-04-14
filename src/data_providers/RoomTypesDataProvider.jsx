@@ -17,7 +17,7 @@ export default function RoomTypeDataProvider({ children }) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)

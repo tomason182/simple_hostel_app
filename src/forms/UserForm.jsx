@@ -34,7 +34,7 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
       body: JSON.stringify(userData),
     };
 

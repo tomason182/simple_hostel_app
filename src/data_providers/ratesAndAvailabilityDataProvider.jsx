@@ -23,7 +23,7 @@ export function useFetchRatesAndAvailabilityByDateRange(from, to) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)

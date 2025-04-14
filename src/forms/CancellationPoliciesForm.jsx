@@ -40,7 +40,7 @@ export default function CancellationPoliciesForm({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     setLoading(true);
@@ -76,7 +76,7 @@ export default function CancellationPoliciesForm({
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "same-origin",
         body: JSON.stringify(formData),
       };
     } else {
@@ -90,7 +90,7 @@ export default function CancellationPoliciesForm({
         headers: {
           "Content-Type": "application/json",
         },
-        credentials: "include",
+        credentials: "same-origin",
         body: JSON.stringify(formData),
       };
     }

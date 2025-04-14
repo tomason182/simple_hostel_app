@@ -93,7 +93,7 @@ export default function UpdateGuestInformation({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
       body: JSON.stringify(formBody),
     };
 

@@ -67,7 +67,7 @@ export default function ReservationPoliciesForm({
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
       body: JSON.stringify(formData),
     };
 

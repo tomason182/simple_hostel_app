@@ -30,7 +30,7 @@ export default function Policies() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
     setLoading(true);
 

@@ -26,7 +26,7 @@ export function ReservationsList({ data, error, loading, info }) {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
     };
 
     fetch(url, options)

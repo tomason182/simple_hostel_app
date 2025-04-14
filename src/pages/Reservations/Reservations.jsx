@@ -45,7 +45,7 @@ export default function Reservations() {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
+      credentials: "same-origin",
       body: JSON.stringify(body),
     };
 
