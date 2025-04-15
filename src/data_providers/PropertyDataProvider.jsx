@@ -44,3 +44,45 @@ export default function usePropertyDataProvider() {
     refreshPropertyData: fetchPropertyData,
   };
 }
+
+export function useFacilitiesDataProvider() {
+  const [facilities, setFacilities] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchPropertyFacilities = useCallback(() => {
+    const url = import.meta.env.VITE_URL_BASE + "/properties";
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    setLoading(true);
+    setError(null);
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to fetch facilities");
+        }
+        return response.json();
+      })
+      .then(data => setFacilities(data))
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetchPropertyFacilities();
+  }, [fetchPropertyFacilities]);
+
+  return {
+    propertyFacilities: facilities,
+    loadingPropertyFacilities: loading,
+    errorPropertyFacilities: error,
+    refreshPropertyFacilities: fetchPropertyFacilities,
+  };
+}
