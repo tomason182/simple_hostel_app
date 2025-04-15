@@ -1,16 +1,49 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./Facilities.module.css";
 
 export default function Facilities() {
   const [facilities, setFacilities] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [loadingFacilities, setLoadingFacilities] = useState(true);
+  const [loadingPropertyFacilities, setLoadingPropertyFacilities] =
+    useState(true);
   const [errorFacilities, setErrorFacilities] = useState(null);
+  const [errorPropertyFacilities, setErrorPropertyFacilities] = useState(null);
   const { t, i18n } = useTranslation();
   const lng = i18n.resolvedLanguage;
 
   const [propertyFacilities, setPropertyFacilities] = useState([]);
+
+  const fetchPropertyFacilities = useCallback(() => {
+    const url = import.meta.env.VITE_URL_BASE + "/properties/facilities";
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    setLoadingPropertyFacilities(true);
+    setErrorPropertyFacilities(null);
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to fetch facilities");
+        }
+        return response.json();
+      })
+      .then(data => setPropertyFacilities(data.msg))
+      .catch(e => setErrorPropertyFacilities(e.message))
+      .finally(() => setLoadingPropertyFacilities(false));
+  }, []);
+
+  useEffect(() => {
+    fetchPropertyFacilities();
+  }, [fetchPropertyFacilities]);
 
   useEffect(() => {
     function fetchFacilities() {
@@ -52,8 +85,42 @@ export default function Facilities() {
     }
   }
 
-  if (loadingFacilities) return <Spinner />;
-  if (errorFacilities) return <div>{errorFacilities}</div>;
+  function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+
+    const formBody = {
+      facilities: propertyFacilities,
+    };
+
+    const url = import.meta.env.VITE_URL_BASE + "/properties/facilities";
+    const options = {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formBody),
+    };
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          throw new Error("Unable to save changes");
+        }
+
+        alert("Changes saved successfully");
+      })
+      .catch(err =>
+        alert(`An error occurred, please try again. Error: ${err.message}`)
+      )
+      .finally(() => setLoading(false));
+  }
+
+  if (loadingFacilities || loadingPropertyFacilities) return <Spinner />;
+  if (errorFacilities || errorPropertyFacilities)
+    return <div>{errorFacilities}</div>;
 
   const categories = [
     { name: "general", label: "General" },
@@ -111,10 +178,10 @@ export default function Facilities() {
   return (
     <div className={styles.container}>
       <h1>{t("property_facilities")}</h1>
-      <form className={styles.facilityForm}>
+      <form className={styles.facilityForm} onSubmit={handleSubmit}>
         <div className={styles.buttonContainer}>
           <button disabled={propertyFacilities.length === 0}>
-            {t("save_changes")}
+            {loading ? t("loading") : t("save_changes")}
           </button>
         </div>
 
