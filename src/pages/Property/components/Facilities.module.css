@@ -1,0 +1,44 @@
+.container h1 {
+  margin: 1rem 0 0 0;
+  padding: 0;
+  font-size: 1.5rem;
+}
+.facilityForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 1280px;
+}
+
+.facilityForm fieldset {
+  display: flex;
+
+  font-size: 0.75rem;
+  padding: 1rem;
+  font-family: "Inter";
+}
+
+.facilityForm fieldset legend {
+  font-family: "Inter-Bold", sans-serif;
+  font-weight: bold;
+  text-align: left;
+}
+
+.buttonContainer button {
+  padding: 0.75rem 1rem;
+  background-color: var(--button-primary);
+  border: none;
+  color: white;
+  float: right;
+  cursor: pointer;
+}
+
+.buttonContainer button:hover {
+  background-color: var(--button-dark);
+}
+
+.buttonContainer button:disabled {
+  background-color: var(--gray-600);
+  opacity: 0.6;
+}

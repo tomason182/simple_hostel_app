@@ -217,5 +217,14 @@
   "up_to_and_including": "Hasta e incluyendo",
   "room_to_sell": "Cuartos a la venta",
   "room_type_selection": "Selección del tipo de cuarto",
-  "facilities_services": "Instalaciones y Servicios"
+  "facilities_services": "Instalaciones y Servicios",
+  "bathroom": "Baño",
+  "connectivity": "Conectividad",
+  "entertainment": "Entretenimiento",
+  "transportation": "Transporte",
+  "safety_security": "Seguridad",
+  "accessibility": "Accesibilidad",
+  "food_drinks": "Comidas y bebidas",
+  "save_changes": "Guardar cambios",
+  "property_facilities": "Servicios e instalaciones de la propiedad"
 }

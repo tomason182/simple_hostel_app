@@ -218,5 +218,14 @@
   "up_to_and_including": "Up to and including",
   "room_to_sell": "Rooms to sell",
   "room_type_selection": "Room type selection",
-  "facilities_services": "Facilities & Services"
+  "facilities_services": "Facilities & Services",
+  "bathroom": "Bathroom",
+  "connectivity": "Connectivity",
+  "entertainment": "Entertainment",
+  "transportation": "Transportation",
+  "safety_security": "Safety & Security",
+  "accessibility": "Accessibility",
+  "food_drinks": "Food & Drinks",
+  "save_changes": "Save changes",
+  "property_facilities": "Property facilities"
 }
