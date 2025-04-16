@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./RoomsPhotos.module.css";
@@ -6,11 +6,54 @@ import styles from "./RoomsPhotos.module.css";
 export default function RoomsPhotos() {
   const [room, setRoom] = useState(null);
   const [images, setImages] = useState([]);
+  const [loadingImages, setLoadingImages] = useState(false);
+  const [loadingImageUpload, setLoadingImageUpload] = useState(false);
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
 
   console.log(images);
 
   console.log("Room: ", room);
+
+  const refreshImageFromServer = useCallback(() => {
+    if (!room?.id) return;
+
+    const url = import.meta.VITE_URL_BASE + "/images/" + room.id;
+    const options = {
+      mode: "cors",
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    };
+
+    setLoadingImages(true);
+    fetch(url, options)
+      .then(response => {
+        if (response.status >= 400) {
+          alert("Failed to load images from server");
+          return;
+        }
+        return response.json();
+      })
+      .then(data => {
+        const serverImages = data.map((url, index) => ({
+          id: `server-${index}`,
+          src: url,
+          name: `image-${index}`,
+          source: "server",
+        }));
+        setImages(serverImages);
+      })
+      .catch(e => {
+        console.error(`Error loading images: ${e.message}`);
+      })
+      .finally(() => setLoadingImages(false));
+  }, [room?.id]);
+
+  useEffect(() => {
+    refreshImageFromServer();
+  }, [refreshImageFromServer]);
 
   function handleRoomSelection(e) {
     const roomId = parseInt(e.target.value);
@@ -24,27 +67,79 @@ export default function RoomsPhotos() {
 
     files.forEach((file, i) => {
       if (/\.(jpe?g|png)/i.test(file.name)) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          setImages(prev => [
-            ...prev,
-            {
-              id: Date.now() + i,
-              src: e.target.result,
-              name: file.name,
-            },
-          ]);
-        };
-        reader.readAsDataURL(file);
+        const imageURL = URL.createObjectURL(file);
+
+        setImages(prev => [
+          ...prev,
+          {
+            id: Date.now() + i,
+            src: imageURL,
+            name: file.name,
+            source: "local",
+            file,
+          },
+        ]);
       }
     });
   }
 
   function removeImage(id) {
-    setImages(images.filter(image => image.id !== id));
+    setImages(prev => {
+      const updatedImages = prev.filter(image => image.id !== id);
+
+      // Find the removed image and revoke its URL
+      const removedImage = prev.find(image => image.id === id);
+      if (removedImage) {
+        URL.revokeObjectURL(removedImage.src);
+      }
+
+      return updatedImages;
+    });
   }
 
-  if (isLoading) return <Spinner />;
+  function uploadImages() {
+    const imagesToUpload = images.filter(img => img.source === "local");
+    if (imagesToUpload.length === 0) return alert("No images to upload");
+
+    const formData = new FormData();
+
+    imagesToUpload.forEach(image => {
+      formData.append("photos", image.file);
+    });
+
+    const roomTypeId = room.id; // Checkear que el ID del room  type este ahi!
+    const url = import.meta.env.VITE_URL_BASE + "/images/upload/" + roomTypeId;
+    const options = {
+      mode: "cors",
+      method: "POST",
+      credentials: "include",
+      body: formData,
+    };
+
+    setLoadingImageUpload(true);
+
+    fetch(url, options)
+      .then(response => {
+        if (response.status === 401) {
+          alert("User Unauthorized");
+          // Redirect to login page or home page
+          return;
+        }
+        if (response.status >= 400) {
+          alert("Unable to upload images. Please try again.");
+          return;
+        }
+        alert("Images uploaded successfully");
+        // We need to clean all temporally URLs
+        imagesToUpload.forEach(image => URL.revokeObjectURL(image.src));
+        // We need to fetch the images from the server.
+        refreshImageFromServer();
+      })
+      .catch(e => alert(`An error Occurred: ${e.message}`))
+      .finally(() => setLoadingImageUpload(false));
+  }
+
+  if (isLoading || loadingImages) return <Spinner />;
 
   if (error) return <p>Network error. Please, try again</p>;
 
@@ -123,7 +218,13 @@ export default function RoomsPhotos() {
         ))}
       </div>
       <div>
-        <button className={styles.submitBtn}>Upload</button>
+        <button
+          className={styles.submitBtn}
+          disabled={loadingImageUpload}
+          onClick={uploadImages}
+        >
+          {loadingImageUpload ? "loading" : "Upload"}
+        </button>
       </div>
     </>
   );
