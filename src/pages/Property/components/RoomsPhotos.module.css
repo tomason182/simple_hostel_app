@@ -22,6 +22,12 @@
   gap: 1rem;
 }
 
+.uploadContent > span:last-child {
+  font-size: 0.7rem;
+  margin: 0;
+  padding: 0;
+}
+
 .hidden {
   display: none;
 }
@@ -46,7 +52,7 @@
 
 .imageContainer img {
   width: 100%;
-  height: 256px;
+  height: 150px;
   object-fit: cover;
   border-radius: 10px;
 }
@@ -73,6 +79,13 @@
 .deleteBtn svg {
   stroke: white;
   transform: translateY(5%);
+}
+
+/* Submit button */
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
 }
 
 .submitBtn {
