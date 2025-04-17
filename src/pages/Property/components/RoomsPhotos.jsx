@@ -45,7 +45,7 @@ export default function RoomsPhotos() {
       })
       .then(data => {
         const serverImages = data.map((image, index) => ({
-          id: `server-${index}`,
+          id: image.id,
           src: import.meta.env.VITE_IMAGES_STATIC_URL + image.file_name,
           name: `image-${index + 1}`,
           source: "server",
@@ -100,18 +100,44 @@ export default function RoomsPhotos() {
     });
   }
 
-  function removeImage(id) {
-    setImages(prev => {
-      const updatedImages = prev.filter(image => image.id !== id);
+  async function removeImage(id) {
+    // Find the removed image and revoke its URL
+    const imageToRemove = images.find(image => image.id === id);
 
-      // Find the removed image and revoke its URL
-      const removedImage = prev.find(image => image.id === id);
-      if (removedImage) {
-        URL.revokeObjectURL(removedImage.src);
+    if (!imageToRemove) return;
+
+    if (imageToRemove && imageToRemove?.src?.startsWith("blob:")) {
+      URL.revokeObjectURL(imageToRemove.src);
+    }
+
+    if (imageToRemove && imageToRemove?.source === "server") {
+      try {
+        const url =
+          import.meta.env.VITE_URL_BASE + "/images/room-types/delete/" + id;
+        const options = {
+          mode: "cors",
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        };
+
+        const response = await fetch(url, options);
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.msg);
+        }
+
+        alert("Image deleted successfully");
+      } catch (e) {
+        console.error(e);
+        return;
       }
+    }
 
-      return updatedImages;
-    });
+    setImages(prev => prev.filter(image => image.id !== id));
   }
 
   function uploadImages() {
