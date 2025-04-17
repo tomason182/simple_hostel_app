@@ -10,8 +10,16 @@ export default function RoomsPhotos() {
   const [loadingImageUpload, setLoadingImageUpload] = useState(false);
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
 
-  console.log(images);
-  console.log(room);
+  // Revoke image URL when component unmounts
+  useEffect(() => {
+    return () => {
+      images.forEach(image => {
+        if (image.source === "local") {
+          URL.revokeObjectURL(image.src);
+        }
+      });
+    };
+  }, []);
 
   const fetchImagesFromServer = useCallback(() => {
     if (!room?.id) return;
@@ -36,10 +44,10 @@ export default function RoomsPhotos() {
         return response.json();
       })
       .then(data => {
-        const serverImages = data.map((url, index) => ({
+        const serverImages = data.map((image, index) => ({
           id: `server-${index}`,
-          src: url,
-          name: `image-${index}`,
+          src: import.meta.env.VITE_IMAGES_STATIC_URL + image.file_name,
+          name: `image-${index + 1}`,
           source: "server",
         }));
         setImages(serverImages);
@@ -56,6 +64,12 @@ export default function RoomsPhotos() {
 
   function handleRoomSelection(e) {
     const roomId = parseInt(e.target.value);
+    images.forEach(image => {
+      if (image.source === "local") {
+        URL.revokeObjectURL(image.src);
+      }
+      setImages([]);
+    });
     if (isNaN(roomId)) {
       setRoom({ id: "" });
       return;
@@ -124,13 +138,15 @@ export default function RoomsPhotos() {
     setLoadingImageUpload(true);
 
     fetch(url, options)
-      .then(response => {
+      .then(async response => {
         if (response.status === 401) {
           alert("User Unauthorized");
           // Redirect to login page or home page
           return;
         }
         if (response.status >= 400) {
+          const error = await response.json();
+          console.error(error);
           alert("Unable to upload images. Please try again.");
           return;
         }
@@ -141,7 +157,14 @@ export default function RoomsPhotos() {
         fetchImagesFromServer();
       })
       .catch(e => alert(`An error Occurred: ${e.message}`))
-      .finally(() => setLoadingImageUpload(false));
+      .finally(() => {
+        setLoadingImageUpload(false);
+        images.forEach(image => {
+          if (image.source === "local") {
+            URL.revokeObjectURL(image.src);
+          }
+        });
+      });
   }
 
   if (isLoading || loadingImages) return <Spinner />;
@@ -154,6 +177,15 @@ export default function RoomsPhotos() {
   return (
     <>
       <h3>Rooms Photos</h3>
+      <div className={styles.buttonContainer}>
+        <button
+          className={styles.submitBtn}
+          disabled={loadingImageUpload}
+          onClick={uploadImages}
+        >
+          {loadingImageUpload ? "loading" : "Upload"}
+        </button>
+      </div>
       {/* Room type selection */}
       <label>
         <select
@@ -188,6 +220,7 @@ export default function RoomsPhotos() {
               <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 8l-5-5-5 5M12 4.2v10.3" />
             </svg>
             <span>Click to upload Images</span>
+            <span>You can upload upto 10 images per room type</span>
           </div>
           <input
             type="file"
@@ -203,7 +236,7 @@ export default function RoomsPhotos() {
       <div className={styles.imagesGrid}>
         {images.map(image => (
           <div key={image.id} className={styles.imageContainer}>
-            <img src={image.src} alt={image.name} className={styles} />
+            <img src={image.src} alt={image.name} className={styles.image} />
             <button
               onClick={() => removeImage(image.id)}
               className={styles.deleteBtn}
@@ -225,15 +258,6 @@ export default function RoomsPhotos() {
             </button>
           </div>
         ))}
-      </div>
-      <div>
-        <button
-          className={styles.submitBtn}
-          disabled={loadingImageUpload}
-          onClick={uploadImages}
-        >
-          {loadingImageUpload ? "loading" : "Upload"}
-        </button>
       </div>
     </>
   );
