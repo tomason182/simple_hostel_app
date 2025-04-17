@@ -4,20 +4,19 @@ import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./RoomsPhotos.module.css";
 
 export default function RoomsPhotos() {
-  const [room, setRoom] = useState(null);
+  const [room, setRoom] = useState({ id: "" });
   const [images, setImages] = useState([]);
   const [loadingImages, setLoadingImages] = useState(false);
   const [loadingImageUpload, setLoadingImageUpload] = useState(false);
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
 
   console.log(images);
+  console.log(room);
 
-  console.log("Room: ", room);
-
-  const refreshImageFromServer = useCallback(() => {
+  const fetchImagesFromServer = useCallback(() => {
     if (!room?.id) return;
 
-    const url = import.meta.VITE_URL_BASE + "/images/" + room.id;
+    const url = import.meta.env.VITE_URL_BASE + "/images/room-types/" + room.id;
     const options = {
       mode: "cors",
       method: "GET",
@@ -52,13 +51,17 @@ export default function RoomsPhotos() {
   }, [room?.id]);
 
   useEffect(() => {
-    refreshImageFromServer();
-  }, [refreshImageFromServer]);
+    fetchImagesFromServer();
+  }, [fetchImagesFromServer]);
 
   function handleRoomSelection(e) {
     const roomId = parseInt(e.target.value);
+    if (isNaN(roomId)) {
+      setRoom({ id: "" });
+      return;
+    }
     const selectedRoom = roomTypes.find(r => r.id === roomId);
-    setRoom(selectedRoom);
+    setRoom({ id: selectedRoom.id });
   }
 
   // Handling images
@@ -100,6 +103,7 @@ export default function RoomsPhotos() {
   function uploadImages() {
     const imagesToUpload = images.filter(img => img.source === "local");
     if (imagesToUpload.length === 0) return alert("No images to upload");
+    if (!room.id) return alert("No room type selected");
 
     const formData = new FormData();
 
@@ -108,7 +112,8 @@ export default function RoomsPhotos() {
     });
 
     const roomTypeId = room.id; // Checkear que el ID del room  type este ahi!
-    const url = import.meta.env.VITE_URL_BASE + "/images/upload/" + roomTypeId;
+    const url =
+      import.meta.env.VITE_URL_BASE + "/images/room-types/upload/" + roomTypeId;
     const options = {
       mode: "cors",
       method: "POST",
@@ -133,7 +138,7 @@ export default function RoomsPhotos() {
         // We need to clean all temporally URLs
         imagesToUpload.forEach(image => URL.revokeObjectURL(image.src));
         // We need to fetch the images from the server.
-        refreshImageFromServer();
+        fetchImagesFromServer();
       })
       .catch(e => alert(`An error Occurred: ${e.message}`))
       .finally(() => setLoadingImageUpload(false));
@@ -151,7 +156,11 @@ export default function RoomsPhotos() {
       <h3>Rooms Photos</h3>
       {/* Room type selection */}
       <label>
-        <select name="room" onChange={e => handleRoomSelection(e)}>
+        <select
+          name="room"
+          onChange={e => handleRoomSelection(e)}
+          value={room.id}
+        >
           <option value="">Select a room type</option>
           {roomTypes.map(room => (
             <option key={room.id} value={room.id}>
