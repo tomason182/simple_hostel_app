@@ -122,6 +122,64 @@ function SignUp({ setIndex }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+  const [passwordCheck, setPasswordCheck] = useState({
+    minLength: false,
+    minLowerCase: false,
+    minUpperCase: false,
+    minNumbers: false,
+    minSymbols: false,
+    hasWhiteSpaces: false,
+  });
+
+  console.log(passwordCheck);
+
+  function handleChange(e) {
+    const password = e.target.value;
+    const minLength = 8;
+    const minLowerCase = 2;
+    const minUpperCase = 2;
+    const minNumbers = 2;
+    const minSymbols = 2;
+
+    const lowerCaseCount = (password.match(/[a-z]/g) || []).length;
+    const upperCaseCount = (password.match(/[A-Z]/g) || []).length;
+    const numbersCount = (password.match(/[0-9]/g) || []).length;
+    const symbolsCount = (password.match(/[^A-Za-z0-9\s]/g) || []).length;
+    const hasWhiteSpaces = /\s/.test(password);
+
+    setPasswordCheck(prev => ({
+      ...prev,
+      minLength: password.length >= minLength,
+      minLowerCase: lowerCaseCount >= minLowerCase,
+      minUpperCase: upperCaseCount >= minUpperCase,
+      minNumbers: numbersCount >= minNumbers,
+      minSymbols: symbolsCount >= minSymbols,
+      hasWhiteSpaces: hasWhiteSpaces,
+    }));
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (e.target.password.value !== e.target.confirmPassword.value) {
+      setError("Passwords don't match");
+      return;
+    }
+
+    const formBody = {
+      username: e.target.username.value,
+      password: e.target.password.value,
+    };
+    const url = import.meta.env.VITE_URL_BASE + "/users/register";
+    const options = {
+      mode: "cors",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+  }
 
   return (
     <>
@@ -147,7 +205,89 @@ function SignUp({ setIndex }) {
         </label>
         <label>
           <span>{t("password")}</span>
-          <input type="password" required aria-required name="password" />
+          <input
+            type="password"
+            required
+            aria-required
+            name="password"
+            onFocus={() => setIsActive(true)}
+            onBlur={() => setIsActive(false)}
+            onChange={handleChange}
+          />
+          <div
+            className={`${styles.passwordValidation} ${
+              isActive ? styles.active : ""
+            }`}
+          >
+            <ul>
+              <li>
+                {passwordCheck.minLength ? (
+                  <span className={styles.success}>
+                    &#x2713; 8-20 characters
+                  </span>
+                ) : (
+                  <span className={styles.notSuccess}>
+                    &#x10102; 8-20 characters
+                  </span>
+                )}
+              </li>
+              <li>
+                {passwordCheck.minUpperCase ? (
+                  <span className={styles.success}>
+                    &#x2713; At least 2 capital letters
+                  </span>
+                ) : (
+                  <span className={styles.notSuccess}>
+                    &#x10102; At least 2 capital letters
+                  </span>
+                )}
+              </li>
+              <li>
+                {passwordCheck.minLowerCase ? (
+                  <span className={styles.success}>
+                    &#x2713; At least 2 lowercase letters
+                  </span>
+                ) : (
+                  <span className={styles.notSuccess}>
+                    &#x10102; At least 2 lowercase letters
+                  </span>
+                )}
+              </li>
+              <li>
+                {passwordCheck.minNumbers ? (
+                  <span className={styles.success}>
+                    &#x2713; At least 2 numbers
+                  </span>
+                ) : (
+                  <span className={styles.notSuccess}>
+                    &#x10102; At least 2 numbers
+                  </span>
+                )}
+              </li>
+              <li>
+                {passwordCheck.minSymbols ? (
+                  <span className={styles.success}>
+                    &#x2713; at least 1 special character
+                  </span>
+                ) : (
+                  <span className={styles.notSuccess}>
+                    &#x10102; at least 1 special character
+                  </span>
+                )}
+              </li>
+              <li>
+                {!passwordCheck.hasWhiteSpaces ? (
+                  <span className={styles.success}>
+                    &#x2713; No white spaces
+                  </span>
+                ) : (
+                  <span className={styles.notSuccess}>
+                    &#x10102; No white spaces
+                  </span>
+                )}
+              </li>
+            </ul>
+          </div>
         </label>
         <label>
           <span>{t("confirm_password")}</span>
@@ -178,7 +318,7 @@ function SignUp({ setIndex }) {
           </label>
         </div>
         <button type="submit" className={styles.submitButton}>
-          {loading ? "Loading..." : t("sign_in")}
+          {loading ? "Loading..." : t("sign_up")}
         </button>
       </form>
     </>

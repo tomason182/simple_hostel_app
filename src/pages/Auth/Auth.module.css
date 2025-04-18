@@ -152,3 +152,31 @@ input[type="checkbox"] {
   width: min-content;
   margin: 0;
 }
+
+/* Password validation */
+.passwordValidation {
+  border: 1px solid var(--gray-200);
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  display: none;
+}
+
+.passwordValidation.active {
+  display: block;
+}
+
+.passwordValidation ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.75rem;
+  text-align: left;
+}
+
+.success {
+  color: green;
+}
+
+.notSuccess {
+  color: red;
+}
