@@ -5,11 +5,22 @@ import RatesAndAvailability from "./pages/RatesAndAvailability/RatesAndAvailabil
 import Reservations from "./pages/Reservations/Reservations";
 import Property from "./pages/Property/Property";
 import Profile from "./pages/User/Profile";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Auth from "./pages/Auth/Auth";
+import { Navigate } from "react-router";
 
 const routes = [
   {
+    path: "accounts/auth",
+    element: <Auth />,
+  },
+  {
     path: "/",
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -48,6 +59,10 @@ const routes = [
         element: <Profile />,
       },
     ],
+  },
+  {
+    path: "*",
+    element: <Navigate to="/accounts/auth" />,
   },
 ];
 
