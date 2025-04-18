@@ -1,0 +1,128 @@
+.mainContent {
+  padding: 2rem;
+}
+
+.mainContent h1 {
+  font-family: "Inter", sans-serif;
+  font-size: 2rem;
+  color: var(--gray-700);
+}
+.buttonContainer {
+  padding: 1rem;
+}
+
+.buttonContainer button {
+  padding: 0.5rem 2.5rem;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  background-color: #fff;
+  cursor: pointer;
+  border: 1px solid var(--gray-300);
+  border-radius: 5px;
+}
+
+.buttonContainer button:hover {
+  border: 1px solid var(--gray-600);
+}
+
+.buttonContainer button.active {
+  background-color: #0056b3;
+  color: #fff;
+}
+
+.formContainer {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 2rem;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.formContainer h3 {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--gray-600);
+  padding: 0;
+  margin: 0;
+}
+
+.formText {
+  font-size: 0.875rem;
+  text-align: center;
+  margin: 0;
+  color: var(--gray-500);
+}
+
+.linkButton {
+  background: #fff;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 1px solid black;
+  border-left: 0;
+  cursor: pointer;
+}
+
+.form {
+  padding: 2rem 0;
+}
+
+.form > label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.875rem;
+  color: #333;
+  gap: 2px;
+  margin-bottom: 1rem;
+}
+
+.form > label > span {
+  align-self: flex-start;
+}
+
+.form > input {
+  width: 100%;
+  padding: 0.35rem 0.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+}
+
+.form button {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  color: #fff;
+  background-color: var(--button-primary);
+  border: none;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.form button:hover {
+  background-color: var(--button-dark);
+}
+
+/* Error message */
+.error {
+  border: 1px solid red;
+}
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin: 15px 0 10px 0;
+}
+
+/* Forgot password button */
+.form button:last-child {
+  width: fit-content;
+  float: left;
+  background-color: none;
+  background: none;
+  color: black;
+  margin: 0;
+  padding: 0;
+}
+
+.form button:last-child:hover {
+  border-bottom: 1px solid black;
+}
