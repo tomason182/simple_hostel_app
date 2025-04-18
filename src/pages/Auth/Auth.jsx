@@ -1,7 +1,7 @@
 import styles from "./Auth.module.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { useTranslation } from "react-i18next";
+import { useTranslation, Trans } from "react-i18next";
 import { useNavigate, Navigate } from "react-router";
 
 export default function Auth() {
@@ -29,7 +29,7 @@ export default function Auth() {
       </div>
       <div className={styles.formContainer}>
         {index === 0 && <LogIn setIndex={setIndex} />}
-        {index === 1 && <h1>Log out</h1>}
+        {index === 1 && <SignUp setIndex={setIndex} />}
       </div>
     </div>
   );
@@ -99,7 +99,9 @@ function LogIn({ setIndex }) {
           <span>{t("password")}</span>
           <input type="password" name="password" required aria-required />
         </label>
-        <button type="submit">{loading ? "Loading..." : t("sign_in")}</button>
+        <button type="submit" className={styles.submitButton}>
+          {loading ? "Loading..." : t("sign_in")}
+        </button>
         <button className={styles.forgotPass} disabled={loading}>
           {t("forgot_password")}
         </button>
@@ -112,6 +114,73 @@ function LogIn({ setIndex }) {
           </p>
         </div>
       )}
+    </>
+  );
+}
+
+function SignUp({ setIndex }) {
+  const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  return (
+    <>
+      <h3>{t("sign_up_title")}</h3>
+      <p className={styles.formText}>
+        {t("sign_up_msg")}{" "}
+        <button onClick={() => setIndex(0)} className={styles.linkButton}>
+          {t("sign_in")}
+        </button>
+      </p>
+      <form className={styles.form}>
+        <label>
+          <span>{t("first_name")}</span>
+          <input type="text" required aria-required name="firstName" />
+        </label>
+        <label>
+          <span>{t("property_name")}</span>
+          <input type="text" required aria-required name="propertyName" />
+        </label>
+        <label>
+          <span>{t("email_address")}</span>
+          <input type="email" required aria-required name="username" />
+        </label>
+        <label>
+          <span>{t("password")}</span>
+          <input type="password" required aria-required name="password" />
+        </label>
+        <label>
+          <span>{t("confirm_password")}</span>
+          <input type="password" required aria-required />
+        </label>
+        <div className={styles.acceptTerms}>
+          <input type="checkbox" name="acceptTerms" required aria-required />
+          <label htmlFor="acceptTerms">
+            <Trans
+              i18nKey="accept_terms"
+              components={{
+                terms: (
+                  <a
+                    href="https://www.simplehostel.net/legal/terms"
+                    target="blank"
+                    rel="noopener noreferrer"
+                  />
+                ),
+                privacy: (
+                  <a
+                    href="https://www.simplehostel.net/legal/privacy"
+                    target="blank"
+                    rel="noopener noreferrer"
+                  />
+                ),
+              }}
+            />
+          </label>
+        </div>
+        <button type="submit" className={styles.submitButton}>
+          {loading ? "Loading..." : t("sign_in")}
+        </button>
+      </form>
     </>
   );
 }

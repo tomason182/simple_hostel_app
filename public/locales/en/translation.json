@@ -236,5 +236,7 @@
   "sign_in_msg": "Don't have an account?",
   "email_address": "Email address",
   "password": "Password",
-  "forgot_password": "Forgot your password?"
+  "forgot_password": "Forgot your password?",
+  "property_name": "Property name",
+  "accept_terms": "I accept SimpleHostel's <terms>Terms and Conditions</terms> and <privacy>Privacy Policies</privacy>"
 }

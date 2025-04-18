@@ -1,7 +1,6 @@
 #root {
   display: flex;
   flex-direction: column;
-  height: 100dvh;
   margin: 0 auto;
   padding: 0;
   text-align: center;

@@ -235,5 +235,9 @@
   "sign_in_msg": "¿No tienes cuenta?",
   "email_address": "Correo electrónico",
   "password": "Contaseña",
-  "forgot_password": "¿Olvido su contraseña?"
+  "forgot_password": "¿Olvido su contraseña?",
+  "sign_up_title": "Crear una cuenta gratis",
+  "sign_up_msg": "¿Tienes una cuenta?",
+  "property_name": "Nombre de la propiedad",
+  "accept_terms": "Acepto los <terms>Términos y Condiciones</terms> y las <privacy>Póliticas de Privacidad</privacy> de SimpleHostel"
 }
