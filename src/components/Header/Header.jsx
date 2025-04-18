@@ -3,11 +3,13 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router";
 import { UserProfileContext } from "../../data_providers/UserProfileProvider";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 export default function Header() {
   const { userProfile, isLoading, error } = useContext(UserProfileContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
 
@@ -39,7 +41,7 @@ export default function Header() {
         return;
       }
 
-      window.location.replace("http://localhost:8080");
+      return navigate("/accounts/auth", { replace: true });
     });
   }
 
