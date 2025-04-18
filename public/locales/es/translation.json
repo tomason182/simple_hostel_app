@@ -226,5 +226,14 @@
   "accessibility": "Accesibilidad",
   "food_drinks": "Comidas y bebidas",
   "save_changes": "Guardar cambios",
-  "property_facilities": "Servicios e instalaciones de la propiedad"
+  "property_facilities": "Servicios e instalaciones de la propiedad",
+  "sign_in_fail_msg": "No pudimos iniciar seción en tu cuenta. Intentalo de nuevo",
+  "invalid_credentials": "Nombre de usuario o contraseña no válidos o su cuenta no está validada.",
+  "sign_in": "Iniciar sesión",
+  "sign_up": "Registrase",
+  "sign_in_title": "Ingresa en tu cuenta",
+  "sign_in_msg": "¿No tienes cuenta?",
+  "email_address": "Correo electrónico",
+  "password": "Contaseña",
+  "forgot_password": "¿Olvido su contraseña?"
 }

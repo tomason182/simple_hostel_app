@@ -18,13 +18,13 @@ export default function Auth() {
           onClick={() => setIndex(0)}
           className={index === 0 ? styles.active : ""}
         >
-          Sign in
+          {t("sign_in")}
         </button>
         <button
           onClick={() => setIndex(1)}
           className={index === 1 ? styles.active : ""}
         >
-          Sign up
+          {t("sign_up")}
         </button>
       </div>
       <div className={styles.formContainer}>
@@ -83,25 +83,25 @@ function LogIn({ setIndex }) {
 
   return (
     <>
-      <h3>Sign in to your account</h3>
+      <h3>{t("sign_in_title")}</h3>
       <p className={styles.formText}>
-        Don&apos;t you have an account?{" "}
+        {t("sign_in_msg")}{" "}
         <button onClick={() => setIndex(1)} className={styles.linkButton}>
-          Sign up
+          {t("sign_up")}
         </button>
       </p>
       <form className={styles.form} onSubmit={handleSubmit}>
         <label>
-          <span>Email address</span>
+          <span>{t("email_address")}</span>
           <input type="email" name="username" required aria-required />
         </label>
         <label>
-          <span>Password</span>
+          <span>{t("password")}</span>
           <input type="password" name="password" required aria-required />
         </label>
-        <button type="submit">{loading ? "Loading..." : "Sign in"}</button>
+        <button type="submit">{loading ? "Loading..." : t("sign_in")}</button>
         <button className={styles.forgotPass} disabled={loading}>
-          Forgot your password?
+          {t("forgot_password")}
         </button>
       </form>
 

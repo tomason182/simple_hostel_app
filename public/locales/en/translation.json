@@ -227,5 +227,14 @@
   "accessibility": "Accessibility",
   "food_drinks": "Food & Drinks",
   "save_changes": "Save changes",
-  "property_facilities": "Property facilities"
+  "property_facilities": "Property facilities",
+  "sign_in_fail_msg": "We could not sign you into your account. Please, try again.",
+  "invalid_credentials": "Invalid username or password, or your account is not validated",
+  "sign_in": "Sign In",
+  "sign_up": "Sign Up",
+  "sign_in_title": "Sign in to your account",
+  "sign_in_msg": "Don't have an account?",
+  "email_address": "Email address",
+  "password": "Password",
+  "forgot_password": "Forgot your password?"
 }
