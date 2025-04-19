@@ -240,5 +240,12 @@
   "sign_up_msg": "¿Tienes una cuenta?",
   "property_name": "Nombre de la propiedad",
   "accept_terms": "Acepto los <terms>Términos y Condiciones</terms> y las <privacy>Póliticas de Privacidad</privacy> de SimpleHostel",
-  "EMAIL_EXISTS": "El correo electrónico ya existe"
+  "confirm_email_title": "Confirma tu correo electrónico",
+  "confirm_email_message": "Hemos enviado un correo electrónico a su bandeja de entrada con un enlace de confirmación. Por favor, revise su correo electrónico y haga clic en el enlace para completar la configuración de su cuenta. Si no lo ve en unos minutos, revise su carpeta de correo no deseado.",
+  "still_trouble": "¿Aún tienes problemas?",
+  "resend_email": "Reenviar email",
+  "EMAIL_EXISTS": "El correo electrónico ya existe",
+  "EMAIL_VALIDATED": "El correo electrónico ya esta validado",
+  "WAITING_PERIOD": "Espere {{count}} minutos antes de reenviar el mail.",
+  "EMAIL_SENT": "Correo electrónico enviado."
 }

@@ -6,6 +6,7 @@ import { useNavigate, Navigate } from "react-router";
 
 export default function Auth() {
   const [index, setIndex] = useState(0);
+  const [email, setEmail] = useState(null);
   const { t } = useTranslation();
 
   if (document.cookie.includes("Auth=true")) return <Navigate to="/" replace />;
@@ -13,23 +14,27 @@ export default function Auth() {
   return (
     <div className={styles.mainContent}>
       <h1>Simple Hostel.</h1>
-      <div className={styles.buttonContainer}>
-        <button
-          onClick={() => setIndex(0)}
-          className={index === 0 ? styles.active : ""}
-        >
-          {t("sign_in")}
-        </button>
-        <button
-          onClick={() => setIndex(1)}
-          className={index === 1 ? styles.active : ""}
-        >
-          {t("sign_up")}
-        </button>
-      </div>
+      {index < 2 && (
+        <div className={styles.buttonContainer}>
+          <button
+            onClick={() => setIndex(0)}
+            className={index === 0 ? styles.active : ""}
+          >
+            {t("sign_in")}
+          </button>
+          <button
+            onClick={() => setIndex(1)}
+            className={index === 1 ? styles.active : ""}
+          >
+            {t("sign_up")}
+          </button>
+        </div>
+      )}
+
       <div className={styles.formContainer}>
         {index === 0 && <LogIn setIndex={setIndex} />}
-        {index === 1 && <SignUp setIndex={setIndex} />}
+        {index === 1 && <SignUp setIndex={setIndex} setEmail={setEmail} />}
+        {index === 2 && <EmailValidation email={email} />}
       </div>
     </div>
   );
@@ -118,7 +123,7 @@ function LogIn({ setIndex }) {
   );
 }
 
-function SignUp({ setIndex }) {
+function SignUp({ setIndex, setEmail }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -132,13 +137,13 @@ function SignUp({ setIndex }) {
     hasWhiteSpaces: false,
   });
 
-  function passwordValidator(password) {
-    const minLength = 8;
-    const minLowerCase = 2;
-    const minUpperCase = 2;
-    const minNumbers = 2;
-    const minSymbols = 2;
+  const minLength = 8;
+  const minLowerCase = 1;
+  const minUpperCase = 1;
+  const minNumbers = 1;
+  const minSymbols = 1;
 
+  function passwordValidator(password) {
     const lowerCaseCount = (password.match(/[a-z]/g) || []).length;
     const upperCaseCount = (password.match(/[A-Z]/g) || []).length;
     const numbersCount = (password.match(/[0-9]/g) || []).length;
@@ -173,11 +178,12 @@ function SignUp({ setIndex }) {
 
   function handleChange(e) {
     const password = e.target.value;
-    const minLength = 8;
-    const minLowerCase = 2;
-    const minUpperCase = 2;
-    const minNumbers = 2;
-    const minSymbols = 2;
+    const isValid = passwordValidator(password);
+    if (isValid) {
+      setIsActive(false);
+    } else {
+      setIsActive(true);
+    }
 
     const lowerCaseCount = (password.match(/[a-z]/g) || []).length;
     const upperCaseCount = (password.match(/[A-Z]/g) || []).length;
@@ -245,7 +251,8 @@ function SignUp({ setIndex }) {
 
       const data = await response.json();
       if (data?.status === "ok") {
-        // Do something
+        setEmail(formBody.username);
+        setIndex(2);
       } else {
         const error = t(data.msg) || t("unexpected_error_message");
         throw new Error(error);
@@ -298,7 +305,6 @@ function SignUp({ setIndex }) {
             required
             aria-required
             name="password"
-            onFocus={() => setIsActive(true)}
             onBlur={() => setIsActive(false)}
             onChange={handleChange}
           />
@@ -310,45 +316,43 @@ function SignUp({ setIndex }) {
             <ul>
               <li>
                 {passwordCheck.minLength ? (
-                  <span className={styles.success}>
-                    &#x2713; 8-20 characters
-                  </span>
+                  <span className={styles.success}>&#x2713; 8 characters</span>
                 ) : (
                   <span className={styles.notSuccess}>
-                    &#x10102; 8-20 characters
+                    &#x10102; 8 characters
                   </span>
                 )}
               </li>
               <li>
                 {passwordCheck.minUpperCase ? (
                   <span className={styles.success}>
-                    &#x2713; At least 2 capital letters
+                    &#x2713; At least 1 capital letters
                   </span>
                 ) : (
                   <span className={styles.notSuccess}>
-                    &#x10102; At least 2 capital letters
+                    &#x10102; At least 1 capital letters
                   </span>
                 )}
               </li>
               <li>
                 {passwordCheck.minLowerCase ? (
                   <span className={styles.success}>
-                    &#x2713; At least 2 lowercase letters
+                    &#x2713; At least 1 lowercase letters
                   </span>
                 ) : (
                   <span className={styles.notSuccess}>
-                    &#x10102; At least 2 lowercase letters
+                    &#x10102; At least 1 lowercase letters
                   </span>
                 )}
               </li>
               <li>
                 {passwordCheck.minNumbers ? (
                   <span className={styles.success}>
-                    &#x2713; At least 2 numbers
+                    &#x2713; At least 1 numbers
                   </span>
                 ) : (
                   <span className={styles.notSuccess}>
-                    &#x10102; At least 2 numbers
+                    &#x10102; At least 1 numbers
                   </span>
                 )}
               </li>
@@ -431,10 +435,95 @@ function SignUp({ setIndex }) {
   );
 }
 
+function EmailValidation({ email }) {
+  const { t } = useTranslation();
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  async function handleResendEmail() {
+    try {
+      const url =
+        import.meta.env.VITE_URL_BASE + "/users/resend-email-verification";
+      const options = {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      };
+
+      setMessage(null);
+      setLoading(true);
+
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        const error = t("unexpected_error_message");
+        throw new Error(error);
+      }
+
+      const data = await response.json();
+      if (data.status && data.msg) {
+        setMessage({
+          status: data.status,
+          message: data.msg,
+          time: data.time || "",
+        });
+      }
+    } catch (e) {
+      setMessage({
+        status: "error",
+        message: e.message,
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div className={styles.emailValidationContent}>
+      <h2>{t("confirm_email_title")}</h2>
+      <p className={styles.emailValidationMessage}>
+        {t("confirm_email_message")}
+      </p>
+      <p className={styles.stillTrouble}>
+        {t("still_trouble")}
+        <button type="button" disabled={loading} onClick={handleResendEmail}>
+          {t("resend_email")}
+        </button>
+      </p>
+      {message && (
+        <div
+          className={`${
+            message.status === "ok" ? styles.success : styles.error
+          }`}
+        >
+          <p
+            className={`${
+              message.status === "ok"
+                ? styles.successMessage
+                : styles.errorMessage
+            }`}
+          >
+            {message.message === "WAITING_PERIOD"
+              ? t(message.message, { count: message?.time })
+              : t(message.message)}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 LogIn.propTypes = {
   setIndex: PropTypes.func.isRequired,
 };
 
 SignUp.propTypes = {
   setIndex: PropTypes.func.isRequired,
+  setEmail: PropTypes.func.isRequired,
+};
+
+EmailValidation.propTypes = {
+  email: PropTypes.string.isRequired,
 };

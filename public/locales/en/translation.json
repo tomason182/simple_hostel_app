@@ -239,5 +239,13 @@
   "forgot_password": "Forgot your password?",
   "property_name": "Property name",
   "accept_terms": "I accept SimpleHostel's <terms>Terms and Conditions</terms> and <privacy>Privacy Policies</privacy>",
-  "EMAIL_EXISTS": "Emails already exists"
+  "confirm_email_title": "Confirm your email",
+  "confirm_email_message": "We've sent an email to your inbox with a confirmation link. Please check your email and click the link to complete your account setup. If you don't see it within a few minutes, check your spam or junk folder.",
+  "still_trouble": "Still having trouble?",
+  "resend_email": "Resend email",
+  "EMAIL_EXISTS": "Emails already exists",
+  "USER_NOT_FOUND": "User not found",
+  "EMAIL_VALIDATED": "Email is already validated",
+  "WAITING_PERIOD": "Please wait {{count}} minutes before resend email.",
+  "EMAIL_SENT": "Email sent."
 }
