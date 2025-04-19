@@ -34,7 +34,7 @@ export default function Auth() {
       <div className={styles.formContainer}>
         {index === 0 && <LogIn setIndex={setIndex} />}
         {index === 1 && <SignUp setIndex={setIndex} setEmail={setEmail} />}
-        {index === 2 && <EmailValidation email={email} />}
+        {index === 2 && <EmailVerification email={email} />}
       </div>
     </div>
   );
@@ -435,7 +435,7 @@ function SignUp({ setIndex, setEmail }) {
   );
 }
 
-function EmailValidation({ email }) {
+function EmailVerification({ email }) {
   const { t } = useTranslation();
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -524,6 +524,6 @@ SignUp.propTypes = {
   setEmail: PropTypes.func.isRequired,
 };
 
-EmailValidation.propTypes = {
+EmailVerification.propTypes = {
   email: PropTypes.string.isRequired,
 };
