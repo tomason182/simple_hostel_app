@@ -7,12 +7,17 @@ import Property from "./pages/Property/Property";
 import Profile from "./pages/User/Profile";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Auth from "./pages/Auth/Auth";
+import EmailVerified from "./pages/EmailVerified/EmailVerified";
 import { Navigate } from "react-router";
 
 const routes = [
   {
     path: "accounts/auth",
     element: <Auth />,
+  },
+  {
+    path: "accounts/email-validation/:token",
+    element: <EmailVerified />,
   },
   {
     path: "/",
