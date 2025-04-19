@@ -240,12 +240,17 @@
   "sign_up_msg": "¿Tienes una cuenta?",
   "property_name": "Nombre de la propiedad",
   "accept_terms": "Acepto los <terms>Términos y Condiciones</terms> y las <privacy>Póliticas de Privacidad</privacy> de SimpleHostel",
-  "confirm_email_title": "Confirma tu correo electrónico",
+  "confirm_email_title": "Verifica tu correo electrónico",
   "confirm_email_message": "Hemos enviado un correo electrónico a su bandeja de entrada con un enlace de confirmación. Por favor, revise su correo electrónico y haga clic en el enlace para completar la configuración de su cuenta. Si no lo ve en unos minutos, revise su carpeta de correo no deseado.",
   "still_trouble": "¿Aún tienes problemas?",
   "resend_email": "Reenviar email",
+  "email_verified": "Correo electrónico verificado",
+  "email_verified_message": "Tu dirección de correo electrónico se verificó correctamente. Ya puedes iniciar sesión en tu cuenta.",
+  "email_verified_error": "Verificación del correo electrónico fallida",
   "EMAIL_EXISTS": "El correo electrónico ya existe",
   "EMAIL_VALIDATED": "El correo electrónico ya esta validado",
   "WAITING_PERIOD": "Espere {{count}} minutos antes de reenviar el mail.",
-  "EMAIL_SENT": "Correo electrónico enviado."
+  "EMAIL_SENT": "Correo electrónico enviado.",
+  "EXPIRED_TOKEN": "No pudimos verificar tu correo electrónico. El token no es válido o ha expirado.",
+  "UNEXPECTED_ERROR": "Un error inesperado a occurido. Intentolo nuevamente o pongase en contacto con nosotros."
 }
