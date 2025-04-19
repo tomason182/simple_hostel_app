@@ -238,5 +238,6 @@
   "password": "Password",
   "forgot_password": "Forgot your password?",
   "property_name": "Property name",
-  "accept_terms": "I accept SimpleHostel's <terms>Terms and Conditions</terms> and <privacy>Privacy Policies</privacy>"
+  "accept_terms": "I accept SimpleHostel's <terms>Terms and Conditions</terms> and <privacy>Privacy Policies</privacy>",
+  "EMAIL_EXISTS": "Emails already exists"
 }

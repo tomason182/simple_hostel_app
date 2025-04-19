@@ -132,7 +132,44 @@ function SignUp({ setIndex }) {
     hasWhiteSpaces: false,
   });
 
-  console.log(passwordCheck);
+  function passwordValidator(password) {
+    const minLength = 8;
+    const minLowerCase = 2;
+    const minUpperCase = 2;
+    const minNumbers = 2;
+    const minSymbols = 2;
+
+    const lowerCaseCount = (password.match(/[a-z]/g) || []).length;
+    const upperCaseCount = (password.match(/[A-Z]/g) || []).length;
+    const numbersCount = (password.match(/[0-9]/g) || []).length;
+    const symbolsCount = (password.match(/[^A-Za-z0-9\s]/g) || []).length;
+    const hasWhiteSpaces = /\s/.test(password);
+
+    let isValid = true;
+    switch (isValid) {
+      case password.length < minLength:
+        isValid = false;
+        break;
+      case lowerCaseCount < minLowerCase:
+        isValid = false;
+        break;
+      case upperCaseCount < minUpperCase:
+        isValid = false;
+        break;
+      case numbersCount < minNumbers:
+        isValid = false;
+        break;
+      case symbolsCount < minSymbols:
+        isValid = false;
+        break;
+      case hasWhiteSpaces:
+        isValid = false;
+        break;
+      default:
+        isValid = true;
+    }
+    return isValid;
+  }
 
   function handleChange(e) {
     const password = e.target.value;
@@ -159,26 +196,65 @@ function SignUp({ setIndex }) {
     }));
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    if (e.target.password.value !== e.target.confirmPassword.value) {
-      setError("Passwords don't match");
-      return;
-    }
+    setError(null);
+    setLoading(true);
 
-    const formBody = {
-      username: e.target.username.value,
-      password: e.target.password.value,
-    };
-    const url = import.meta.env.VITE_URL_BASE + "/users/register";
-    const options = {
-      mode: "cors",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    try {
+      if (e.target.password.value !== e.target.confirmPassword.value) {
+        throw new Error("Passwords don't match");
+      }
+
+      const isValidPassword = passwordValidator(e.target.password.value);
+
+      if (!isValidPassword) {
+        throw new Error(
+          "Not a valid password. Please, check password restrictions."
+        );
+      }
+
+      const formBody = {
+        username: e.target.username.value,
+        password: e.target.password.value,
+        firstName: e.target.firstName.value,
+        propertyName: e.target.propertyName.value,
+        acceptTerms: e.target.acceptTerms.value === "true",
+        captchaToken: "CAPTCHA_TOKEN_GOES_HERE",
+      };
+
+      const url = import.meta.env.VITE_URL_BASE + "/users/register";
+      const options = {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formBody),
+      };
+
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        const error = await response.json();
+        console.error(error);
+        throw new Error(
+          "We couldn't sign you up. Please try again or contact support."
+        );
+      }
+
+      const data = await response.json();
+      if (data?.status === "ok") {
+        // Do something
+      } else {
+        const error = t(data.msg) || t("unexpected_error_message");
+        throw new Error(error);
+      }
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -190,14 +266,26 @@ function SignUp({ setIndex }) {
           {t("sign_in")}
         </button>
       </p>
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <label>
           <span>{t("first_name")}</span>
-          <input type="text" required aria-required name="firstName" />
+          <input
+            type="text"
+            required
+            aria-required
+            name="firstName"
+            maxLength={100}
+          />
         </label>
         <label>
           <span>{t("property_name")}</span>
-          <input type="text" required aria-required name="propertyName" />
+          <input
+            type="text"
+            required
+            aria-required
+            name="propertyName"
+            maxLength={255}
+          />
         </label>
         <label>
           <span>{t("email_address")}</span>
@@ -291,10 +379,21 @@ function SignUp({ setIndex }) {
         </label>
         <label>
           <span>{t("confirm_password")}</span>
-          <input type="password" required aria-required />
+          <input
+            type="password"
+            name="confirmPassword"
+            required
+            aria-required
+          />
         </label>
         <div className={styles.acceptTerms}>
-          <input type="checkbox" name="acceptTerms" required aria-required />
+          <input
+            type="checkbox"
+            name="acceptTerms"
+            value="true"
+            required
+            aria-required
+          />
           <label htmlFor="acceptTerms">
             <Trans
               i18nKey="accept_terms"
@@ -321,10 +420,21 @@ function SignUp({ setIndex }) {
           {loading ? "Loading..." : t("sign_up")}
         </button>
       </form>
+      {error && (
+        <div className={styles.error}>
+          <p className={styles.errorMessage} style={{ color: "red" }}>
+            {error}
+          </p>
+        </div>
+      )}
     </>
   );
 }
 
 LogIn.propTypes = {
+  setIndex: PropTypes.func.isRequired,
+};
+
+SignUp.propTypes = {
   setIndex: PropTypes.func.isRequired,
 };

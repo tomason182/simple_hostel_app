@@ -239,5 +239,6 @@
   "sign_up_title": "Crear una cuenta gratis",
   "sign_up_msg": "¿Tienes una cuenta?",
   "property_name": "Nombre de la propiedad",
-  "accept_terms": "Acepto los <terms>Términos y Condiciones</terms> y las <privacy>Póliticas de Privacidad</privacy> de SimpleHostel"
+  "accept_terms": "Acepto los <terms>Términos y Condiciones</terms> y las <privacy>Póliticas de Privacidad</privacy> de SimpleHostel",
+  "EMAIL_EXISTS": "El correo electrónico ya existe"
 }
