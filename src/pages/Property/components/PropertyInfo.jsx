@@ -147,7 +147,7 @@ export default function PropertyInfo({
               </li>
               <li>
                 <span>{t("country")}:</span>
-                <span>{country.label}</span>
+                <span>{country?.label}</span>
               </li>
               <li>
                 <span>{t("postal_code")}:</span>
