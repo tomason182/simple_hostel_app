@@ -48,7 +48,7 @@
   font-weight: 400;
 
   color: var(--secondary-color);
-  background-color: var(--gray-200);
+  background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
