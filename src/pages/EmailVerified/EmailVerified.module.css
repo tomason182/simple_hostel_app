@@ -35,7 +35,7 @@
   padding: 0;
 }
 
-.mainContent p {
+.mainContent .text {
   font-size: 0.875rem;
   color: var(--gray-600);
 }
@@ -51,4 +51,15 @@
 
 .mainContent button:hover {
   background-color: var(--button-dark);
+}
+
+/* Success and error message */
+.error {
+  border: 1px solid red;
+  margin-top: 1rem;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 0.75rem;
 }

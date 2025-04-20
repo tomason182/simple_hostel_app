@@ -4,19 +4,23 @@ import { useParams } from "react-router";
 import Spinner from "../../components/Spinner/Spinner";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router";
 
 export default function EmailVerified() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { token } = useParams();
-
   useEffect(() => {
     if (token) {
       async function verifyToken() {
         try {
           const url =
-            import.meta.env.VITE_URL_BASE + "/users/confirm-email/" + token;
+            import.meta.env.VITE_URL_BASE +
+            "/users/confirm-email/" +
+            1234 +
+            token;
           const options = {
             mode: "cors",
             method: "GET",
@@ -50,13 +54,18 @@ export default function EmailVerified() {
   return (
     <div className={styles.mainContent}>
       <h1>SimpleHostel.</h1>
-      {error === null ? <SuccessfulMessage /> : <ErrorMessage error={error} />}
+      {error === null ? (
+        <SuccessfulMessage />
+      ) : (
+        <ErrorMessage error={error} token={token} />
+      )}
     </div>
   );
 }
 
 function SuccessfulMessage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   return (
     <>
       <svg
@@ -76,15 +85,20 @@ function SuccessfulMessage() {
       </svg>
       <h2>{t("email_verified")}</h2>
       <p>{t("email_verified_message")}</p>
-      <button>Go to back</button>
+      <button onClick={() => navigate("/accounts/auth", { replace: true })}>
+        Go to back
+      </button>
     </>
   );
 }
 
-function ErrorMessage({ error }) {
+function ErrorMessage({ error, token }) {
   const { t } = useTranslation();
   const [resendEmailLoading, setResendEmailLoading] = useState(false);
   const [resendEmailMessage, setResendEmailMessage] = useState(null);
+
+  const decoded = jwtDecode(token);
+  const email = decoded.sub.email;
 
   async function handleResendEmail() {
     try {
@@ -144,7 +158,7 @@ function ErrorMessage({ error }) {
         <line x1="9" y1="9" x2="15" y2="15"></line>
       </svg>
       <h2>{t("email_verified_error")}</h2>
-      <p>{t(error)}</p>
+      <p className={styles.text}>{t(error)}</p>
       <button
         type="button"
         disabled={resendEmailLoading}
@@ -179,4 +193,5 @@ function ErrorMessage({ error }) {
 
 ErrorMessage.propTypes = {
   error: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired,
 };
