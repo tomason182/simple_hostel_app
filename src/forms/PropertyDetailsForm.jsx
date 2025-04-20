@@ -110,8 +110,6 @@ export default function ProperTyDetailsForm({
     } finally {
       setLoading(false);
     }
-
-    console.log(formData);
   }
 
   const currenciesList = currencies.map(currency => (

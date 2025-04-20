@@ -11,8 +11,6 @@ export default function RoomSelectionForm({
 }) {
   const [isDisabled, setIsDisable] = useState(true);
 
-  console.log(selectedRooms);
-
   const { t } = useTranslation();
 
   useEffect(() => {

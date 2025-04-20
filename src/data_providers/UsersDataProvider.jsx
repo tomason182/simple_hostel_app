@@ -27,7 +27,7 @@ export default function useUsersDataProvider() {
       })
       .then(data => setUsersData(data))
       .catch(e => {
-        console.log("Error fetching all property users data", e), setError(e);
+        console.error("Error fetching all property users data", e), setError(e);
       })
       .finally(() => setLoading(false));
   }, []);

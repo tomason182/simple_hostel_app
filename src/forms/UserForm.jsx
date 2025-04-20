@@ -44,7 +44,6 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
       .then(async response => {
         if (response.status >= 400) {
           const error = await response.json();
-          console.log(error);
           throw new Error(error.msg || "Server Error");
         }
 

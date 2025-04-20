@@ -72,7 +72,6 @@ export default function RatesAndAvailabilityFrom({
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
         refreshRatesAndAvailability();
         setIsOpen(false);
       } else {

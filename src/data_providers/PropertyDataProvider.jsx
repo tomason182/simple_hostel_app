@@ -27,7 +27,7 @@ export default function usePropertyDataProvider() {
       })
       .then(data => setPropertyData(data))
       .catch(e => {
-        console.log("Error fetching property data", e);
+        console.error("Error fetching property data", e);
         setError(e);
       })
       .finally(() => setIsLoading(false));
