@@ -1,7 +1,6 @@
 import styles from "./Users.module.css";
 import { useState } from "react";
 import Spinner from "../../../components/Spinner/Spinner";
-import Button from "../../../components/Button/Button";
 import UserForm from "../../../forms/UserForm";
 import Modal from "../../../components/Modal/Modal";
 import PropTypes from "prop-types";
@@ -104,7 +103,7 @@ export default function Users() {
         role = t("employee");
     }
     return (
-      <li key={user.id}>
+      <li key={user.id} className={styles.userElement}>
         <h3>{`${user.first_name} ${
           user.last_name === null ? "" : user.last_name
         }`}</h3>
@@ -159,8 +158,29 @@ export default function Users() {
 
   return (
     <div>
-      <Button title={t("create")} onClick={() => setIsOpen(true)} />
-      <ul className={styles.list}>{userList}</ul>
+      <h1>{t("users")}</h1>
+      <ul className={styles.list}>
+        {userList}
+        <li className={styles.newUser}>
+          <button onClick={() => setIsOpen(true)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="56"
+              height="56"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#000000"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <p>Add new user</p>
+          </button>
+        </li>
+      </ul>
       <Modal
         isOpen={isOpen}
         onClose={() => {
