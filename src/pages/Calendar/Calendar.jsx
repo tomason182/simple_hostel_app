@@ -19,6 +19,7 @@ import { useFetchReservationByDateRange } from "../../data_providers/reservation
 import { dateFormatHelper } from "../../utils/dateFormatHelper";
 
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router";
 
 export default function Calendar() {
   const today = new Date();
@@ -406,7 +407,7 @@ export default function Calendar() {
         <tbody>
           {error || errorReservations ? (
             <tr height={250}>
-              <td>An Error occurred fetching room types data</td>
+              <td colSpan={17}>An Error occurred fetching room types data</td>
             </tr>
           ) : isLoading && loadingReservations ? (
             <tr height={250}>
@@ -417,8 +418,9 @@ export default function Calendar() {
           ) : roomList.length === 0 ? (
             <tr height={250}>
               <td colSpan={17} className={styles.noRoomTypesMessage}>
-                There are no room types created. Before you begin, please create
-                your property room types
+                {t("no_room_message")}
+                <br />
+                <Link to="/property">{t("create")}</Link>
               </td>
             </tr>
           ) : (
