@@ -91,7 +91,7 @@ export default function RoomTypes({
       <Button title={t("create")} onClick={() => setIsOpen(true)} />
       <div style={{ display: "flex", gap: "1rem", padding: "1rem" }}>
         {roomTypes.length === 0 ? (
-          <p>{t("no_room_type_message")}</p>
+          <p className={styles.noRooms}>{t("no_room_types_message")}</p>
         ) : (
           roomTypes.map(room => {
             let type = "";

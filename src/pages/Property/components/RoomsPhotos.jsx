@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./RoomsPhotos.module.css";
+import { useTranslation } from "react-i18next";
 
 export default function RoomsPhotos() {
   const [room, setRoom] = useState({ id: "" });
@@ -9,6 +10,8 @@ export default function RoomsPhotos() {
   const [loadingImages, setLoadingImages] = useState(false);
   const [loadingImageUpload, setLoadingImageUpload] = useState(false);
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
+
+  const { t } = useTranslation();
 
   // Revoke image URL when component unmounts
   useEffect(() => {
@@ -197,8 +200,7 @@ export default function RoomsPhotos() {
 
   if (error) return <p>Network error. Please, try again</p>;
 
-  if (roomTypes.length === 0)
-    return <p>No room types found. Please, create your room type first.</p>;
+  if (roomTypes.length === 0) return <p>{t("no_room_types_message")}</p>;
 
   return (
     <>
