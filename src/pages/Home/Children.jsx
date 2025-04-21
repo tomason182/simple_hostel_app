@@ -2,49 +2,19 @@ import Spinner from "../../components/Spinner/Spinner";
 import { format } from "date-fns";
 import PropTypes from "prop-types";
 import styles from "./Children.module.css";
-import Modal from "../../components/Modal/Modal";
-import { useState } from "react";
 import {
   dateFormatHelper,
   formateDateToLocale,
 } from "../../utils/dateFormatHelper";
 
+import { useNavigate } from "react-router";
+
 export function ReservationsList({ data, error, loading, info }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [reservationData, setReservationData] = useState({});
-  const [reservationError, setReservationError] = useState(null);
-  const [reservationLoading, setReservationLoading] = useState(true);
+  const navigate = useNavigate();
 
   function onReservationClick(id) {
-    setReservationLoading(true);
-    setReservationError(null);
-    const url =
-      import.meta.env.VITE_URL_BASE + "/reservations/find-by-id/" + id;
-    const options = {
-      mode: "cors",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    };
-
-    fetch(url, options)
-      .then(response => {
-        if (response.status >= 400) {
-          throw new Error("Unable to get reservation details. Server error");
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.status === "error") {
-          setReservationError(data.msg);
-          return false;
-        }
-        setReservationData(data);
-      })
-      .catch(e => setReservationError(e.message))
-      .finally(() => setReservationLoading(false));
+    const url = "/reservations/" + id;
+    return navigate(url);
   }
 
   if (loading) {
@@ -88,7 +58,6 @@ export function ReservationsList({ data, error, loading, info }) {
         <li
           key={d.id}
           onClick={() => {
-            setIsOpen(true);
             onReservationClick(d.id);
           }}
         >
@@ -119,30 +88,14 @@ export function ReservationsList({ data, error, loading, info }) {
       ))
     );
 
-  return (
-    <>
-      <ul className={styles.list}>{reservationsList}</ul>
-      <Modal
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        display="center"
-        header={`${reservationData?.guest?.first_name} ${reservationData?.guest?.last_name}`}
-      >
-        <ReservationDetails
-          loading={reservationLoading}
-          error={reservationError}
-          data={reservationData}
-        />
-      </Modal>
-    </>
-  );
+  return <ul className={styles.list}>{reservationsList}</ul>;
 }
 
+// Esta function parece no estar en uso
 export function ReservationDetails({ loading, error, data }) {
   if (loading) return <Spinner />;
   if (error) return <h3>Error fetching reservation data</h3>;
 
-  /* const guest = data.guest; */
   const reservation = data.reservation;
   const checkIn = formateDateToLocale(reservation.check_in);
   const checkOut = formateDateToLocale(reservation.check_out);

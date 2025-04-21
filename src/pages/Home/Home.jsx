@@ -1,6 +1,4 @@
-import { useState } from "react";
 import Card from "../../components/Card/Card";
-import Modal from "../../components/Modal/Modal";
 import {
   useGetTodayReservations,
   useGetLatestReservations,
@@ -19,12 +17,6 @@ export default function Home() {
     loadingLatestReservation,
     errorLatestReservations,
   } = useGetLatestReservations();
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  function onModalClose() {
-    setIsOpen(false);
-  }
 
   const customStyle = {
     children: {
@@ -75,7 +67,6 @@ export default function Home() {
           info={latest}
         />
       </Card>
-      <Modal isOpen={isOpen} onClose={onModalClose}></Modal>
     </div>
   );
 }
