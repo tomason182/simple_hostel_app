@@ -1,23 +1,33 @@
+.tableWrapper {
+  flex: 1;
+}
+
 .calendarTable {
   width: 100%;
   border-spacing: 0px;
   table-layout: fixed;
+  border-collapse: collapse;
 }
 
-.calendarTable td {
-  border-left: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+.calendarTable tbody tr td {
+  border: 1px solid var(--gray-400);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   height: 2rem;
 }
 
+.calendarTable thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1;
+}
+
 /* Table header */
 
 .monthDisplay {
   font-size: 1.5rem;
-  /* border-bottom: 1px solid var(--gray-400); */
   color: var(--gray-700);
   text-align: center;
 }
@@ -111,10 +121,6 @@
 
 .reservationStatus li {
   font-family: "Inter-Bold";
-}
-
-.reservationStatus th {
-  border-top: 1px solid #ccc;
 }
 
 /* New reservation button */

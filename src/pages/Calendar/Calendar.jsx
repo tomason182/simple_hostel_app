@@ -355,7 +355,7 @@ export default function Calendar() {
   };
 
   return (
-    <>
+    <div className={styles.tableWrapper}>
       <table className={styles.calendarTable}>
         <thead>
           <tr>
@@ -440,6 +440,6 @@ export default function Calendar() {
       >
         {formChildren[currentIndex]}
       </Modal>
-    </>
+    </div>
   );
 }
