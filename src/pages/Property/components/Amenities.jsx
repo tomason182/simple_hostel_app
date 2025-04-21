@@ -145,7 +145,7 @@ export default function Amenities({
 
   const amenitiesInput = amenities.map(amenity => (
     <label key={amenity.id}>
-      {amenity.name}
+      <span>{amenity.name}</span>
       <input
         type="checkbox"
         name="amenity"
@@ -156,8 +156,8 @@ export default function Amenities({
     </label>
   ));
   return (
-    <div>
-      <div>
+    <>
+      <div className={styles.roomSelection}>
         <select name="room_id" onChange={handleChange}>
           <option value="">{t("select_one")}</option>
           {roomTypeList}
@@ -166,13 +166,13 @@ export default function Amenities({
       <div>
         <form className={styles.amenitiesForm} onSubmit={handleSubmit}>
           <fieldset>
-            <legend>Amenities</legend>
+            <legend>{t("room_amenities")}</legend>
             {amenitiesInput}
           </fieldset>
           <button disabled={formData.room_id === ""}>{t("save")}</button>
         </form>
       </div>
-    </div>
+    </>
   );
 }
 
