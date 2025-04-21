@@ -9,6 +9,7 @@ import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Auth from "./pages/Auth/Auth";
 import EmailVerified from "./pages/EmailVerified/EmailVerified";
 import { Navigate } from "react-router";
+import ReservationDetails from "./pages/Reservations/components/ReservationDetails";
 
 const routes = [
   {
@@ -42,6 +43,10 @@ const routes = [
       {
         path: "reservations",
         element: <Reservations />,
+      },
+      {
+        path: "reservations/:id",
+        element: <ReservationDetails />,
       },
       {
         path: "property",

@@ -17,14 +17,16 @@ import UpdateGuestInformation from "../../../forms/UpdateGuestInformation";
 import CancelReservationForm from "../../../forms/CancelReservationForm";
 
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router";
 
-export default function ReservationDetails({ id }) {
+export default function ReservationDetails() {
   const [activeTab, setActiveTab] = useState(0);
   const [index, setIndex] = useState(0);
   /* Modal state */
   const [isOpen, setIsOpen] = useState(false);
 
   const { roomTypes, isLoading } = useContext(RoomTypeContext);
+  const { id } = useParams();
 
   const { reservation, loading, error, refreshReservationById } =
     useFetchReservationById(id);
@@ -515,10 +517,6 @@ function PaymentDetails({
     </>
   );
 }
-
-ReservationDetails.propTypes = {
-  id: PropTypes.number.isRequired,
-};
 
 ReservationInfo.propTypes = {
   reservationData: PropTypes.object.isRequired,

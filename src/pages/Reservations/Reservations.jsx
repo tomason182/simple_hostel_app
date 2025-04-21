@@ -1,21 +1,17 @@
 import { useState } from "react";
 import styles from "./Reservations.module.css";
-import ReservationDetails from "./components/ReservationDetails";
 import Spinner from "../../components/Spinner/Spinner";
 import { formateDateToLocale } from "../../utils/dateFormatHelper";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
 
 export default function Reservations() {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
   const { t } = useTranslation();
-
-  const [showReservation, setShowReservation] = useState({
-    status: false,
-    id: 0,
-  });
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -72,6 +68,11 @@ export default function Reservations() {
       .finally(() => setLoading(false));
   }
 
+  function handleClick(id) {
+    const url = "/reservations/" + id;
+    return navigate(url);
+  }
+
   const list = reservations.map(r => {
     const checkIn = formateDateToLocale(r.check_in);
     const checkOut = formateDateToLocale(r.check_out);
@@ -97,12 +98,7 @@ export default function Reservations() {
     }
 
     return (
-      <li
-        key={r.reservation_id}
-        onClick={() =>
-          setShowReservation({ status: true, id: r.reservation_id })
-        }
-      >
+      <li key={r.reservation_id} onClick={() => handleClick(r.reservation_id)}>
         <p className={styles.fullName}>
           {r.first_name} {r.last_name}
         </p>
@@ -114,9 +110,6 @@ export default function Reservations() {
       </li>
     );
   });
-
-  if (showReservation.status === true)
-    return <ReservationDetails id={showReservation.id} />;
 
   return (
     <div className={styles.content}>
