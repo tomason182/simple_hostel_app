@@ -401,32 +401,15 @@ export default function Policies() {
         </Card>
       </div>
       <div className={styles.policiesDescription}>
-        <h2>Policies Information</h2>
-        <h3>Advance payment Policies</h3>
-        <p>
-          When a guest makes a reservation through your webpage using the Simple
-          Hostel booking engine, the reservation will initially be marked as
-          &quot;Provisional&quot; in your calendar. As the property owner, you
-          are responsible for contacting the guest to arrange the required
-          deposit payment. The reservation will remain provisional until the
-          payment is confirmed.
-        </p>
-        <h3>Cancellation Policies</h3>
-        <p>
-          When a guest cancels a reservation, you can define whether the advance
-          payment will be refunded or not. Your cancellation policy helps set
-          clear expectations for guests and ensures a fair process for both
-          parties.
-        </p>
-        <h3>Children Policies</h3>
-        <p>
-          Define whether children are allowed in your property. If permitted,
-          you can specify which types of rooms they can stay in, such as private
-          rooms only or any room. This policy helps set clear expectations for
-          families and ensures a suitable accommodation experience.
-        </p>
-        <h3>Pets Policies</h3>
-        <p>Specify whether pets are allowed in your property.</p>
+        <h2>{t("policies_information")}</h2>
+        <h3>{t("advance_payment_policy")}</h3>
+        <p>{t("advance_payment_rule")}</p>
+        <h3>{t("cancellation_policies")}</h3>
+        <p>{t("cancellation_policies_rule")}</p>
+        <h3>{t("children_policies")}</h3>
+        <p>{t("cancellation_policies_rule")}</p>
+        <h3>{t("other_policies")}</h3>
+        <p>{t("other_policies_rule")}</p>
       </div>
       <Modal
         header={form?.header}
