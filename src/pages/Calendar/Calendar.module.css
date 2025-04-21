@@ -91,6 +91,7 @@
 .guestName {
   font-family: "Inter";
   color: white;
+  cursor: pointer;
 }
 
 .confirmed {

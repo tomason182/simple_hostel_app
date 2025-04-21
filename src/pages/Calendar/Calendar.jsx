@@ -20,6 +20,7 @@ import { dateFormatHelper } from "../../utils/dateFormatHelper";
 
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 export default function Calendar() {
   const today = new Date();
@@ -71,6 +72,7 @@ export default function Calendar() {
   } = useFetchReservationByDateRange(fromDate, toDate);
 
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const lng = localStorage.getItem("i18nextLng") || navigator.language || "en";
 
@@ -89,6 +91,12 @@ export default function Calendar() {
   const daysArray = Array.from({ length: lengthOfCalendar }, (_, i) =>
     add(firstDayOfCalendar, { days: i })
   );
+
+  // handle click on reservation
+  function handelClick(id) {
+    const url = "/reservations/" + id;
+    return navigate(url);
+  }
 
   // Helper to format day cells
   const formatDayCell = isToday => ({
@@ -173,6 +181,7 @@ export default function Calendar() {
       type === "start" ? checkOut - currentDay : checkOut - checkIn;
 
     return {
+      id: reservation.id,
       guestName: reservation.guest_info.full_name,
       checkIn: reservation.check_in,
       checkOut: reservation.check_out,
@@ -241,6 +250,7 @@ export default function Calendar() {
                         key={index}
                         colSpan={colSpan}
                         className={`${styles.guestName} ${styles[statusClassName]}`}
+                        onClick={() => handelClick(reservation.id)}
                       >
                         {reservation.guestName}
                       </td>
