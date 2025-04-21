@@ -326,3 +326,9 @@ textarea {
   color: var(--gray-900);
   padding: 1rem;
 }
+
+/* Payment methods label */
+.paymentMethodLabel {
+  display: flex;
+  justify-content: space-between;
+}

@@ -181,24 +181,21 @@ export default function ReservationPoliciesForm({
 
       <fieldset>
         <legend>{t("payment_methods")}</legend>
-        <div className={styles.groupContainer}>
-          {availablePaymentMethods.map(method => (
-            <div key={method.id}>
-              <label>
-                {method.label}
-                <input
-                  type="checkbox"
-                  name={method.id}
-                  value={method.id}
-                  checked={formData.payment_methods_accepted.includes(
-                    method.id
-                  )}
-                  onChange={e => handlePaymentMethodsChange(e)}
-                />
-              </label>
-            </div>
-          ))}
-        </div>
+
+        {availablePaymentMethods.map(method => (
+          <div key={method.id}>
+            <label className={styles.paymentMethodLabel}>
+              <span>{method.label}</span>
+              <input
+                type="checkbox"
+                name={method.id}
+                value={method.id}
+                checked={formData.payment_methods_accepted.includes(method.id)}
+                onChange={e => handlePaymentMethodsChange(e)}
+              />
+            </label>
+          </div>
+        ))}
       </fieldset>
       <div className={styles.buttonGroup}>
         <button className={styles.cancelButton} onClick={closeModal}>
