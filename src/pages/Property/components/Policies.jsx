@@ -368,7 +368,6 @@ export default function Policies() {
           actions={actionOthers}
           customStyle={customStyle}
         >
-          <h4>{t("house_rules")}</h4>
           <ul className={styles.list}>
             <li>
               <span>{t("quite_hours")}:</span>
