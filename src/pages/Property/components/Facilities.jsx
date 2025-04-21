@@ -161,7 +161,7 @@ export default function Facilities() {
 
     const facilitiesList = filteredFacilities.map(facility => (
       <label key={facility.id}>
-        {facility.name}
+        <span>{facility.name}</span>
         <input
           type="checkbox"
           name="facility"
@@ -184,13 +184,14 @@ export default function Facilities() {
             {loading ? t("loading") : t("save_changes")}
           </button>
         </div>
-
-        {categories.map(category => (
-          <fieldset key={category.name}>
-            <legend>{category.label}</legend>
-            {renderLabels(category.name)}
-          </fieldset>
-        ))}
+        <div className={styles.fieldContainer}>
+          {categories.map(category => (
+            <fieldset key={category.name}>
+              <legend>{category.label}</legend>
+              {renderLabels(category.name)}
+            </fieldset>
+          ))}
+        </div>
       </form>
     </div>
   );
