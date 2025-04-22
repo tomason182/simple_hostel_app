@@ -506,8 +506,12 @@ function EmailVerification({ email }) {
             }`}
           >
             {message.message === "WAITING_PERIOD"
-              ? t(message.message, { count: message?.time })
-              : t(message.message)}
+              ? t(
+                  message.message,
+                  { count: message?.time },
+                  { ns: "validation" }
+                )
+              : t(message.message, { ns: "validation" })}
           </p>
         </div>
       )}

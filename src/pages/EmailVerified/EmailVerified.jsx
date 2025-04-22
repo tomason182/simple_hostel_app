@@ -180,10 +180,14 @@ function ErrorMessage({ error, token }) {
             }`}
           >
             {resendEmailMessage.message === "WAITING_PERIOD"
-              ? t(resendEmailMessage.message, {
-                  count: resendEmailMessage?.time,
-                })
-              : t(resendEmailMessage.message)}
+              ? t(
+                  resendEmailMessage.message,
+                  {
+                    count: resendEmailMessage?.time,
+                  },
+                  { ns: "validation" }
+                )
+              : t(resendEmailMessage.message, { ns: "validation" })}
           </p>
         </div>
       )}
