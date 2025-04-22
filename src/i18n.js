@@ -8,7 +8,8 @@ i18next
   .use(LanguageDEtector)
   .use(Backend)
   .init({
+    ns: ["translation", "validation"],
     fallbackLng: "en",
-    fallbackNS: "translation",
+    defaultNS: "translation",
     interpolation: { escapeValue: false },
   });
