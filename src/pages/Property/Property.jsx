@@ -2,7 +2,7 @@ import SecondaryTabs from "../../components/Tabs/SecondaryTabs";
 import PropertyInfo from "./components/PropertyInfo";
 import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
-import RoomsPhotos from "./components/RoomsPhotos";
+import Photos from "./components/Photos";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
 import Facilities from "./components/Facilities";
@@ -52,7 +52,7 @@ export default function Property() {
     },
     {
       label: t("photos"),
-      content: <RoomsPhotos />,
+      content: <Photos />,
     },
     {
       label: t("policies"),

@@ -1,0 +1,17 @@
+.upload {
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.uploadLabel input {
+  margin-top: 1rem;
+}
+
+.uploadLabel input[type="file"]::file-selector-button {
+  font-size: bold;
+  color: var(--gray-800);
+  padding: 0.5rem;
+  border: thin solid var(--gray-400);
+  border-radius: 5px;
+  cursor: pointer;
+}

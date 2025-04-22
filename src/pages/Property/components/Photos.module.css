@@ -1,0 +1,40 @@
+.mainContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.leftContainer {
+  flex: 1;
+  padding: 1rem;
+}
+
+.rightContainer {
+  flex: 2;
+  padding: 1rem;
+}
+
+.selectionList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.selectionList li {
+  border: 1px solid var(--gray-300);
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+.selectionList li button {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.selectionList li button:hover {
+  background-color: var(--gray-200);
+}

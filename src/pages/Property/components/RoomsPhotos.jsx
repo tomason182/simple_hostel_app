@@ -153,8 +153,10 @@ export default function RoomsPhotos() {
 
   function uploadImages() {
     const imagesToUpload = images.filter(img => img.source === "local");
-    if (imagesToUpload.length === 0) return alert(t("NO_IMAGE_TO_UPLOAD"));
-    if (!room.id) return alert(t("NO_ROOM_TYPE_SELECTED"));
+    if (imagesToUpload.length === 0)
+      return alert(t("NO_IMAGE_TO_UPLOAD", { ns: "validation" }));
+    if (!room.id)
+      return alert(t("NO_ROOM_TYPE_SELECTED", { ns: "validation" }));
 
     const formData = new FormData();
 
@@ -212,16 +214,6 @@ export default function RoomsPhotos() {
 
   return (
     <>
-      <h3>Rooms Photos</h3>
-      <div className={styles.buttonContainer}>
-        <button
-          className={styles.submitBtn}
-          disabled={loadingImageUpload}
-          onClick={uploadImages}
-        >
-          {loadingImageUpload ? "loading" : "Upload"}
-        </button>
-      </div>
       {/* Room type selection */}
       <label>
         <select
@@ -241,7 +233,7 @@ export default function RoomsPhotos() {
       {/* Upload container */}
       <div className={styles.upload}>
         <label className={styles.uploadLabel}>
-          <div className={styles.uploadContent}>
+          <button className={styles.uploadContent}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -257,7 +249,7 @@ export default function RoomsPhotos() {
             </svg>
             <span>Click to upload Images</span>
             <span>You can upload upto 10 images per room type</span>
-          </div>
+          </button>
           <input
             type="file"
             multiple
@@ -294,6 +286,15 @@ export default function RoomsPhotos() {
             </button>
           </div>
         ))}
+      </div>
+      <div className={styles.buttonContainer}>
+        <button
+          className={styles.submitBtn}
+          disabled={loadingImageUpload}
+          onClick={uploadImages}
+        >
+          {loadingImageUpload ? "loading" : t("save")}
+        </button>
       </div>
     </>
   );
