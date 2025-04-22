@@ -1,8 +1,11 @@
 {
   "EMAIL_EXISTS": "El correo electrónico ya existe",
+  "USER_NOT_FOUND": "Usuario no encontrado",
   "EMAIL_VALIDATED": "El correo electrónico ya esta validado",
   "WAITING_PERIOD": "Espere {{count}} minutos antes de reenviar el mail.",
   "EMAIL_SENT": "Correo electrónico enviado.",
   "EXPIRED_TOKEN": "No pudimos verificar tu correo electrónico. El token no es válido o ha expirado.",
-  "UNEXPECTED_ERROR": "Un error inesperado a occurido. Intentolo nuevamente o pongase en contacto con nosotros."
+  "UNEXPECTED_ERROR": "Un error inesperado a occurido. Intentolo nuevamente o pongase en contacto con nosotros.",
+  "LOGOUT_ERROR": "No pudimos cerrar tu sesión. Inténtalo de nuevo.",
+  "LOGOUT_SUCCESS": "Se ha cerrado la sesión correctamente."
 }
