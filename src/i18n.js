@@ -9,5 +9,6 @@ i18next
   .use(Backend)
   .init({
     fallbackLng: "en",
+    fallbackNS: "translation",
     interpolation: { escapeValue: false },
   });
