@@ -1,0 +1,9 @@
+{
+  "EMAIL_EXISTS": "Emails already exists",
+  "USER_NOT_FOUND": "User not found",
+  "EMAIL_VALIDATED": "Email is already validated",
+  "WAITING_PERIOD": "Please wait {{count}} minutes before resend email.",
+  "EMAIL_SENT": "Email sent.",
+  "EXPIRED_TOKEN": "We couldn't verify your email. Token is invalid or has expired",
+  "UNEXPECTED_ERROR": "An unexpected error has occurred. Please try again or contact us."
+}
