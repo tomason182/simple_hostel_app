@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { UserProfileContext } from "../../data_providers/UserProfileProvider";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
+import { useToast } from "../../hooks/useToast";
 
 export default function Header() {
   const { userProfile, isLoading, error } = useContext(UserProfileContext);
@@ -12,6 +13,7 @@ export default function Header() {
   const navigate = useNavigate();
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     function handleClickOutside(e) {
@@ -37,10 +39,16 @@ export default function Header() {
 
     fetch(url, options).then(response => {
       if (response.status >= 400) {
-        alert("Unable to log you out. Please try again");
+        addToast({
+          message: t("LOGOUT_ERROR", { ns: "validation" }),
+          type: "error",
+        });
         return;
       }
-
+      addToast({
+        message: t("LOGOUT_SUCCESS", { ns: "validation" }),
+        type: "success",
+      });
       return navigate("/accounts/auth", { replace: true });
     });
   }
