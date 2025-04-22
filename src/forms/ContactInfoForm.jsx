@@ -3,6 +3,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import countryCode from "../utils/country_code.json";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function ContactInfoForm({
   contactInfoData,
@@ -18,6 +19,7 @@ export default function ContactInfoForm({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -46,16 +48,16 @@ export default function ContactInfoForm({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Server Error. Try again");
+          throw new Error("UNEXPECTED_ERROR");
         }
         return response.json();
       })
       .then(() => {
-        alert("Contact info updated successfully");
+        addToast({ message: t("CONTACT_INFO_UPDATE"), type: "success" });
         refreshPropertyData();
         setIsOpen(false);
       })
-      .catch(e => setError(e.message))
+      .catch(e => setError(t(e.message, { ns: "validation" })))
       .finally(() => setLoading(false));
   }
 

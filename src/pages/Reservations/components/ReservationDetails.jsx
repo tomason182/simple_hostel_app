@@ -18,6 +18,7 @@ import CancelReservationForm from "../../../forms/CancelReservationForm";
 
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
+import { useToast } from "../../../hooks/useToast";
 
 export default function ReservationDetails() {
   const [activeTab, setActiveTab] = useState(0);
@@ -168,6 +169,7 @@ function ReservationInfo({
   const departureDate = formateDateToLocale(reservationData.check_out);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setReservationStatus(reservationData.reservation_status);
@@ -198,13 +200,17 @@ function ReservationInfo({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Unable to update payment status. Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
-
-        alert("Payment status updated successfully");
+        addToast({
+          message: t("RESERVATION_STATUS_UPDATED", { ns: "validation" }),
+          type: "success",
+        });
         refreshData();
       })
-      .catch(e => alert(e.message))
+      .catch(e =>
+        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
+      )
       .finally(() => setLoading(false));
   }
   return (
@@ -367,6 +373,7 @@ function PaymentDetails({
   const [loading, setLoading] = useState(false);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setPaymentStatus(reservationData.payment_status || "");
@@ -402,13 +409,18 @@ function PaymentDetails({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Unable to update payment status. Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
 
-        alert("Payment status updated successfully");
+        addToast({
+          message: t("PAYMENT_STATUS_UPDATED", { ns: "validation" }),
+          type: "success",
+        });
         refreshData();
       })
-      .catch(e => alert(e.message))
+      .catch(e =>
+        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
+      )
       .finally(() => setLoading(false));
   }
 

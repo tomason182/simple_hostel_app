@@ -2,6 +2,7 @@ import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function ChildrenPoliciesForm({
   closeModal,
@@ -19,6 +20,7 @@ export default function ChildrenPoliciesForm({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleInputChange(e) {
     const { name, value } = e.target;
@@ -47,16 +49,19 @@ export default function ChildrenPoliciesForm({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Unable to update children policies. Server error");
+          throw new Error("POLICY_CREATE_ERROR");
         }
         return response.json();
       })
       .then(() => {
         closeModal();
         refreshPropertyData();
-        alert("Children policy created successfully");
+        addToast({
+          message: t("POLICY_CREATE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
       })
-      .catch(e => setError(e.message))
+      .catch(e => setError(t(e.message, { ns: "validation" })))
       .finally(() => setLoading(false));
   }
   return (

@@ -2,6 +2,7 @@ import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function CancellationPoliciesForm({
   cancellationPolicies,
@@ -19,6 +20,7 @@ export default function CancellationPoliciesForm({
   });
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -55,7 +57,10 @@ export default function CancellationPoliciesForm({
       .then(() => {
         closeModal();
         refreshPropertyPolicies();
-        alert("Policy deleted successfully");
+        addToast({
+          message: t("POLICY_DELETE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));
@@ -113,7 +118,10 @@ export default function CancellationPoliciesForm({
         }
         closeModal();
         refreshPropertyPolicies();
-        alert("Cancellation policy created successfully");
+        addToast({
+          message: t("POLICY_CREATE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));

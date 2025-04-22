@@ -1,6 +1,7 @@
 import styles from "./defaultFormStyle.module.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function PasswordEditForm() {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ export default function PasswordEditForm() {
   const [invalidPass, setInvalidPass] = useState("");
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -43,7 +45,7 @@ export default function PasswordEditForm() {
     fetch(url, options)
       .then(response => {
         if (response >= 400) {
-          throw new Error("Server Error. Unable to update password.");
+          throw new Error("UNEXPECTED_ERROR");
         }
 
         return response.json();
@@ -53,10 +55,11 @@ export default function PasswordEditForm() {
           setError(data.msg);
           return false;
         }
-
-        alert("User password updated successfully");
+        addToast({
+          message: t("PASSWORD_UPDATE_SUCCESS", { ns: "validation" }),
+        });
       })
-      .catch(e => setError(e.message))
+      .catch(e => setError(t(e.message, { ns: "validation" })))
       .finally(() => setLoading(false));
   }
 
@@ -64,7 +67,7 @@ export default function PasswordEditForm() {
     function checkPass() {
       if (formData.newPassword !== "" && formData.repeatNewPassword !== "") {
         if (formData.newPassword !== formData.repeatNewPassword) {
-          setInvalidPass("Passwords don't match");
+          setInvalidPass("PASSWORD_NOT_MATCH");
         } else {
           setInvalidPass("");
         }
@@ -113,7 +116,9 @@ export default function PasswordEditForm() {
             required
           />
         </label>
-        <span className={styles.error}>{invalidPass}</span>
+        <span className={styles.error}>
+          {t(invalidPass, { ns: "validation" })}
+        </span>
       </div>
       <div className={styles.buttonGroup}>
         <button

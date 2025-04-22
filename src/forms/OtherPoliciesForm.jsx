@@ -2,6 +2,7 @@ import styles from "./defaultFormStyle.module.css";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function OtherPoliciesForm({
   otherPoliciesData,
@@ -20,6 +21,7 @@ export default function OtherPoliciesForm({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setFormData({
@@ -61,9 +63,7 @@ export default function OtherPoliciesForm({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error(
-            "Server error. Unable to create or update property other policies"
-          );
+          throw new Error("UNEXPECTED_ERROR");
         }
 
         return response.json();
@@ -71,9 +71,9 @@ export default function OtherPoliciesForm({
       .then(() => {
         closeModal();
         refreshPropertyData();
-        alert("Other policies created/updated successfully");
+        addToast({ message: t("POLICY_CREATE_SUCCESS", { ns: "validation" }) });
       })
-      .catch(e => setError(e.message))
+      .catch(e => setError(t(e.message, { ns: "validate" })))
       .finally(() => setLoading(false));
   }
 

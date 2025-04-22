@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import Spinner from "../components/Spinner/Spinner";
 
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function ProperTyDetailsForm({
   setIsOpen,
@@ -26,6 +27,7 @@ export default function ProperTyDetailsForm({
   const [currenciesError, setCurrenciesError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setFormData({
@@ -99,10 +101,14 @@ export default function ProperTyDetailsForm({
       if (!response.ok) {
         const error = await response.json();
         console.error(error);
-        throw new Error(error.msg || "Server Error");
+        throw new Error(
+          error.msg || t("UNEXPECTED_ERROR", { ns: "validation" })
+        );
       }
-
-      alert("Property Info updated successfully");
+      addToast({
+        message: t("PROPERTY_UPDATE_SUCCESS", { ns: "validation" }),
+        type: "success",
+      });
       setIsOpen(false);
       refreshPropertyData();
     } catch (e) {

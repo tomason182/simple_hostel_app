@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function AdvancePaymentPolicyForm({
   advancePaymentData,
@@ -15,6 +16,8 @@ export default function AdvancePaymentPolicyForm({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { t } = useTranslation();
+
+  const { addToast } = useToast();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -56,7 +59,11 @@ export default function AdvancePaymentPolicyForm({
       .then(() => {
         closeModal();
         refreshPropertyPolicies();
-        alert("Advance Payment updated successfully");
+
+        addToast({
+          message: t("POLICY_UPDATE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./Facilities.module.css";
+import { useToast } from "../../../hooks/useToast";
 
 export default function Facilities() {
   const [facilities, setFacilities] = useState([]);
@@ -12,6 +13,7 @@ export default function Facilities() {
   const [errorFacilities, setErrorFacilities] = useState(null);
   const [errorPropertyFacilities, setErrorPropertyFacilities] = useState(null);
   const { t, i18n } = useTranslation();
+  const { addToast } = useToast();
   const lng = i18n.resolvedLanguage;
 
   const [propertyFacilities, setPropertyFacilities] = useState([]);
@@ -107,13 +109,18 @@ export default function Facilities() {
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Unable to save changes");
+          throw new Error("UNEXPECTED_ERROR");
         }
-
-        alert("Changes saved successfully");
+        addToast({
+          message: t("CHANGES_SAVE", { ns: "validation" }),
+          type: "success",
+        });
       })
       .catch(err =>
-        alert(`An error occurred, please try again. Error: ${err.message}`)
+        addToast({
+          message: t(err.message, { ns: "validation" }),
+          type: "error",
+        })
       )
       .finally(() => setLoading(false));
   }

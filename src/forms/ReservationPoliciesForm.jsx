@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function ReservationPoliciesForm({
   closeModal,
@@ -22,6 +23,7 @@ export default function ReservationPoliciesForm({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   const availablePaymentMethods = [
     { id: "debit_credit", label: t("debit_credit") },
@@ -75,18 +77,19 @@ export default function ReservationPoliciesForm({
     fetch(url, options)
       .then(async response => {
         if (response.status >= 400) {
-          const error = await response.json();
-          console.error(error);
-          throw new Error("Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
         return response.json();
       })
       .then(() => {
         refreshPropertyPolicies();
         closeModal();
-        alert("Reservation policies updated successfully");
+        addToast({
+          message: t("POLICY_UPDATE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
       })
-      .catch(e => setError(e.message))
+      .catch(e => setError(t(e.message, { ns: "validation" })))
       .finally(() => setLoading(false));
   }
 

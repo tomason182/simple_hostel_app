@@ -3,6 +3,7 @@ import styles from "./Amenities.module.css";
 import Spinner from "../../../components/Spinner/Spinner.jsx";
 import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
+import { useToast } from "../../../hooks/useToast.jsx";
 
 export default function Amenities({
   roomTypes,
@@ -21,6 +22,7 @@ export default function Amenities({
   });
 
   const { t, i18n } = useTranslation();
+  const { addToast } = useToast();
   const lng = i18n.resolvedLanguage;
 
   useEffect(() => {
@@ -100,6 +102,7 @@ export default function Amenities({
 
     if (roomId === "") {
       alert("Please, select a room first");
+      return;
     }
 
     setLoadingForm(true);
@@ -118,19 +121,27 @@ export default function Amenities({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
         return response.json();
       })
       .then(data => {
         if (data.status === "ok") {
-          alert("Amenities updated successfully");
+          addToast({
+            message: t("AMENITIES_UPDATE_SUCCESS", { ns: "validation" }),
+            type: "success",
+          });
           refreshRoomTypeData();
           return;
         }
-        alert("Unable to update amenities");
+        throw new Error("UNEXPECTED_ERROR");
       })
-      .catch(err => alert(`Unable to update amenities: ${err.message}`))
+      .catch(err =>
+        addToast({
+          message: t(err.message, { ns: "validation" }),
+          type: "error",
+        })
+      )
       .finally(() => setLoadingForm(false));
   }
 

@@ -3,6 +3,7 @@ import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./RoomsPhotos.module.css";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../../../hooks/useToast";
 
 export default function RoomsPhotos() {
   const [room, setRoom] = useState({ id: "" });
@@ -12,6 +13,7 @@ export default function RoomsPhotos() {
   const { roomTypes, isLoading, error } = useContext(RoomTypeContext);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   // Revoke image URL when component unmounts
   useEffect(() => {
@@ -41,8 +43,7 @@ export default function RoomsPhotos() {
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          alert("Failed to load images from server");
-          return;
+          throw new Error("IMAGE_LOAD_FAIL");
         }
         return response.json();
       })
@@ -56,6 +57,10 @@ export default function RoomsPhotos() {
         setImages(serverImages);
       })
       .catch(e => {
+        addToast({
+          message: t(e.message, { ns: "validation" }),
+          type: "error",
+        });
         console.error(`Error loading images: ${e.message}`);
       })
       .finally(() => setLoadingImages(false));
@@ -133,7 +138,10 @@ export default function RoomsPhotos() {
           throw new Error(error.msg);
         }
 
-        alert("Image deleted successfully");
+        addToast({
+          message: t("IMAGE_DELETED", { ns: "validation" }),
+          type: "success",
+        });
       } catch (e) {
         console.error(e);
         return;
@@ -145,8 +153,8 @@ export default function RoomsPhotos() {
 
   function uploadImages() {
     const imagesToUpload = images.filter(img => img.source === "local");
-    if (imagesToUpload.length === 0) return alert("No images to upload");
-    if (!room.id) return alert("No room type selected");
+    if (imagesToUpload.length === 0) return alert(t("NO_IMAGE_TO_UPLOAD"));
+    if (!room.id) return alert(t("NO_ROOM_TYPE_SELECTED"));
 
     const formData = new FormData();
 
@@ -167,25 +175,25 @@ export default function RoomsPhotos() {
     setLoadingImageUpload(true);
 
     fetch(url, options)
-      .then(async response => {
+      .then(response => {
         if (response.status === 401) {
-          alert("User Unauthorized");
-          // Redirect to login page or home page
-          return;
+          throw new Error("USER_UNAUTHORIZED");
         }
         if (response.status >= 400) {
-          const error = await response.json();
-          console.error(error);
-          alert("Unable to upload images. Please try again.");
-          return;
+          throw new Error("UNEXPECTED_ERROR");
         }
-        alert("Images uploaded successfully");
+        addToast({
+          message: t("IMAGE_UPLOADED", { ns: "validation" }),
+          type: "success",
+        });
         // We need to clean all temporally URLs
         imagesToUpload.forEach(image => URL.revokeObjectURL(image.src));
         // We need to fetch the images from the server.
         fetchImagesFromServer();
       })
-      .catch(e => alert(`An error Occurred: ${e.message}`))
+      .catch(e =>
+        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
+      )
       .finally(() => {
         setLoadingImageUpload(false);
         images.forEach(image => {

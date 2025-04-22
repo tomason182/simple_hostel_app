@@ -3,6 +3,7 @@ import { UserProfileContext } from "../data_providers/UserProfileProvider";
 import { useContext, useEffect, useState } from "react";
 import Spinner from "../components/Spinner/Spinner";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function ProfileEditForm() {
   const { userProfile, loading, error, refreshUserProfile } =
@@ -18,6 +19,7 @@ export default function ProfileEditForm() {
   const [loadingForm, setLoadingForm] = useState(false);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     function handleFormInitialValues() {
@@ -63,15 +65,20 @@ export default function ProfileEditForm() {
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Unable to update user profile");
+          throw new Error("UNEXPECTED_ERROR");
         }
         return response.json();
       })
       .then(() => {
         refreshUserProfile();
-        alert("User updated successfully");
+        addToast({
+          message: t("USER_UPDATE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
       })
-      .catch(e => alert(e.message))
+      .catch(e =>
+        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
+      )
       .finally(() => setLoadingForm(false));
   }
 

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import styles from "./defaultFormStyle.module.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function CancelReservationForm({
   name,
@@ -13,6 +14,7 @@ export default function CancelReservationForm({
   const [loading, setLoading] = useState(false);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleOnClick(id) {
     setLoading(true);
@@ -37,20 +39,23 @@ export default function CancelReservationForm({
         if (response.status >= 400) {
           message = {
             status: "error",
-            msg: "Unable to modify reservation status",
+            msg: "RESERVATION_STATUS_CHANGE_ERROR",
           };
           return;
         }
         message = {
-          status: "ok",
-          msg: "Reservation status changed successfully",
+          status: "success",
+          msg: "RESERVATION_STATUS_CHANGE",
         };
       })
       .catch(e => console.error(e.message))
       .finally(() => {
         refreshReservationById();
         setLoading(false);
-        alert(message.msg);
+        addToast({
+          message: t(message.msg, { ns: "validation" }),
+          type: message.status,
+        });
         setIsOpen(false);
       });
   }

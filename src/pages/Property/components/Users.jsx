@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 
 // Fetch team members
 import useUsersDataProvider from "../../../data_providers/UsersDataProvider";
+import { useToast } from "../../../hooks/useToast";
 
 export default function Users() {
   // Modal States
@@ -21,11 +22,13 @@ export default function Users() {
     last_name: "",
     role: "",
   });
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const { users, loading, usersError, refreshUsersData } =
     useUsersDataProvider();
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function editUser(id) {
     const selectedUser = users.find(user => user.id === id);
@@ -51,6 +54,7 @@ export default function Users() {
   }
 
   function deleteUser(id) {
+    setLoadingDelete(true);
     const url = import.meta.env.VITE_URL_BASE + "/users/profile/delete/" + id;
     const options = {
       mode: "cors",
@@ -65,16 +69,20 @@ export default function Users() {
       .then(async response => {
         if (response.status >= 400) {
           const error = await response.json();
-          throw new Error(error.msg || "Server Error");
+          throw new Error(error.msg || "UNEXPECTED_ERROR");
         }
-        return response.json();
+        addToast({
+          message: t("USER_DELETED", { ns: "validation" }),
+          type: "success",
+        });
       })
-      .then(() => alert("User deleted successfully"))
-      .catch(e => {
-        console.error(e);
-        alert(`Unable to delete user. ${e.message}`);
-      })
-      .finally(() => refreshUsersData());
+      .catch(e =>
+        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
+      )
+      .finally(() => {
+        refreshUsersData();
+        setLoadingDelete(false);
+      });
   }
 
   if (loading) return <Spinner />;
@@ -113,6 +121,7 @@ export default function Users() {
           <button
             className={styles.deleteBtn}
             onClick={() => deleteUser(user.id)}
+            disabled={loadingDelete}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

@@ -2,6 +2,7 @@ import styles from "./defaultFormStyle.module.css";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function RoomTypeForm({
   roomData,
@@ -21,6 +22,7 @@ export default function RoomTypeForm({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setFormData({ ...roomData });
@@ -70,21 +72,23 @@ export default function RoomTypeForm({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
 
         return response.json();
       })
       .then(data => {
         if (data.status === "error") {
-          setError(data.msg);
-        } else {
-          alert(data.msg);
-          refreshRoomTypeData();
-          setIsOpen(false);
+          throw new Error(data.msg);
         }
+        addToast({
+          message: t(data.message, { ns: "validation" }),
+          type: "success",
+        });
+        refreshRoomTypeData();
+        setIsOpen(false);
       })
-      .catch(e => setError(e.message))
+      .catch(e => setError(t(e.message, { ns: "validation" })))
       .finally(() => setLoading(false));
   }
 

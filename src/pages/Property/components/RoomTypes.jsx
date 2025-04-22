@@ -8,6 +8,7 @@ import Modal from "../../../components/Modal/Modal";
 import RoomTypeForm from "../../../forms/RoomTypeForm";
 
 import { useTranslation } from "react-i18next";
+import { useToast } from "../../../hooks/useToast";
 
 export default function RoomTypes({
   roomTypes,
@@ -25,8 +26,10 @@ export default function RoomTypes({
   });
 
   const [isOpen, setIsOpen] = useState(false);
+  const [loadingDelete, setLoadingDelete] = useState(false);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleRoomToEdit(roomId) {
     const roomType = roomTypes.find(room => room.id === roomId);
@@ -55,6 +58,7 @@ export default function RoomTypes({
   }
 
   function deleteRoomType(id) {
+    setLoadingDelete(true);
     const url = import.meta.env.VITE_URL_BASE + "/room-types/delete/" + id;
     const options = {
       mode: "cors",
@@ -68,19 +72,25 @@ export default function RoomTypes({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
         return response.json();
       })
       .then(data => {
         if (data.status === "error") {
-          alert(data.msg);
+          throw new Error(data.msg);
         } else {
-          alert("Room type deleted successfully");
+          addToast({
+            message: t("ROOM_TYPE_DELETED", { ns: "validation" }),
+            type: "success",
+          });
           refreshRoomTypeData();
         }
       })
-      .catch(e => console.error(e.message));
+      .catch(e =>
+        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
+      )
+      .finally(() => setLoadingDelete(false));
   }
 
   if (isLoading) return <Spinner />;
@@ -132,6 +142,7 @@ export default function RoomTypes({
                       deleteRoomType(room.id);
                       refreshRoomTypeData();
                     }}
+                    disabled={loadingDelete}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

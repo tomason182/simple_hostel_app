@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import countryCodes from "../utils/country_code.json";
 
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function UpdateGuestInformation({
   setIsOpen,
@@ -25,6 +26,7 @@ export default function UpdateGuestInformation({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setFormData({
@@ -100,7 +102,7 @@ export default function UpdateGuestInformation({
     fetch(url, options)
       .then(response => {
         if (response.status >= 400) {
-          throw new Error("Unable to update guest info. Server Error");
+          throw new Error("UNEXPECTED_ERROR");
         }
 
         return response.json();
@@ -110,12 +112,15 @@ export default function UpdateGuestInformation({
           setError(data.msg);
           return;
         }
-        alert("Guest updated successfully");
+        addToast({
+          message: t("GUEST_UPDATE_SUCCESS", { ns: "validation" }),
+          type: "success",
+        });
         setIsOpen(false);
         refreshData();
       })
       .catch(e => {
-        setError(e.message);
+        setError(t(e.message, { ns: "validation" }));
       })
       .finally(() => setLoading(false));
   }
