@@ -221,8 +221,8 @@ export default function RoomsPhotos() {
 
   if (error) return <p>Network error. Please, try again</p>;
 
-  /*   if (roomTypes.length === 0)
-    return <p className={styles.noRooms}>{t("no_room_types_message")}</p>; */
+  if (roomTypes.length === 0)
+    return <p className={styles.noRooms}>{t("no_room_types_message")}</p>;
 
   return (
     <>
@@ -245,7 +245,7 @@ export default function RoomsPhotos() {
       {/* Upload container */}
       <div className={styles.upload}>
         <label className={styles.uploadLabel}>
-          <p>Select room type images</p>
+          <p>Room type images</p>
           <button className={styles.inputButton} onClick={handleInputOpen}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

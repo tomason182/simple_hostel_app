@@ -206,7 +206,7 @@ export default function PropertyPhotos() {
     <>
       <div className={styles.upload}>
         <label className={styles.uploadLabel}>
-          <p>Select property images</p>
+          <p>Property images</p>
           <input
             type="file"
             multiple

@@ -430,7 +430,9 @@ export default function Calendar() {
               <td colSpan={17} className={styles.noRoomTypesMessage}>
                 {t("no_room_message")}
                 <br />
-                <Link to="/property">{t("create")}</Link>
+                <p>Need Help?</p>
+                Check the <Link to="/property">manual</Link> or{" "}
+                <Link to="#">Contact support</Link>
               </td>
             </tr>
           ) : (

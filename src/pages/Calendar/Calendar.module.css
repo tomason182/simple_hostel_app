@@ -10,7 +10,7 @@
 }
 
 .calendarTable tbody tr td {
-  border: 1px solid var(--gray-400);
+  border: 1px solid var(--gray-300);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -148,5 +148,6 @@
 
 /* No room types message */
 .noRoomTypesMessage {
-  color: black;
+  color: var(--gray-500);
+  font-size: 0.875rem;
 }
