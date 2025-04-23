@@ -25,6 +25,10 @@
   margin-bottom: 0.5rem;
 }
 
+.selectionList li.active {
+  border: 2px solid var(--gray-700);
+}
+
 .selectionList li button {
   height: 100%;
   width: 100%;

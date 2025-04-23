@@ -11,10 +11,10 @@ export default function Photos() {
     <div className={styles.mainContainer}>
       <div className={styles.leftContainer}>
         <ul className={styles.selectionList}>
-          <li>
+          <li className={index === 0 ? styles.active : ""}>
             <button onClick={() => setIndex(0)}>{t("property")}</button>
           </li>
-          <li>
+          <li className={index === 1 ? styles.active : ""}>
             <button onClick={() => setIndex(1)}>{t("room_types")}</button>
           </li>
         </ul>

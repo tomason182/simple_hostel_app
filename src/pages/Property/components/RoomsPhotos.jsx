@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState, useRef } from "react";
 import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
 import Spinner from "../../../components/Spinner/Spinner";
 import styles from "./RoomsPhotos.module.css";
@@ -14,6 +14,7 @@ export default function RoomsPhotos() {
 
   const { t } = useTranslation();
   const { addToast } = useToast();
+  const inputFile = useRef(null);
 
   // Revoke image URL when component unmounts
   useEffect(() => {
@@ -206,11 +207,22 @@ export default function RoomsPhotos() {
       });
   }
 
+  function handleInputOpen() {
+    if (images.length >= 10) {
+      alert("Maximum images allowed reach");
+      return;
+    }
+    if (inputFile && inputFile.current) {
+      inputFile.current.click();
+    }
+  }
+
   if (isLoading || loadingImages) return <Spinner />;
 
   if (error) return <p>Network error. Please, try again</p>;
 
-  if (roomTypes.length === 0) return <p>{t("no_room_types_message")}</p>;
+  /*   if (roomTypes.length === 0)
+    return <p className={styles.noRooms}>{t("no_room_types_message")}</p>; */
 
   return (
     <>
@@ -233,7 +245,8 @@ export default function RoomsPhotos() {
       {/* Upload container */}
       <div className={styles.upload}>
         <label className={styles.uploadLabel}>
-          <button className={styles.uploadContent}>
+          <p>Select room type images</p>
+          <button className={styles.inputButton} onClick={handleInputOpen}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -256,6 +269,7 @@ export default function RoomsPhotos() {
             accept="image/*"
             className={styles.hidden}
             onChange={handleFileChange}
+            ref={inputFile}
           />
         </label>
       </div>
