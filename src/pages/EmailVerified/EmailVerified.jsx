@@ -17,10 +17,7 @@ export default function EmailVerified() {
       async function verifyToken() {
         try {
           const url =
-            import.meta.env.VITE_URL_BASE +
-            "/users/confirm-email/" +
-            1234 +
-            token;
+            import.meta.env.VITE_URL_BASE + "/users/confirm-email/" + token;
           const options = {
             mode: "cors",
             method: "GET",

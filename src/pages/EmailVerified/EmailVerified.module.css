@@ -35,6 +35,11 @@
   padding: 0;
 }
 
+.mainContent h3 {
+  font-size: 1.2rem;
+  color: var(--gray-700);
+}
+
 .mainContent .text {
   font-size: 0.875rem;
   color: var(--gray-600);

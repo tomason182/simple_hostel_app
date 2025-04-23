@@ -8,6 +8,7 @@ import Profile from "./pages/User/Profile";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Auth from "./pages/Auth/Auth";
 import EmailVerified from "./pages/EmailVerified/EmailVerified";
+import NewUser from "./pages/EmailVerified/NewUser";
 import { Navigate } from "react-router";
 import ReservationDetails from "./pages/Reservations/components/ReservationDetails";
 
@@ -19,6 +20,10 @@ const routes = [
   {
     path: "accounts/email-validation/:token",
     element: <EmailVerified />,
+  },
+  {
+    path: "accounts/email-validation-and-password/:token",
+    element: <NewUser />,
   },
   {
     path: "/",
