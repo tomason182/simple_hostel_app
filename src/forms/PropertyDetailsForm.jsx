@@ -3,6 +3,7 @@ import styles from "./defaultFormStyle.module.css";
 import countries from "../utils/country_code.json";
 import PropTypes from "prop-types";
 import Spinner from "../components/Spinner/Spinner";
+import ToolTip from "../components/ToolTip/ToolTip";
 
 import { useTranslation } from "react-i18next";
 import { useToast } from "../hooks/useToast";
@@ -202,7 +203,26 @@ export default function ProperTyDetailsForm({
         <div className={styles.groupContainer}>
           <div className={styles.formGroup}>
             <label>
-              {t("base_currency")}
+              <div className={styles.labelContainer}>
+                <span>{t("base_currency")}</span>
+                <ToolTip content="Es la moneda en la que estan establecidos los precios de tus cuartos.">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </ToolTip>
+              </div>
               <select
                 name="base_currency"
                 id="base_currency"
@@ -215,7 +235,27 @@ export default function ProperTyDetailsForm({
           </div>
           <div className={styles.formGroup}>
             <label>
-              {t("payment_currency")}
+              <div className={styles.labelContainer}>
+                <span>{t("payment_currency")}</span>
+                <ToolTip content="Es la moneda en la que se realizan los pagos en tu propiedad.">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </ToolTip>
+              </div>
+
               <select
                 name="payment_currency"
                 id="payment_currency"
