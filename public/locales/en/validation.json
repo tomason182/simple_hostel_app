@@ -38,5 +38,7 @@
   "ADMIN_NOT_DELETE": "Admin user can not be deleted.",
   "NOT_DELETE_OWN_ACCOUNT": "You can not delete your own account from here. Please, go to settings",
   "PAYMENT_STATUS_UPDATED": "Payment status updated.",
-  "RESERVATION_STATUS_UPDATED": "Reservation status updated."
+  "RESERVATION_STATUS_UPDATED": "Reservation status updated.",
+  "TEAM_MEMBERS_LIMIT": "You can not create more that 5 team members",
+  "USER_CREATED": "User created successfully."
 }

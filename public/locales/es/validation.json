@@ -38,5 +38,7 @@
   "ADMIN_NOT_DELETE": "El usuario administrador no se puede eliminar.",
   "NOT_DELETE_OWN_ACCOUNT": "No puedes eliminar tu cuenta desde aquí. Ve a la configuración.",
   "PAYMENT_STATUS_UPDATED": "Estado del pago actualizado",
-  "RESERVATION_STATUS_UPDATED": "Estado de la reserva actualizado."
+  "RESERVATION_STATUS_UPDATED": "Estado de la reserva actualizado.",
+  "TEAM_MEMBERS_LIMIT": "No puedes crear mas de 5 usuarios.",
+  "USER_CREATED": "Usuario creado exitosamente."
 }
