@@ -55,6 +55,7 @@ export default function Users() {
 
   function deleteUser(id) {
     setLoadingDelete(true);
+    console.log("User to delete: ", id);
     const url = import.meta.env.VITE_URL_BASE + "/users/profile/delete/" + id;
     const options = {
       mode: "cors",
@@ -202,6 +203,7 @@ export default function Users() {
           user={userData}
           setIsOpen={setIsOpen}
           refreshUsersData={refreshUsersData}
+          resetState={resetState}
         />
       </Modal>
     </div>

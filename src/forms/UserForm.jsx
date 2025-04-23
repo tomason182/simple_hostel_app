@@ -3,7 +3,12 @@ import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
 
-export default function UserForm({ user, setIsOpen, refreshUsersData }) {
+export default function UserForm({
+  user,
+  setIsOpen,
+  resetState,
+  refreshUsersData,
+}) {
   const [userData, setUserData] = useState({
     id: user.id === "" ? -1 : user.id,
     username: user.username,
@@ -52,6 +57,7 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
       .then(() => {
         refreshUsersData();
         setIsOpen(false);
+        resetState();
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false));
@@ -122,7 +128,9 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
       <div className={styles.buttonGroup}>
         <button
           className={styles.cancelButton}
-          onClick={() => setIsOpen(false)}
+          onClick={() => {
+            resetState(), setIsOpen(false);
+          }}
         >
           {t("cancel")}
         </button>
@@ -141,6 +149,7 @@ export default function UserForm({ user, setIsOpen, refreshUsersData }) {
 
 UserForm.propTypes = {
   user: PropTypes.object.isRequired,
-  setIsOpen: PropTypes.object.isRequired,
-  refreshUsersData: PropTypes.object.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
+  refreshUsersData: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
 };
