@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./defaultFormStyle.module.css";
 import PropTypes from "prop-types";
 import { useTranslation } from "react-i18next";
+import { useToast } from "../hooks/useToast";
 
 export default function UserForm({
   user,
@@ -20,6 +21,7 @@ export default function UserForm({
   const [error, setError] = useState(null);
 
   const { t } = useTranslation();
+  const { addToast } = useToast();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -49,12 +51,16 @@ export default function UserForm({
       .then(async response => {
         if (response.status >= 400) {
           const error = await response.json();
-          throw new Error(error.msg || "Server Error");
+          throw new Error(error.msg || "UNEXPECTED_ERROR");
         }
 
         return response.json();
       })
       .then(() => {
+        addToast({
+          message: t("USER_CREATED"),
+          type: "success",
+        });
         refreshUsersData();
         setIsOpen(false);
         resetState();

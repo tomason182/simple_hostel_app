@@ -55,7 +55,6 @@ export default function Users() {
 
   function deleteUser(id) {
     setLoadingDelete(true);
-    console.log("User to delete: ", id);
     const url = import.meta.env.VITE_URL_BASE + "/users/profile/delete/" + id;
     const options = {
       mode: "cors",
@@ -70,6 +69,7 @@ export default function Users() {
       .then(async response => {
         if (response.status >= 400) {
           const error = await response.json();
+          console.log("Error: ", error);
           throw new Error(error.msg || "UNEXPECTED_ERROR");
         }
         addToast({
