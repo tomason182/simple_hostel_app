@@ -251,5 +251,8 @@
   "advance_payment_rule": "When a guest makes a reservation through your website using the Simple Hostel booking engine, the reservation will initially be marked as Provisional on your calendar. As the host, you are responsible for contacting the guest to arrange payment of the required deposit. The reservation will remain provisional until payment is confirmed.",
   "cancellation_policies_rule": "When a guest cancels a reservation, you can define whether the advance payment will be refunded or not. Your cancellation policy helps set clear expectations for guests and ensures a fair process for both parties.",
   "children_policies_rule": "Define whether children are allowed in your property. If permitted, you can specify which types of rooms they can stay in, such as private rooms only or any room. This policy helps set clear expectations for families and ensures a suitable accommodation experience.",
-  "other_policies_rule": "Establish other policies relevant to your property, such as quiet hours, smoking areas, pet restrictions, and more."
+  "other_policies_rule": "Establish other policies relevant to your property, such as quiet hours, smoking areas, pet restrictions, and more.",
+  "welcome_simple_hostel": "Welcome to Simple Hostel.",
+  "invitation": "{name} has invited you to join their team.",
+  "get_started": "To get started, please create a password for your account."
 }

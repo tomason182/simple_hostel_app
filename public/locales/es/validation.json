@@ -17,6 +17,7 @@
   "CONTACT_INFO_UPDATE": "La información de contacto ha sido actualizada",
   "PASSWORD_UPDATE_SUCCESS": "Su contraseña ha sido actualizada",
   "PASSWORD_NOT_MATCH": "Las contraseñas no coinciden",
+  "PASSWORD_REQUIREMENT": "La contraseña debe contener al menos 8 caracteres, 1 minúscula, 1 mayúscula, 1 numero y 1 caracter especial.",
   "USER_UPDATE_SUCCESS": "Usuario actualizado correctamente",
   "PROPERTY_UPDATE_SUCCESS": "La informacion de la propiedad fue actualizada correctamente",
   "ROOM_TYPE_EXIST": "Ya existe un tipo de habitación con la misma descripción.",

@@ -188,10 +188,15 @@ textarea {
 }
 .error {
   color: red;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   margin-top: 5px;
 }
 
+.passwordRequirementMessage {
+  color: red;
+  font-size: 0.66rem;
+  max-width: 400px;
+}
 /* Buttons styles */
 .buttonGroup {
   display: flex;

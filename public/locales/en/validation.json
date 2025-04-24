@@ -17,6 +17,7 @@
   "CONTACT_INFO_UPDATE": "Contact information has been updated",
   "PASSWORD_UPDATE_SUCCESS": "Your password has been updated",
   "PASSWORD_NOT_MATCH": "The passwords do not match",
+  "PASSWORD_REQUIREMENT": "The password must contain at least 8 characters: 1 lowercase letters, 1 uppercase letters, 1 numbers and 1 symbols.",
   "USER_UPDATE_SUCCESS": "User updated successfully",
   "PROPERTY_UPDATE_SUCCESS": "The property information was updated successfully",
   "ROOM_TYPE_EXIST": "A room type with the same description already exists.",
