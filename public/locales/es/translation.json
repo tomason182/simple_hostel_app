@@ -254,6 +254,6 @@
   "children_policies_rule": "Defina si se permiten niños en su propiedad. Si se permite, puede especificar en qué tipo de habitaciones pueden alojarse, como solo habitaciones privadas o cualquier habitación. Esta política ayuda a establecer expectativas claras para las familias y garantiza una experiencia de alojamiento adecuada.",
   "other_policies_rule": "Establezca otras políticas relevantes para su propiedad, como horarios de silencio, áreas para fumadores, mascotas y más.",
   "welcome_simple_hostel": "Bienvenido/a a SimpleHostel.",
-  "invitation": "{name} te ha invitado a unirte a su equipo de trabajo.",
+  "invitation": "{{name}} te ha invitado a unirte a su equipo de trabajo.",
   "get_started": "Para comenzar crea una contraseña para tu cuenta."
 }

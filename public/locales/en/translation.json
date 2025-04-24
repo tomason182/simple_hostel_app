@@ -253,6 +253,6 @@
   "children_policies_rule": "Define whether children are allowed in your property. If permitted, you can specify which types of rooms they can stay in, such as private rooms only or any room. This policy helps set clear expectations for families and ensures a suitable accommodation experience.",
   "other_policies_rule": "Establish other policies relevant to your property, such as quiet hours, smoking areas, pet restrictions, and more.",
   "welcome_simple_hostel": "Welcome to Simple Hostel.",
-  "invitation": "{name} has invited you to join their team.",
+  "invitation": "{{name}} has invited you to join their team.",
   "get_started": "To get started, please create a password for your account."
 }
