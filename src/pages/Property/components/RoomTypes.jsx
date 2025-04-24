@@ -57,40 +57,36 @@ export default function RoomTypes({
     });
   }
 
-  function deleteRoomType(id) {
-    setLoadingDelete(true);
-    const url = import.meta.env.VITE_URL_BASE + "/room-types/delete/" + id;
-    const options = {
-      mode: "cors",
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    };
+  async function deleteRoomType(id) {
+    try {
+      setLoadingDelete(true);
+      const url = import.meta.env.VITE_URL_BASE + "/room-types/delete/" + id;
+      const options = {
+        mode: "cors",
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      };
 
-    fetch(url, options)
-      .then(response => {
-        if (response.status >= 400) {
-          throw new Error("UNEXPECTED_ERROR");
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.status === "error") {
-          throw new Error(data.msg);
-        } else {
-          addToast({
-            message: t("ROOM_TYPE_DELETED", { ns: "validation" }),
-            type: "success",
-          });
-          refreshRoomTypeData();
-        }
-      })
-      .catch(e =>
-        addToast({ message: t(e.message, { ns: "validation" }), type: "error" })
-      )
-      .finally(() => setLoadingDelete(false));
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.msg || "UNEXPECTED_ERROR");
+      }
+
+      addToast({
+        message: t("ROOM_TYPE_DELETED", { ns: "validation" }),
+        type: "success",
+      });
+      refreshRoomTypeData();
+    } catch (e) {
+      addToast({ message: t(e.message, { ns: "validation" }), type: "error" });
+    } finally {
+      setLoadingDelete(false);
+    }
   }
 
   if (isLoading) return <Spinner />;

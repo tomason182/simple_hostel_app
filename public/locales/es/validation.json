@@ -41,5 +41,6 @@
   "PAYMENT_STATUS_UPDATED": "Estado del pago actualizado",
   "RESERVATION_STATUS_UPDATED": "Estado de la reserva actualizado.",
   "TEAM_MEMBERS_LIMIT": "No puedes crear mas de 5 usuarios.",
-  "USER_CREATED": "Usuario creado exitosamente."
+  "USER_CREATED": "Usuario creado exitosamente.",
+  "UPCOMING_RESERVATIONS": "No se puede eliminar el tipo de habitación. Hay próximas reservas. Espere hasta la última salida."
 }

@@ -41,5 +41,6 @@
   "PAYMENT_STATUS_UPDATED": "Payment status updated.",
   "RESERVATION_STATUS_UPDATED": "Reservation status updated.",
   "TEAM_MEMBERS_LIMIT": "You can not create more that 5 team members",
-  "USER_CREATED": "User created successfully."
+  "USER_CREATED": "User created successfully.",
+  "UPCOMING_RESERVATIONS": "The room type cannot be deleted. There are upcoming reservations. Please wait until the last checkout."
 }
