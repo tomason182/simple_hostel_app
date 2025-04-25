@@ -58,7 +58,7 @@ export default function UserForm({
       })
       .then(() => {
         addToast({
-          message: t("USER_CREATED"),
+          message: t("USER_CREATED", { ns: "validation" }),
           type: "success",
         });
         refreshUsersData();

@@ -53,7 +53,10 @@ export default function ContactInfoForm({
         return response.json();
       })
       .then(() => {
-        addToast({ message: t("CONTACT_INFO_UPDATE"), type: "success" });
+        addToast({
+          message: t("CONTACT_INFO_UPDATE", { ns: "validation" }),
+          type: "success",
+        });
         refreshPropertyData();
         setIsOpen(false);
       })
