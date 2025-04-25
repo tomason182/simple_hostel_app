@@ -236,6 +236,7 @@
   "email_address": "Correo electrónico",
   "password": "Contaseña",
   "forgot_password": "¿Olvido su contraseña?",
+  "forgot_password_text": "Ingrese su dirección de correo electrónico y le enviaremos instrucciones sobre cómo restablecer su cuenta.",
   "sign_up_title": "Crear una cuenta gratis",
   "sign_up_msg": "¿Tienes una cuenta?",
   "property_name": "Nombre de la propiedad",

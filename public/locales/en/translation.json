@@ -237,6 +237,7 @@
   "email_address": "Email address",
   "password": "Password",
   "forgot_password": "Forgot your password?",
+  "forgot_password_text": "Enter your email address and we'll send you instructions on how to reset your account.",
   "property_name": "Property name",
   "accept_terms": "I accept SimpleHostel's <terms>Terms and Conditions</terms> and <privacy>Privacy Policies</privacy>",
   "confirm_email_title": "Please, verify your email",

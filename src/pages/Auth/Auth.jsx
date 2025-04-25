@@ -3,6 +3,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useTranslation, Trans } from "react-i18next";
 import { useNavigate, Navigate } from "react-router";
+import { useToast } from "../../hooks/useToast";
 
 export default function Auth() {
   const [index, setIndex] = useState(0);
@@ -35,6 +36,7 @@ export default function Auth() {
         {index === 0 && <LogIn setIndex={setIndex} />}
         {index === 1 && <SignUp setIndex={setIndex} setEmail={setEmail} />}
         {index === 2 && <EmailVerification email={email} />}
+        {index === 3 && <ForgotPassword setIndex={setIndex} />}
       </div>
     </div>
   );
@@ -107,7 +109,12 @@ function LogIn({ setIndex }) {
         <button type="submit" className={styles.submitButton}>
           {loading ? "Loading..." : t("sign_in")}
         </button>
-        <button className={styles.forgotPass} disabled={loading}>
+        <button
+          className={styles.forgotPass}
+          disabled={loading}
+          type="button"
+          onClick={() => setIndex(3)}
+        >
           {t("forgot_password")}
         </button>
       </form>
@@ -519,6 +526,84 @@ function EmailVerification({ email }) {
   );
 }
 
+function ForgotPassword({ setIndex }) {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const { t } = useTranslation();
+  const { addToast } = useToast();
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+      setError(null);
+      const url =
+        import.meta.env.VITE_URL_BASE +
+        "/users/reset-password/init-change-pass";
+      const options = {
+        mode: "cors",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: e.target.email.value }),
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.msg || "UNEXPECTED_ERROR");
+      }
+
+      addToast({
+        message: t("EMAIL_SENT"),
+        type: "success",
+      });
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <div>
+      <h1>{t("forgot_password")}</h1>
+      <p className={styles.formText}>{t("forgot_password_text")}</p>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <label>
+          {t("email_address")}
+          <input type="email" name="email" required aria-required />
+        </label>
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : t("send")}
+        </button>
+        {error && (
+          <div className={styles.error}>
+            <p className={styles.errorMessage} style={{ color: "red" }}>
+              {t(error, { ns: "validation" })}
+            </p>
+          </div>
+        )}
+        <br />
+        <button
+          type="button"
+          className={styles.linkButton}
+          style={{ float: "left" }}
+          onClick={() => setIndex(0)}
+        >
+          back
+        </button>
+      </form>
+    </div>
+  );
+}
+
 LogIn.propTypes = {
   setIndex: PropTypes.func.isRequired,
 };
@@ -530,4 +615,8 @@ SignUp.propTypes = {
 
 EmailVerification.propTypes = {
   email: PropTypes.string.isRequired,
+};
+
+ForgotPassword.propTypes = {
+  setIndex: PropTypes.func.isRequired,
 };
