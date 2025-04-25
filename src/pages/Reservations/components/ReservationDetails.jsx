@@ -307,8 +307,24 @@ function ReservationInfo({
         >
           <option value="canceled">{t("canceled")}</option>
           <option value="no_show">No-show</option>
-          <option value="provisional">{t("provisional")}</option>
-          <option value="confirmed">{t("confirmed")}</option>
+          <option
+            value="provisional"
+            disabled={
+              reservationStatus === "canceled" ||
+              reservationStatus === "no_show"
+            }
+          >
+            {t("provisional")}
+          </option>
+          <option
+            value="confirmed"
+            disabled={
+              reservationStatus === "canceled" ||
+              reservationStatus === "no_show"
+            }
+          >
+            {t("confirmed")}
+          </option>
         </select>
       </div>
     </>
