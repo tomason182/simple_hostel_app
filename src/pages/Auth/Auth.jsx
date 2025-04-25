@@ -558,7 +558,7 @@ function ForgotPassword({ setIndex }) {
       }
 
       addToast({
-        message: t("EMAIL_SENT"),
+        message: t("EMAIL_SENT", { ns: "validation" }),
         type: "success",
       });
     } catch (err) {
@@ -568,7 +568,7 @@ function ForgotPassword({ setIndex }) {
     }
   }
   return (
-    <div>
+    <>
       <h1>{t("forgot_password")}</h1>
       <p className={styles.formText}>{t("forgot_password_text")}</p>
       <form className={styles.form} onSubmit={handleSubmit}>
@@ -600,7 +600,7 @@ function ForgotPassword({ setIndex }) {
           back
         </button>
       </form>
-    </div>
+    </>
   );
 }
 

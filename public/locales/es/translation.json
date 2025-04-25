@@ -256,5 +256,8 @@
   "other_policies_rule": "Establezca otras políticas relevantes para su propiedad, como horarios de silencio, áreas para fumadores, mascotas y más.",
   "welcome_simple_hostel": "Bienvenido/a a SimpleHostel.",
   "invitation": "{{name}} te ha invitado a unirte a su equipo de trabajo.",
-  "get_started": "Para comenzar crea una contraseña para tu cuenta."
+  "get_started": "Para comenzar crea una contraseña para tu cuenta.",
+  "reset_your_password": "Restablece tu contraseña.",
+  "reset_your_password_text": "Introduzca una nueva contraseña para restablecer la contraseña de su cuenta.",
+  "reset_password": "Restablecer contraseña"
 }

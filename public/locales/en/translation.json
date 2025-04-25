@@ -255,5 +255,8 @@
   "other_policies_rule": "Establish other policies relevant to your property, such as quiet hours, smoking areas, pet restrictions, and more.",
   "welcome_simple_hostel": "Welcome to Simple Hostel.",
   "invitation": "{{name}} has invited you to join their team.",
-  "get_started": "To get started, please create a password for your account."
+  "get_started": "To get started, please create a password for your account.",
+  "reset_your_password": "Reset your password.",
+  "reset_your_password_text": "Enter a new password to reset the password on your account.",
+  "reset_password": "Reset password"
 }

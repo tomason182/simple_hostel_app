@@ -66,6 +66,8 @@
 .error {
   border: 1px solid red;
   margin-top: 1rem;
+  padding: 0rem 1rem;
+  max-width: 400px;
 }
 
 .errorMessage {
