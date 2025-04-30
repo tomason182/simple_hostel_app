@@ -259,5 +259,7 @@
   "get_started": "Para comenzar crea una contraseña para tu cuenta.",
   "reset_your_password": "Restablece tu contraseña.",
   "reset_your_password_text": "Introduzca una nueva contraseña para restablecer la contraseña de su cuenta.",
-  "reset_password": "Restablecer contraseña"
+  "reset_password": "Restablecer contraseña",
+  "modify_prices": "Actualizar precios de la reserva",
+  "change_prices": "Cambiar precios"
 }

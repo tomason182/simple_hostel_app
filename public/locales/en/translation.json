@@ -258,5 +258,7 @@
   "get_started": "To get started, please create a password for your account.",
   "reset_your_password": "Reset your password.",
   "reset_your_password_text": "Enter a new password to reset the password on your account.",
-  "reset_password": "Reset password"
+  "reset_password": "Reset password",
+  "modify_prices": "Update reservation prices",
+  "change_prices": "Change prices"
 }

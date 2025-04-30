@@ -15,6 +15,7 @@ import { useFetchReservationById } from "../../../data_providers/reservationData
 import ChangeReservationsDatesForm from "../../../forms/ChangeReservationDatesForm";
 import UpdateGuestInformation from "../../../forms/UpdateGuestInformation";
 import CancelReservationForm from "../../../forms/CancelReservationForm";
+import EditReservationPrices from "../../../forms/EditReservationPrices";
 
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
@@ -26,7 +27,8 @@ export default function ReservationDetails() {
   /* Modal state */
   const [isOpen, setIsOpen] = useState(false);
 
-  const { roomTypes, isLoading } = useContext(RoomTypeContext);
+  const { roomTypes, loadingRoomTypes, errorRoomTypes } =
+    useContext(RoomTypeContext);
   const { id } = useParams();
 
   const { reservation, loading, error, refreshReservationById } =
@@ -34,9 +36,9 @@ export default function ReservationDetails() {
 
   const { t } = useTranslation();
 
-  if (loading || isLoading) return <Spinner />;
+  if (loading || loadingRoomTypes) return <Spinner />;
 
-  if (error)
+  if (error || errorRoomTypes)
     return (
       <div>
         <p>{t("unexpected_error_message")}</p>
@@ -78,6 +80,8 @@ export default function ReservationDetails() {
           totalPrice={totalPrice}
           roomTypes={roomTypes}
           refreshData={refreshReservationById}
+          setIndex={setIndex}
+          setIsOpen={setIsOpen}
         />
       ),
     },
@@ -122,6 +126,17 @@ export default function ReservationDetails() {
           setIsOpen={setIsOpen}
           guestData={reservation.guest}
           refreshData={refreshReservationById}
+        />
+      ),
+    },
+    {
+      header: t("modify_prices"),
+      content: (
+        <EditReservationPrices
+          reservationData={reservation.reservation}
+          roomTypes={roomTypes}
+          setIsOpen={setIsOpen}
+          refreshReservationById={refreshReservationById}
         />
       ),
     },
@@ -369,7 +384,8 @@ function GuestInfo({ guestData, setIndex, setIsOpen }) {
         <h5>{t("update_guest")}</h5>
         <button
           onClick={() => {
-            setIndex(3), setIsOpen(true);
+            setIndex(3);
+            setIsOpen(true);
           }}
         >
           {t("update_guest_info")}
@@ -384,6 +400,8 @@ function PaymentDetails({
   totalPrice,
   roomTypes,
   refreshData,
+  setIndex,
+  setIsOpen,
 }) {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [loading, setLoading] = useState(false);
@@ -509,6 +527,19 @@ function PaymentDetails({
       </div>
       <div className={styles.controlPanel}>
         <span style={{ fontSize: "14px", color: "#333", marginBottom: "10px" }}>
+          -- {t("modify_prices")} --
+        </span>
+        <button
+          onClick={() => {
+            setIndex(4);
+            setIsOpen(true);
+          }}
+        >
+          {t("change_prices")}
+        </button>
+        <br />
+
+        <span style={{ fontSize: "14px", color: "#333", marginBottom: "10px" }}>
           -- {t("change_payment_status")} --
         </span>
         <select
@@ -565,4 +596,6 @@ PaymentDetails.propTypes = {
   totalPrice: PropTypes.number.isRequired,
   roomTypes: PropTypes.array.isRequired,
   refreshData: PropTypes.func.isRequired,
+  setIndex: PropTypes.func.isRequired,
+  setIsOpen: PropTypes.func.isRequired,
 };
