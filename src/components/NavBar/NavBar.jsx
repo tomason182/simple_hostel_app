@@ -29,7 +29,7 @@ export default function NavBar() {
           <NavLink to="/inbox">{t("inbox")}</NavLink>
         </li>
         <li>
-          <NavLink to="/website">{t("website")}</NavLink>
+          <NavLink to="/book-engine">{t("book_engine")}</NavLink>
         </li>
         <li>
           <NavLink to="/reports">{t("reports")}</NavLink>

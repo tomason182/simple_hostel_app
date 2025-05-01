@@ -5,6 +5,7 @@ import RatesAndAvailability from "./pages/RatesAndAvailability/RatesAndAvailabil
 import Reservations from "./pages/Reservations/Reservations";
 import Property from "./pages/Property/Property";
 import Inbox from "./pages/Inbox/Inbox";
+import BookEngine from "./pages/BookEngine/BookEngine";
 import Profile from "./pages/User/Profile";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Auth from "./pages/Auth/Auth";
@@ -68,8 +69,8 @@ const routes = [
         element: <Inbox />,
       },
       {
-        path: "my-website",
-        element: <h1>My Website Page</h1>,
+        path: "book-engine",
+        element: <BookEngine />,
       },
       {
         path: "reports",

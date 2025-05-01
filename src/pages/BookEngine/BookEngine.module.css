@@ -1,0 +1,56 @@
+.content {
+  color: var(--gray-700);
+  text-align: center;
+  display: flex;
+  padding: 2rem 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.75rem;
+}
+
+.link {
+  border: 1px solid var(--gray-300);
+  padding: 0.75rem 3rem;
+  color: var(--gray-500);
+  font-size: 0.875rem;
+}
+
+.requirements h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.requirements ul {
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.requestSentText {
+  color: green;
+  font-size: medium;
+}
+
+.requestButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  background: none;
+  border: none;
+  background-color: var(--button-primary);
+  color: white;
+  cursor: pointer;
+}
+
+.requestButton:hover {
+  background-color: var(--button-dark);
+}
