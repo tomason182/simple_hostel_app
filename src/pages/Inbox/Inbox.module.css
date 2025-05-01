@@ -1,0 +1,45 @@
+.content {
+  padding: 0 2rem;
+  text-align: left;
+  color: var(--gray-700);
+  overflow: hidden;
+}
+
+.content p {
+  color: var(--gray-500);
+  padding: 0.25rem;
+  border-bottom: 1px solid var(--gray-500);
+}
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+}
+.sendButton {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  background-color: var(--button-primary);
+  color: white;
+  font-weight: bold;
+}
+
+.sendButton:disabled {
+  background-color: var(--gray-700);
+  cursor: not-allowed;
+}
+
+.messagesList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  max-width: 900px;
+}
+
+.messagesList li {
+  border: 1px solid var(--gray-300);
+  padding: 1rem;
+}

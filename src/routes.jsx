@@ -4,6 +4,7 @@ import Calendar from "./pages/Calendar/Calendar";
 import RatesAndAvailability from "./pages/RatesAndAvailability/RatesAndAvailability";
 import Reservations from "./pages/Reservations/Reservations";
 import Property from "./pages/Property/Property";
+import Inbox from "./pages/Inbox/Inbox";
 import Profile from "./pages/User/Profile";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import Auth from "./pages/Auth/Auth";
@@ -64,7 +65,7 @@ const routes = [
       },
       {
         path: "inbox",
-        element: <h1>Inbox Page</h1>,
+        element: <Inbox />,
       },
       {
         path: "my-website",
