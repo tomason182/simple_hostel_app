@@ -260,5 +260,7 @@
   "reset_your_password_text": "Enter a new password to reset the password on your account.",
   "reset_password": "Reset password",
   "modify_prices": "Update reservation prices",
-  "change_prices": "Change prices"
+  "change_prices": "Change prices",
+  "taxes_fees": "Taxes and fees",
+  "breakfast_meals": "Breakfast and meals"
 }

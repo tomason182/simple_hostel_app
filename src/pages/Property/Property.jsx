@@ -2,7 +2,8 @@ import SecondaryTabs from "../../components/Tabs/SecondaryTabs";
 import PropertyInfo from "./components/PropertyInfo";
 import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
-import Photos from "./components/Photos";
+import RoomsPhotos from "./components/RoomsPhotos";
+import PropertyPhotos from "./components/PropertyPhotos";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
 import Facilities from "./components/Facilities";
@@ -55,20 +56,20 @@ export default function Property() {
       subTabs: [
         {
           label: t("property"),
-          content: <h1>Property images</h1>,
+          content: <PropertyPhotos />,
         },
         {
-          label: t("rooms"),
-          content: <h1>Room Images</h1>,
+          label: t("room_types"),
+          content: <RoomsPhotos />,
         },
       ],
     },
     {
-      label: t("taxes"),
+      label: t("taxes_fees"),
       content: <h1>Taxes</h1>,
     },
     {
-      label: t("breakfast_and_meals"),
+      label: t("breakfast_meals"),
       content: <h1>Breakfast</h1>,
     },
     {

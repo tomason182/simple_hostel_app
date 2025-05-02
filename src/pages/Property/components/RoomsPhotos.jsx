@@ -227,25 +227,28 @@ export default function RoomsPhotos() {
   return (
     <>
       {/* Room type selection */}
-      <label>
-        <select
-          name="room"
-          onChange={e => handleRoomSelection(e)}
-          value={room.id}
-        >
-          <option value="">Select a room type</option>
-          {roomTypes.map(room => (
-            <option key={room.id} value={room.id}>
-              {room.description}
-            </option>
-          ))}
-        </select>
-      </label>
+      <h2>Room type images</h2>
+      <div className={styles.roomSelection}>
+        <label>
+          <select
+            name="room"
+            onChange={e => handleRoomSelection(e)}
+            value={room.id}
+          >
+            <option value="">Select a room type</option>
+            {roomTypes.map(room => (
+              <option key={room.id} value={room.id}>
+                {room.description}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <br />
 
       {/* Upload container */}
       <div className={styles.upload}>
         <label className={styles.uploadLabel}>
-          <p>Room type images</p>
           <button className={styles.inputButton} onClick={handleInputOpen}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
