@@ -95,13 +95,16 @@ export default function PropertyInfo({
 
   return (
     <>
-      <h1>{propertyData.property_name}</h1>
       <div className={styles.gridContainer}>
         <Card title={t("contact_details")} actions={contactDetailsActions}>
           {loadingPropertyData ? (
             <Spinner />
           ) : (
             <ul className={styles.list}>
+              <li>
+                <span>{t("property_name")}</span>
+                <span>{propertyData.property_name}</span>
+              </li>
               <li>
                 <span>Email:</span>
                 <span>{contactInfoData.email}</span>

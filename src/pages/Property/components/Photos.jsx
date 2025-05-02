@@ -10,14 +10,19 @@ export default function Photos() {
   return (
     <div className={styles.mainContainer}>
       <div className={styles.leftContainer}>
-        <ul className={styles.selectionList}>
-          <li className={index === 0 ? styles.active : ""}>
-            <button onClick={() => setIndex(0)}>{t("property")}</button>
-          </li>
-          <li className={index === 1 ? styles.active : ""}>
-            <button onClick={() => setIndex(1)}>{t("room_types")}</button>
-          </li>
-        </ul>
+        <button
+          onClick={() => setIndex(0)}
+          className={index === 0 ? styles.active : ""}
+        >
+          {t("property")}
+        </button>
+
+        <button
+          onClick={() => setIndex(1)}
+          className={index === 1 ? styles.active : ""}
+        >
+          {t("room_types")}
+        </button>
       </div>
       <div className={styles.rightContainer}>
         {index === 0 && <PropertyPhotos />}

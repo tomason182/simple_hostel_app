@@ -4,6 +4,7 @@ import Spinner from "../../../components/Spinner/Spinner";
 import UserForm from "../../../forms/UserForm";
 import Modal from "../../../components/Modal/Modal";
 import PropTypes from "prop-types";
+import Button from "../../../components/Button/Button";
 
 import { useTranslation } from "react-i18next";
 
@@ -167,30 +168,9 @@ export default function Users() {
   });
 
   return (
-    <div>
-      <h1>{t("users")}</h1>
-      <ul className={styles.list}>
-        {userList}
-        <li className={styles.newUser}>
-          <button onClick={() => setIsOpen(true)}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="56"
-              height="56"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#000000"
-              strokeWidth="1"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="12" y1="5" x2="12" y2="19"></line>
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-            </svg>
-            <p>Add new user</p>
-          </button>
-        </li>
-      </ul>
+    <>
+      <Button title={t("create")} onClick={() => setIsOpen(true)} />
+      <ul className={styles.list}>{userList}</ul>
       <Modal
         isOpen={isOpen}
         onClose={() => {
@@ -206,7 +186,7 @@ export default function Users() {
           resetState={resetState}
         />
       </Modal>
-    </div>
+    </>
   );
 }
 

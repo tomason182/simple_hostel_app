@@ -1,44 +1,35 @@
 .mainContainer {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
 .leftContainer {
-  flex: 1;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
 }
 
 .rightContainer {
-  flex: 2;
   padding: 1rem;
 }
 
-.selectionList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.selectionList li {
-  border: 1px solid var(--gray-300);
-  padding: 0;
-  margin-bottom: 0.5rem;
-}
-
-.selectionList li.active {
+.leftContainer button.active {
   border: 2px solid var(--gray-700);
 }
 
-.selectionList li button {
+.leftContainer button {
+  border: 1px solid var(--gray-300);
+  padding: 0;
+  margin-bottom: 0.5rem;
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 1rem;
-  border: none;
   background: none;
   cursor: pointer;
 }
 
-.selectionList li button:hover {
+.leftContainer button:hover {
   background-color: var(--gray-200);
 }
