@@ -52,7 +52,24 @@ export default function Property() {
     },
     {
       label: t("photos"),
-      content: <Photos />,
+      subTabs: [
+        {
+          label: t("property"),
+          content: <h1>Property images</h1>,
+        },
+        {
+          label: t("rooms"),
+          content: <h1>Room Images</h1>,
+        },
+      ],
+    },
+    {
+      label: t("taxes"),
+      content: <h1>Taxes</h1>,
+    },
+    {
+      label: t("breakfast_and_meals"),
+      content: <h1>Breakfast</h1>,
     },
     {
       label: t("policies"),

@@ -43,3 +43,29 @@
   color: var(--gray-700);
   border-radius: 0 0 8px 8px;
 }
+
+/* SubTab list */
+.subTabList {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+}
+
+.subTabButton {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  color: #555;
+}
+
+.subTabButton:hover {
+  background-color: #eee;
+}
+
+.activeSubTabBtn {
+  font-weight: bold;
+  background-color: #ddd;
+}
