@@ -4,6 +4,7 @@ import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
 import PropertyPhotos from "./components/PropertyPhotos";
+import Taxes from "./components/Taxes";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
 import Facilities from "./components/Facilities";
@@ -66,7 +67,7 @@ export default function Property() {
     },
     {
       label: t("taxes_fees"),
-      content: <h1>Taxes</h1>,
+      content: <Taxes />,
     },
     {
       label: t("breakfast_meals"),
