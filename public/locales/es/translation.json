@@ -269,5 +269,6 @@
   "per_booking": "Por reserva",
   "per_night": "Por noche",
   "per_guest": "Por huesped",
-  "fixed": "Fijo"
+  "fixed": "Fijo",
+  "taxes_note": "Si no se añaden impuestos ni tasas, todos los cargos se considerarán incluidos en la tarifa."
 }

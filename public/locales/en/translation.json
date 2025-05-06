@@ -268,5 +268,6 @@
   "per_booking": "Per booking",
   "per_night": "Per night",
   "per_guest": "Per guest",
-  "fixed": "Fixed"
+  "fixed": "Fixed",
+  "taxes_note": "If no taxes or fees are added, all charges will be considered included in the rate."
 }

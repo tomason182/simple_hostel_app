@@ -161,6 +161,7 @@ export default function Taxes() {
           </li>
         ))}
       </ul>
+      <p className={styles.note}>{t("taxes_note")}</p>
     </div>
   );
 }

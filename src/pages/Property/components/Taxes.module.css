@@ -70,3 +70,10 @@
 .listItem button:hover {
   text-decoration: underline;
 }
+
+.note {
+  margin-top: 2rem;
+  padding: 1rem;
+  color: var(--gray-500);
+  border: 1px solid var(--gray-300);
+}
