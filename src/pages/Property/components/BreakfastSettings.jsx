@@ -7,14 +7,12 @@ export default function BreakfastSettings() {
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [errorSettings, setErrorSettings] = useState(null);
   const [breakfastSettings, setBreakfastSettings] = useState({
-    is_served: false,
-    is_included: false,
+    is_served: 0,
+    is_included: 0,
     price: "",
   });
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [errorUpdate, setErrorUpdate] = useState(null);
-
-  console.log(breakfastSettings);
 
   const { t } = useTranslation();
 
@@ -89,7 +87,7 @@ export default function BreakfastSettings() {
     const value = e.target.checked;
     setBreakfastSettings(prev => ({
       ...prev,
-      is_served: value,
+      is_served: value ? 1 : 0,
     }));
   }
 
@@ -97,7 +95,7 @@ export default function BreakfastSettings() {
     const value = e.target.value === "included";
     setBreakfastSettings(prev => ({
       ...prev,
-      is_included: value,
+      is_included: value ? 1 : 0,
     }));
   }
 
@@ -139,7 +137,7 @@ export default function BreakfastSettings() {
         />
         {t("breakfast_is_served")}
       </label>
-      {breakfastSettings.is_served && (
+      {breakfastSettings.is_served === 1 && (
         <div className={styles.options}>
           <label className={styles.radioLabel}>
             <input
@@ -162,7 +160,7 @@ export default function BreakfastSettings() {
             <span>{t("extra_charge")}</span>
           </label>
 
-          {!breakfastSettings.is_included && (
+          {breakfastSettings.is_included === 0 && (
             <input
               type="number"
               className={styles.input}

@@ -278,7 +278,7 @@
   "breakfast_price": "Precio del desayuno",
   "breakfast_current_settings": "Configuración actual del desayuno",
   "no_breakfast": "Actualmente no sirven desayuno.",
-  "breakfast_not_included": "Se sirve desayuno y cuesta {{value}} por unidad.",
-  "breakfast_included": "Se sirve desayuno is esta incluido en la tarifa.",
+  "breakfast_not_included": "Se sirve desayuno y cuesta ${{value}} por unidad.",
+  "breakfast_included": "Se sirve desayuno y esta incluido en la tarifa.",
   "set_up": "Configurar"
 }
