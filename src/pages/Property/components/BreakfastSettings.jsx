@@ -6,13 +6,20 @@ import Spinner from "../../../components/Spinner/Spinner";
 export default function BreakfastSettings() {
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [errorSettings, setErrorSettings] = useState(null);
+  const [currentSettings, setCurrentSettings] = useState({
+    is_served: 0,
+    is_included: 1,
+    price: "",
+  });
   const [breakfastSettings, setBreakfastSettings] = useState({
     is_served: 0,
-    is_included: 0,
+    is_included: 1,
     price: "",
   });
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [errorUpdate, setErrorUpdate] = useState(null);
+
+  console.log(breakfastSettings);
 
   const { t } = useTranslation();
 
@@ -38,7 +45,14 @@ export default function BreakfastSettings() {
       }
 
       const data = await response.json();
-      setBreakfastSettings(data);
+      setBreakfastSettings({
+        ...data,
+        is_included: data.is_included || 1,
+      });
+      setCurrentSettings({
+        ...data,
+        is_included: data.is_included || 1,
+      });
     } catch (err) {
       console.error(err.message);
     } finally {
@@ -117,11 +131,11 @@ export default function BreakfastSettings() {
       <div className={styles.currentSettings}>
         <dl>
           <dt>{t("breakfast_current_settings")}</dt>
-          {breakfastSettings?.is_served === 0 ? (
+          {currentSettings?.is_served === 0 ? (
             <dd>{t("no_breakfast")}</dd>
-          ) : breakfastSettings?.is_included === 0 ? (
+          ) : currentSettings?.is_included === 0 ? (
             <dd>
-              {t("breakfast_not_included", { value: breakfastSettings?.price })}
+              {t("breakfast_not_included", { value: currentSettings?.price })}
             </dd>
           ) : (
             <dd>{t("breakfast_included")}</dd>
