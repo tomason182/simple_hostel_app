@@ -1,24 +1,72 @@
-.radioInput {
-  text-align: left;
+.mainContent {
+  padding: 1.5rem;
+  background-color: #fff;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.radioInput label {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: left;
-}
-.radioInput label span {
-  flex: 5;
-}
-
-.radioInput label input {
-  flex: 1;
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .gridContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  padding: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1px solid var(--gray-300);
+  border-radius: 4px;
+  width: 100%;
+}
+
+.button {
+  background-color: var(--button-primary);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  background-color: var(--button-dark);
+}
+
+.taxList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.listItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  background-color: #f9fafb;
+  border: 1px solid var(--gray-200);
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+}
+
+.listItem button {
+  background: transparent;
+  color: #ef4444;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.listItem button:hover {
+  text-decoration: underline;
 }
