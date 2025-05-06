@@ -270,5 +270,15 @@
   "per_night": "Por noche",
   "per_guest": "Por huesped",
   "fixed": "Fijo",
-  "taxes_note": "Si no se añaden impuestos ni tasas, todos los cargos se considerarán incluidos en la tarifa."
+  "taxes_note": "Si no se añaden impuestos ni tasas, todos los cargos se considerarán incluidos en la tarifa.",
+  "breakfast_settings": "Configuración del desayuno",
+  "breakfast_is_served": "Se sirve desayuno",
+  "included_in_rate": "Incluido en la tarifa",
+  "extra_charge": "Cargo extra",
+  "breakfast_price": "Precio del desayuno",
+  "breakfast_current_settings": "Configuración actual del desayuno",
+  "no_breakfast": "Actualmente no sirven desayuno.",
+  "breakfast_not_included": "Se sirve desayuno y cuesta {{value}} por unidad.",
+  "breakfast_included": "Se sirve desayuno is esta incluido en la tarifa.",
+  "set_up": "Configurar"
 }

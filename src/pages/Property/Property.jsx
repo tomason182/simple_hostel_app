@@ -5,6 +5,7 @@ import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
 import PropertyPhotos from "./components/PropertyPhotos";
 import Taxes from "./components/Taxes";
+import BreakfastSettings from "./components/BreakfastSettings";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
 import Facilities from "./components/Facilities";
@@ -71,7 +72,7 @@ export default function Property() {
     },
     {
       label: t("breakfast_meals"),
-      content: <h1>Breakfast</h1>,
+      content: <BreakfastSettings />,
     },
     {
       label: t("policies"),

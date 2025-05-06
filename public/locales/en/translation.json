@@ -269,5 +269,15 @@
   "per_night": "Per night",
   "per_guest": "Per guest",
   "fixed": "Fixed",
-  "taxes_note": "If no taxes or fees are added, all charges will be considered included in the rate."
+  "taxes_note": "If no taxes or fees are added, all charges will be considered included in the rate.",
+  "breakfast_settings": "Breakfast Settings",
+  "breakfast_is_served": "Breakfast is served",
+  "included_in_rate": "Included in rate",
+  "extra_charge": "Extra charge",
+  "breakfast_price": "Breakfast price",
+  "breakfast_current_settings": "Breakfast current settings",
+  "no_breakfast": "You currently do not serve breakfast.",
+  "breakfast_not_included": "Breakfast is served and costs {{value}} per unit.",
+  "breakfast_included": "Breakfast is served and included in the rate.",
+  "set_up": "Set up"
 }
