@@ -263,5 +263,11 @@
   "modify_prices": "Actualizar precios de la reserva",
   "change_prices": "Cambiar precios",
   "taxes_fees": "Impuestos y tasas",
-  "breakfast_meals": "Desayuno y Comidas"
+  "breakfast_meals": "Desayuno y Comidas",
+  "VAT": "IVA",
+  "value": "Valor",
+  "per_booking": "Por reserva",
+  "per_night": "Por noche",
+  "per_guest": "Por huesped",
+  "fixed": "Fijo"
 }

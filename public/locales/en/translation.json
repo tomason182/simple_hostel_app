@@ -262,5 +262,11 @@
   "modify_prices": "Update reservation prices",
   "change_prices": "Change prices",
   "taxes_fees": "Taxes and fees",
-  "breakfast_meals": "Breakfast and meals"
+  "breakfast_meals": "Breakfast and meals",
+  "VAT": "VAT",
+  "value": "Value",
+  "per_booking": "Per booking",
+  "per_night": "Per night",
+  "per_guest": "Per guest",
+  "fixed": "Fixed"
 }
