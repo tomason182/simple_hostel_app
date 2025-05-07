@@ -93,7 +93,12 @@ export default function ReservationDetails() {
   const forms = [
     {
       header: t("change_reservation_dates"),
-      content: <ChangeReservationsDatesForm setIsOpen={setIsOpen} />,
+      content: (
+        <ChangeReservationsDatesForm
+          setIsOpen={setIsOpen}
+          reservation={reservation?.reservation}
+        />
+      ),
     },
     {
       header: t("cancel_reservation"),

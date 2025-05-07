@@ -279,5 +279,12 @@
   "no_breakfast": "You currently do not serve breakfast.",
   "breakfast_not_included": "Breakfast is served and costs {{value}} per unit.",
   "breakfast_included": "Breakfast is served and included in the rate.",
-  "set_up": "Set up"
+  "set_up": "Set up",
+  "no_show": "no-show",
+  "important": "Important",
+  "change_rates_message": "Changing dates will result in a recalculation of the total amount and deposit based on the payment status. You can always manually adjust the amounts in the Payment Details tab if necessary.",
+  "change_rates_pending": "PENDING: The total and deposit will be recalculated based on the new dates.",
+  "change_rates_partial": "PARTIAL: The total amount will be updated, but the deposit will remain unchanged.",
+  "change_rates_paid": "PAID: Dates cannot be changed.",
+  "change_rates_note": ""
 }

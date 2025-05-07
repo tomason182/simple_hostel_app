@@ -42,5 +42,12 @@
   "RESERVATION_STATUS_UPDATED": "Reservation status updated.",
   "TEAM_MEMBERS_LIMIT": "You can not create more that 5 team members",
   "USER_CREATED": "User created successfully.",
-  "UPCOMING_RESERVATIONS": "The room type cannot be deleted. There are upcoming reservations. Please wait until the last checkout."
+  "UPCOMING_RESERVATIONS": "The room type cannot be deleted. There are upcoming reservations. Please wait until the last checkout.",
+  "INVALID_DATES_ORDER": "Invalid dates order",
+  "CHANGE_RESERVATION_DATES_POLICY": "Cancelled or no-show reservations cannot be modified.",
+  "DATES_AND_PRICE_UPDATED": "Reservation dates and prices updated.",
+  "CANNOT_UPDATE_FULLY_PAID_RESERVATION": "The dates cannot be updated because the reservation is fully paid.",
+  "CANNOT_UPDATE_REFUNDED_RESERVATION": "The dates cannot be updated because the reservation payment has been refunded.",
+  "CHANGE_DATES_PARTIAL_PAYMENT:": "Payment status PARTIAL: Total amount will be updated, deposit will remain the same.",
+  "CHANGE_DATES_PENDING_PAYMENT:": "Payment status PENDING: Total amount and deposit will be updated."
 }

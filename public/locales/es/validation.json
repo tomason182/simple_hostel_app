@@ -42,5 +42,12 @@
   "RESERVATION_STATUS_UPDATED": "Estado de la reserva actualizado.",
   "TEAM_MEMBERS_LIMIT": "No puedes crear mas de 5 usuarios.",
   "USER_CREATED": "Usuario creado exitosamente.",
-  "UPCOMING_RESERVATIONS": "No se puede eliminar el tipo de habitación. Hay próximas reservas. Espere hasta la última salida."
+  "UPCOMING_RESERVATIONS": "No se puede eliminar el tipo de habitación. Hay próximas reservas. Espere hasta la última salida.",
+  "INVALID_DATES_ORDER": "Orden de fechas invalido",
+  "CHANGE_RESERVATION_DATES_POLICY": "Las reservas canceladas o no presentadas no pueden ser modificadas.",
+  "DATES_AND_PRICE_UPDATED": "Fecha y precios de la reserva actualizados.",
+  "CANNOT_UPDATE_FULLY_PAID_RESERVATION": "No se pueden actualizar las fechas porque la reserva está totalmente pagada.",
+  "CANNOT_UPDATE_REFUNDED_RESERVATION": "Las fechas no se pueden actualizar porque se reembolsó el pago de la reserva.",
+  "CHANGE_DATES_PARTIAL_PAYMENT:": "Estado de pago PARCIAL: Se actualizará el monto total, el depósito permanecerá igual.",
+  "CHANGE_DATES_PENDING_PAYMENT:": "Estado de pago PENDIENTE: Se actualizará el monto total y el depósito."
 }
