@@ -25,6 +25,7 @@ export default function ChangeReservationsDatesForm({
 
     if (new Date(formBody.newCheckIn) >= new Date(formBody.newCheckOut)) {
       alert(t("INVALID_DATES_ORDER", { ns: "validation" }));
+      return;
     }
 
     if (reservation_status === "canceled" || reservation_status === "no_show") {
@@ -39,6 +40,7 @@ export default function ChangeReservationsDatesForm({
 
     if (reservation_status === "refunded") {
       alert(t("CANNOT_UPDATE_REFUNDED_RESERVATION", { ns: "validation" }));
+      return;
     }
 
     if (payment_status === "partial") {

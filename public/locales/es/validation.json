@@ -48,6 +48,6 @@
   "DATES_AND_PRICE_UPDATED": "Fecha y precios de la reserva actualizados.",
   "CANNOT_UPDATE_FULLY_PAID_RESERVATION": "No se pueden actualizar las fechas porque la reserva está totalmente pagada.",
   "CANNOT_UPDATE_REFUNDED_RESERVATION": "Las fechas no se pueden actualizar porque se reembolsó el pago de la reserva.",
-  "CHANGE_DATES_PARTIAL_PAYMENT:": "Estado de pago PARCIAL: Se actualizará el monto total, el depósito permanecerá igual.",
-  "CHANGE_DATES_PENDING_PAYMENT:": "Estado de pago PENDIENTE: Se actualizará el monto total y el depósito."
+  "CHANGE_DATES_PARTIAL_PAYMENT": "Estado de pago PARCIAL: Se actualizará el monto total, el depósito permanecerá igual.",
+  "CHANGE_DATES_PENDING_PAYMENT": "Estado de pago PENDIENTE: Se actualizará el monto total y el depósito."
 }
