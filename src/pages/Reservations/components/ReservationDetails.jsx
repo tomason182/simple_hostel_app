@@ -476,7 +476,7 @@ function PaymentDetails({
       advancePayStatus = t("paid");
       break;
     case "paid":
-      status = t("pending");
+      status = t("paid");
       advancePayStatus = t("paid");
       break;
     case "refunded":
