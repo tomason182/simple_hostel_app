@@ -63,10 +63,10 @@ export default function ChangeReservationsDatesForm({
       setLoading(true);
       setError(null);
       const url =
-        import.meta.env.VITE_URL_BASE + "/reservations/change-date/" + id;
+        import.meta.env.VITE_URL_BASE + "/reservations/change-dates/" + id;
       const options = {
         mode: "cors",
-        method: "GET",
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -81,7 +81,7 @@ export default function ChangeReservationsDatesForm({
       }
 
       addToast({
-        message: t("DATES_AND_PRICE_UPDATED", { ns: "translation" }),
+        message: t("DATES_AND_PRICE_UPDATED", { ns: "validation" }),
         status: "success",
       });
     } catch (err) {
