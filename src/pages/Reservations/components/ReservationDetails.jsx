@@ -7,7 +7,7 @@ import { RoomTypeContext } from "../../../data_providers/RoomTypesDataProvider";
 
 // Helpers
 import { formateDateToLocale } from "../../../utils/dateFormatHelper";
-
+import country_code from "../../../utils/country_code.json";
 // Data provider
 import { useFetchReservationById } from "../../../data_providers/reservationDataProvider";
 
@@ -353,6 +353,13 @@ function ReservationInfo({
 
 function GuestInfo({ guestData, setIndex, setIsOpen }) {
   const { t } = useTranslation();
+
+  function getCountryName(code) {
+    const countryObject = country_code.find(
+      country => country.value === code.toLowerCase()
+    );
+    return countryObject.label;
+  }
   return (
     <>
       <div className={styles.leftContent}>
@@ -372,7 +379,7 @@ function GuestInfo({ guestData, setIndex, setIsOpen }) {
             </tr>
             <tr>
               <th>{t("country")}</th>
-              <td>{guestData.address.country_code}</td>
+              <td>{getCountryName(guestData.address.country_code)}</td>
             </tr>
             <tr>
               <th>{t("city")}</th>
