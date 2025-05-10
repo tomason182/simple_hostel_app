@@ -44,6 +44,7 @@
   "phone_code": "Phone code",
   "phone_number": "Phone number",
   "country": "Country",
+  "state": "State | region | province",
   "city": "City",
   "postal_code": "Postal code",
   "street": "Street",

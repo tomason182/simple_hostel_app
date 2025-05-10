@@ -1,5 +1,6 @@
 import SecondaryTabs from "../../components/Tabs/SecondaryTabs";
 import PropertyInfo from "./components/PropertyInfo";
+import Location from "./components/Location";
 import Users from "./components/Users";
 import RoomTypes from "./components/RoomTypes";
 import RoomsPhotos from "./components/RoomsPhotos";
@@ -37,6 +38,10 @@ export default function Property() {
           refreshPropertyData={refreshPropertyData}
         />
       ),
+    },
+    {
+      label: t("location"),
+      content: <Location />,
     },
     {
       label: t("users"),

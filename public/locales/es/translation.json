@@ -44,6 +44,7 @@
   "phone_code": "Código de area",
   "phone_number": "Número de teléfono",
   "country": "País",
+  "state": "Estado | región | provincia",
   "city": "Ciudad",
   "postal_code": "Código postal",
   "street": "Calle",

@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.subContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.mapContainer {
+  height: 400px;
+}
+
+/* Display country list search */
+
+.locationDetails {
+  border: 1px solid var(--gray-200);
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+.locationDetails ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.locationDetails li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.locationDetails li:last-child {
+  border-bottom: none;
+}
+
+.locationDetails li span:first-child {
+  font-weight: bold;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.valueContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-grow: 1;
+  justify-content: flex-end;
+}
+
+.valueContainer > span {
+  text-align: right;
+  word-break: break-all;
+}
+
+.editInput {
+  padding: 6px 8px;
+  border: 1px solid var(--gray-400);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.editButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray-400);
+}
+
+.editButton:hover svg {
+  stroke: #007bff;
+}
+
+.saveButton {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: background-color 0.2s;
+}
+
+.saveButton:hover {
+  background-color: #218838;
+}
+
+.errorBanner {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border: 1px solid #f5c5cb;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.errorBanner p {
+  margin: 0 0 5px 0;
+}
+
+.errorBanner button {
+  background-color: #721c24;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
