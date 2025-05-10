@@ -14,74 +14,21 @@
 
 /* Display country list search */
 
-.locationDetails {
+.searchLocation {
   border: 1px solid var(--gray-200);
   border-radius: 5px;
   margin-bottom: 1rem;
   padding: 1rem;
 }
-.locationDetails ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.locationDetails li {
+.searchLocation form {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--gray-200);
-}
-
-.locationDetails li:last-child {
-  border-bottom: none;
-}
-
-.locationDetails li span:first-child {
-  font-weight: bold;
-  margin-right: 10px;
-  flex-shrink: 0;
-}
-
-.valueContainer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-grow: 1;
-  justify-content: flex-end;
-}
-
-.valueContainer > span {
-  text-align: right;
-  word-break: break-all;
-}
-
-.editInput {
-  padding: 6px 8px;
-  border: 1px solid var(--gray-400);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.editButton {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  color: var(--gray-400);
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.editButton:hover svg {
-  stroke: #007bff;
-}
-
-.saveButton {
+.searchButton {
   background-color: #28a745;
   color: white;
   padding: 10px 15px;
