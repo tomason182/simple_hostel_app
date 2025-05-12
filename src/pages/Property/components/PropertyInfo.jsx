@@ -6,7 +6,7 @@ import Modal from "../../../components/Modal/Modal";
 import { useState } from "react";
 // Forms
 import ContactInfoForm from "../../../forms/ContactInfoForm";
-import ProperTyDetailsForm from "../../../forms/PropertyDetailsForm";
+import PropertyCurrenciesForm from "../../../forms/PropertyCurrenciesForm";
 
 // Countries
 import countries from "../../../utils/country_code.json";
@@ -58,7 +58,17 @@ export default function PropertyInfo({
     {
       label: t("edit"),
       onClick: () => {
-        setIndex(1), setIsOpen(true);
+        alert("Para editar ve a la pestaña ubicación");
+      },
+    },
+  ];
+
+  const currenciesActions = [
+    {
+      label: t("edit"),
+      onClick: () => {
+        setIndex(1);
+        setIsOpen(true);
       },
     },
   ];
@@ -75,9 +85,9 @@ export default function PropertyInfo({
       ),
     },
     {
-      header: t("edit_property_info"),
+      header: t("currency_preference"),
       children: (
-        <ProperTyDetailsForm
+        <PropertyCurrenciesForm
           setIsOpen={setIsOpen}
           propertyDetailsData={propertyDetailsData}
           refreshPropertyData={refreshPropertyData}
@@ -128,21 +138,11 @@ export default function PropertyInfo({
                 <span>Hostel ID:</span> <span>{propertyData.id}</span>
               </li>
               <li>
-                <span>{t("currency_preference")}:</span>
-                <ul className={styles.innerList}>
-                  <li>
-                    <span>{t("base_currency")}:</span>
-                    <span>{propertyData?.currencies.base_currency}</span>
-                  </li>
-                  <li>
-                    <span>{t("payment_currency")}:</span>
-                    <span>{propertyData?.currencies.payment_currency}</span>
-                  </li>
-                </ul>
-              </li>
-              <li>
                 <span>{t("street")}:</span>
-                <span>{propertyData?.address.street}</span>
+                <span>
+                  {propertyData?.address.street}{" "}
+                  {propertyData?.address.house_number}
+                </span>
               </li>
               <li>
                 <span>{t("city")}:</span>
@@ -159,16 +159,15 @@ export default function PropertyInfo({
             </ul>
           )}
         </Card>
-        <Card title="Integration Status">
+        <Card title={t("currency_preference")} actions={currenciesActions}>
           <ul className={styles.list}>
             <li>
-              <span>{t("website_connected")}:</span>
+              <span>{t("base_currency")}:</span>
+              <span>{propertyDetailsData?.base_currency}</span>
             </li>
             <li>
-              <span>{t("book_engine_status")}:</span>
-            </li>
-            <li>
-              <span>{t("otas_connected")}:</span>
+              <span>{t("payment_currency")}:</span>
+              <span>{propertyDetailsData?.payment_currency}</span>
             </li>
           </ul>
         </Card>

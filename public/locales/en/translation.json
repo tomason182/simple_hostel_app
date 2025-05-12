@@ -287,5 +287,6 @@
   "change_rates_pending": "PENDING: The total and deposit will be recalculated based on the new dates.",
   "change_rates_partial": "PARTIAL: The total amount will be updated, but the deposit will remain unchanged.",
   "change_rates_paid": "PAID: Dates cannot be changed.",
-  "change_rates_note": ""
+  "change_rates_note": "",
+  "location": "Location"
 }
