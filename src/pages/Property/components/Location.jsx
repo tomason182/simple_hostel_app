@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import Modal from "../../../components/Modal/Modal";
 import LocationForm from "../../../forms/LocationForm";
+import PropTypes from "prop-types";
 
 const initialLocationState = {
   country: "",
-  country_code: "",
+  alpha_2_code: "",
   state: "",
   city: "",
   postal_code: "",
@@ -16,10 +17,9 @@ const initialLocationState = {
   lat: "",
   lon: "",
   osm_id: "",
-  osm_type: "",
 };
 
-export default function Location() {
+export default function Location({ property }) {
   const [initialCenter, setInitialCenter] = useState([20, 0]);
   const [mapZoom, setMapZoom] = useState(2);
   const [location, setLocation] = useState(initialLocationState);
@@ -31,6 +31,18 @@ export default function Location() {
   const [errorLocation, setErrorLocation] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    if (property.address) {
+      const address = property.address;
+      setMarker({
+        lat: address.lat,
+        lon: address.lon,
+      });
+      setInitialCenter([address.lat || 20, address.lon || 0]);
+      setMapZoom(address.lat ? 20 : 2);
+    }
+  }, []);
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -107,7 +119,7 @@ export default function Location() {
 
       setLocation({
         country: address.country || "",
-        country_code: address.country_code || "",
+        alpha_2_code: address.country_code || "",
         state: address.state || "",
         city:
           address.city ||
@@ -118,10 +130,9 @@ export default function Location() {
         postal_code: address.postcode || "",
         street: address.road || "",
         house_number: address.house_number || "",
-        lat: data.lat || "",
-        lon: data.lon || "",
+        lat: Math.round(data.lat * 1000000) / 1000000 || "",
+        lon: Math.round(data.lon * 1000000) / 1000000 || "",
         osm_id: data.osm_id || "",
-        osm_type: data.osm_type || "",
       });
 
       setIsOpen(true);
@@ -209,3 +220,7 @@ export default function Location() {
     </div>
   );
 }
+
+Location.propTypes = {
+  property: PropTypes.object.isRequired,
+};

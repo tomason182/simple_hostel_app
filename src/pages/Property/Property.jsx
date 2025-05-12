@@ -41,7 +41,7 @@ export default function Property() {
     },
     {
       label: t("location"),
-      content: <Location />,
+      content: <Location property={propertyData} />,
     },
     {
       label: t("users"),

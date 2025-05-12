@@ -25,13 +25,14 @@ export default function LocationForm({
   async function handleFormSubmit(e) {
     e.preventDefault();
 
-    const url = `${import.meta.env.VITE_URL_BASE}/property/location/`;
+    const url = `${import.meta.env.VITE_URL_BASE}/properties/update/location`;
     const options = {
       mode: "cors",
-      method: "POST",
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(locationData),
     };
 
@@ -42,14 +43,13 @@ export default function LocationForm({
       const response = await fetch(url, options);
       if (!response.ok) {
         const error = await response.json();
-        console.error(error.msg);
-        throw new Error(error.msg);
+        console.error(error);
+        throw new Error(error.msg || "UNEXPECTED_ERROR");
       }
 
       alert("Property location updated");
       setIsOpen(false);
     } catch (err) {
-      console.error(err.message);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -170,7 +170,9 @@ export default function LocationForm({
         </button>
         <button className={styles.submitButton}>{t("save")}</button>
       </div>
-      {error && <p className={styles.error}>{t({ error })}</p>}
+      {error && (
+        <p className={styles.error}>{t(error, { ns: "validation" })}</p>
+      )}
     </form>
   );
 }
