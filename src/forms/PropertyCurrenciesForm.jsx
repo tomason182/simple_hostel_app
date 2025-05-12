@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import Spinner from "../components/Spinner/Spinner";
 import ToolTip from "../components/ToolTip/ToolTip";
 import { useState, useEffect } from "react";
+import { useToast } from "../hooks/useToast";
 
 export default function PropertyCurrenciesForm({
   setIsOpen,
@@ -19,6 +20,9 @@ export default function PropertyCurrenciesForm({
   const [currencies, setCurrencies] = useState([]);
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
   const [currenciesError, setCurrenciesError] = useState(null);
+
+  const { t } = useTranslation();
+  const { addToast } = useToast();
 
   useEffect(() => {
     setFormData({
@@ -64,13 +68,59 @@ export default function PropertyCurrenciesForm({
     </option>
   ));
 
-  const { t } = useTranslation();
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const url = import.meta.env.VITE_URL_BASE + "/properties/update/currencies";
+    const options = {
+      mode: "cors",
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    };
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        const error = await response.json();
+        console.log(error);
+        throw new Error(error.msg || "UNEXPECTED_ERROR");
+      }
+
+      addToast({
+        message: "Currencies_updated",
+        type: "success",
+      });
+      refreshPropertyData();
+      setIsOpen(false);
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (loadingCurrencies) return <Spinner />;
 
   if (currenciesError) return <div>Error Loading currencies list</div>;
   return (
-    <form>
+    <form className={styles.form} onSubmit={handleSubmit}>
       <fieldset>
         <legend>{t("currencies")}</legend>
         <div className={styles.groupContainer}>
@@ -100,7 +150,7 @@ export default function PropertyCurrenciesForm({
                 name="base_currency"
                 id="base_currency"
                 value={formData.base_currency}
-                onChange={handleFormChange}
+                onChange={handleChange}
               >
                 {currenciesList}
               </select>
@@ -133,7 +183,7 @@ export default function PropertyCurrenciesForm({
                 name="payment_currency"
                 id="payment_currency"
                 value={formData.payment_currency}
-                onChange={handleFormChange}
+                onChange={handleChange}
               >
                 {currenciesList}
               </select>
