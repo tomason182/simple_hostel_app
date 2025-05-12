@@ -17,6 +17,7 @@ export default function PropertyInfo({
   loadingPropertyData,
   propertyError,
   refreshPropertyData,
+  setActiveTab,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [index, setIndex] = useState(0);
@@ -58,7 +59,7 @@ export default function PropertyInfo({
     {
       label: t("edit"),
       onClick: () => {
-        alert("Para editar ve a la pestaña ubicación");
+        setActiveTab(1);
       },
     },
   ];
@@ -204,4 +205,5 @@ PropertyInfo.propTypes = {
   loadingPropertyData: PropTypes.bool.isRequired,
   propertyError: PropTypes.string,
   refreshPropertyData: PropTypes.func.isRequired,
+  setActiveTab: PropTypes.func.isRequired,
 };

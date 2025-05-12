@@ -2,8 +2,7 @@ import styles from "./SecondaryTabs.module.css";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-export default function SecondaryTabs({ tabs, defaultActiveTab = 0 }) {
-  const [activeTab, setActiveTab] = useState(defaultActiveTab);
+export default function SecondaryTabs({ tabs, activeTab, setActiveTab }) {
   const [activeSubTabIndex, setActiveSubTabIndex] = useState(null);
 
   function handleTabClick(index) {
@@ -80,6 +79,6 @@ SecondaryTabs.propTypes = {
       ),
     })
   ).isRequired,
-  defaultActiveTab: PropTypes.number.isRequired,
-  onTabChange: PropTypes.func.isRequired,
+  activeTab: PropTypes.number.isRequired,
+  setActiveTab: PropTypes.func.isRequired,
 };

@@ -10,7 +10,7 @@ import BreakfastSettings from "./components/BreakfastSettings";
 import Policies from "./components/Policies";
 import Amenities from "./components/Amenities";
 import Facilities from "./components/Facilities";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { useTranslation } from "react-i18next";
 
@@ -19,6 +19,7 @@ import usePropertyDataProvider from "../../data_providers/PropertyDataProvider";
 import { RoomTypeContext } from "../../data_providers/RoomTypesDataProvider";
 
 export default function Property() {
+  const [activeTab, setActiveTab] = useState(0);
   const { propertyData, isLoading, error, refreshPropertyData } =
     usePropertyDataProvider();
 
@@ -36,6 +37,7 @@ export default function Property() {
           loadingPropertyData={isLoading}
           propertyError={error}
           refreshPropertyData={refreshPropertyData}
+          setActiveTab={setActiveTab}
         />
       ),
     },
@@ -106,5 +108,11 @@ export default function Property() {
     },
   ];
 
-  return <SecondaryTabs tabs={tabs} />;
+  return (
+    <SecondaryTabs
+      tabs={tabs}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+    />
+  );
 }
