@@ -56,6 +56,7 @@ export default function ReservationDetails({
 
   function submitFormData() {
     setLoading(true);
+    setError(null);
     setIndex(4);
 
     const formBody = removeEmptyFields(data);
