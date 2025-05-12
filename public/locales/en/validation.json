@@ -50,5 +50,6 @@
   "CANNOT_UPDATE_REFUNDED_RESERVATION": "The dates cannot be updated because the reservation payment has been refunded.",
   "CHANGE_DATES_PARTIAL_PAYMENT": "Payment status PARTIAL: Total amount will be updated, deposit will remain the same.",
   "CHANGE_DATES_PENDING_PAYMENT": "Payment status PENDING: Total amount and deposit will be updated.",
-  "RESERVATION_PRICES_UPDATED": "Reservation prices updated."
+  "RESERVATION_PRICES_UPDATED": "Reservation prices updated.",
+  "LOCATION_UPDATED": "Location updated"
 }

@@ -288,6 +288,5 @@
   "change_rates_pending": "PENDIENTE: El total y el depósito se recalcularán en función de las nuevas fechas.",
   "change_rates_partial": "PARCIAL: Se actualizará el importe total, pero el depósito permanecerá sin cambios.",
   "change_rates_paid": "PAGADO: Las fechas no se pueden cambiar.",
-  "change_rates_note": "",
   "location": "Ubicación"
 }

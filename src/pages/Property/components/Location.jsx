@@ -19,7 +19,7 @@ const initialLocationState = {
   osm_id: "",
 };
 
-export default function Location({ property }) {
+export default function Location({ property, refreshPropertyData }) {
   const [initialCenter, setInitialCenter] = useState([20, 0]);
   const [mapZoom, setMapZoom] = useState(2);
   const [location, setLocation] = useState(initialLocationState);
@@ -74,8 +74,6 @@ export default function Location({ property }) {
 
   const language = i18n.resolvedLanguage || "en";
 
-  console.log(location);
-
   function handleChange(e) {
     const { name, value } = e.target;
 
@@ -113,6 +111,8 @@ export default function Location({ property }) {
       const data = await response.json();
       const address = data?.address;
 
+      console.log(address);
+
       if (!address) {
         throw new Error("ADDRESS_NOT_FOUND");
       }
@@ -123,6 +123,7 @@ export default function Location({ property }) {
         state: address.state || "",
         city:
           address.city ||
+          address.city_district ||
           address.town ||
           address.village ||
           address.municipality ||
@@ -215,6 +216,7 @@ export default function Location({ property }) {
           locationData={location}
           setLocationData={setLocation}
           setIsOpen={setIsOpen}
+          refreshPropertyData={refreshPropertyData}
         />
       </Modal>
     </div>
@@ -223,4 +225,5 @@ export default function Location({ property }) {
 
 Location.propTypes = {
   property: PropTypes.object.isRequired,
+  refreshPropertyData: PropTypes.func.isRequired,
 };

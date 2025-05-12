@@ -3,15 +3,18 @@ import { useTranslation } from "react-i18next";
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Spinner from "../components/Spinner/Spinner";
+import { useToast } from "../hooks/useToast";
 
 export default function LocationForm({
   locationData,
   setLocationData,
   setIsOpen,
+  refreshPropertyData,
 }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { addToast } = useToast();
 
   function handleFormChange(e) {
     const { name, value } = e.target;
@@ -47,7 +50,11 @@ export default function LocationForm({
         throw new Error(error.msg || "UNEXPECTED_ERROR");
       }
 
-      alert("Property location updated");
+      addToast({
+        message: t("LOCATION_UPDATED", { ns: "validation" }),
+        type: "success",
+      });
+      refreshPropertyData();
       setIsOpen(false);
     } catch (err) {
       setError(err.message);
@@ -181,4 +188,5 @@ LocationForm.propTypes = {
   locationData: PropTypes.object.isRequired,
   setLocationData: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
+  refreshPropertyData: PropTypes.func.isRequired,
 };

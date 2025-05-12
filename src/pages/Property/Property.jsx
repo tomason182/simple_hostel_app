@@ -43,7 +43,12 @@ export default function Property() {
     },
     {
       label: t("location"),
-      content: <Location property={propertyData} />,
+      content: (
+        <Location
+          property={propertyData}
+          refreshPropertyData={refreshPropertyData}
+        />
+      ),
     },
     {
       label: t("users"),
