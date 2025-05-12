@@ -435,13 +435,42 @@ function PaymentDetails({
     return roomType.description;
   }
 
-  function handlePaymentStatusChange(e) {
+  function handleChange(e) {
+    const { name, value } = e.target;
+
+    let status = "";
+
+    if (name === "advance_payment") {
+      switch (value) {
+        case "pending":
+          status = "pending";
+          break;
+        case "paid":
+          status = "partial";
+          break;
+        case "refunded":
+          status = "refunded";
+          break;
+      }
+    }
+
+    if (name === "remaining_balance") {
+      switch (value) {
+        case "pending":
+          status = "partial";
+          break;
+        case "paid":
+          status = "paid";
+          break;
+      }
+    }
+
     const url =
       import.meta.env.VITE_URL_BASE +
       "/reservations/change-payment-status/" +
       reservationData.id +
       "-" +
-      e.target.value;
+      status;
 
     const options = {
       mode: "cors",
@@ -475,24 +504,24 @@ function PaymentDetails({
 
   switch (paymentStatus) {
     case "pending":
-      status = t("pending");
-      advancePayStatus = t("pending");
+      status = "pending";
+      advancePayStatus = "pending";
       break;
     case "partial":
-      status = t("pending");
-      advancePayStatus = t("paid");
+      status = "pending";
+      advancePayStatus = "paid";
       break;
     case "paid":
-      status = t("paid");
-      advancePayStatus = t("paid");
+      status = "paid";
+      advancePayStatus = "paid";
       break;
     case "refunded":
-      status = t("canceled");
-      advancePayStatus = t("refunded");
+      status = "canceled";
+      advancePayStatus = "refunded";
       break;
     case "fully_refunded":
-      status = t("refunded");
-      advancePayStatus = t("refunded");
+      status = "refunded";
+      advancePayStatus = "refunded";
   }
 
   return (
@@ -527,12 +556,47 @@ function PaymentDetails({
             <tr>
               <th>{t("advance_payment")}</th>
               <td>$ {advancePaymentAmount}</td>
-              <td>{advancePayStatus}</td>
+              <td>
+                <select
+                  name="advance_payment"
+                  onChange={handleChange}
+                  disabled={loading}
+                >
+                  <option
+                    value="pending"
+                    selected={advancePayStatus === "pending"}
+                  >
+                    {t("pending")}
+                  </option>
+                  <option value="paid" selected={advancePayStatus === "paid"}>
+                    {t("paid")}
+                  </option>
+                  <option
+                    value="refunded"
+                    selected={advancePayStatus === "refunded"}
+                  >
+                    {t("refunded")}
+                  </option>
+                </select>
+              </td>
             </tr>
             <tr className={styles.highlightRow}>
               <th>{t("remaining_balance")}</th>
               <td>$ {remainingBalance.toFixed(2)}</td>
-              <td>{status}</td>
+              <td>
+                <select
+                  name="remaining_balance"
+                  onChange={handleChange}
+                  disabled={loading}
+                >
+                  <option value="pending" selected={(status = "pending")}>
+                    {t("pending")}
+                  </option>
+                  <option value="paid" selected={status === "paid"}>
+                    {t("paid")}
+                  </option>
+                </select>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -549,41 +613,6 @@ function PaymentDetails({
         >
           {t("change_prices")}
         </button>
-        <br />
-
-        <span style={{ fontSize: "14px", color: "#333", marginBottom: "10px" }}>
-          -- {t("change_payment_status")} --
-        </span>
-        <select
-          value={paymentStatus}
-          onChange={handlePaymentStatusChange}
-          disabled={loading}
-        >
-          <option value="pending">{t("pending")}</option>
-          <option value="partial">{t("partial")}</option>
-          <option value="paid">{t("paid")}</option>
-          <option value="refunded">{t("refunded")}</option>
-        </select>
-        <div className={styles.statusNotes}>
-          <p>{t("status_description")}</p>
-          <ul>
-            <li>
-              <span>{t("pending")}:</span> {t("pending_description")}
-            </li>
-            <li>
-              <span>{t("partial")}:</span> {t("partial_description")}
-            </li>
-            <li>
-              <span>{t("paid")}:</span> {t("paid_description")}
-            </li>
-            <li>
-              <span>{t("refunded")}:</span> {t("refunded_description")}
-            </li>
-            <li>
-              <span>{t("full_refund")}:</span> {t("full_refund_description")}
-            </li>
-          </ul>
-        </div>
       </div>
     </>
   );
