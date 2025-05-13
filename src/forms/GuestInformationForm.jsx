@@ -150,7 +150,7 @@ export default function GuestInformationForm({
               >
                 {countryCodes.map(c => (
                   <option key={c.value} value={c.code}>
-                    {c.code} - {c.label}{" "}
+                    {c.code} - {c.label}
                   </option>
                 ))}
               </select>
